@@ -1,6 +1,6 @@
 package main.java.model.user;
 
-import main.java.model.ProductImpl;
+import main.java.model.product.ProductImpl;
 
 public class AdminImpl extends UserImpl implements Admin{
 

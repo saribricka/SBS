@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.model.product.ProductImpl;
+
 interface Discount {
 	
 	float getDiscount(ProductImpl item);

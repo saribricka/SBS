@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.model.product.ProductImpl;
+
 public class CartImpl implements Cart {
 	
 	private static final int PERCENTAGE = 100;

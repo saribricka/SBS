@@ -1,6 +1,6 @@
 package main.java.model.user;
 
-public class CashierImpl extends UserImpl implements Cashier{
+public class CashierImpl extends UserImpl implements Cashier {
 
 	public CashierImpl(int id, String name, String surname, String username, String city, String street, int zipCode, String description) {
 		super(id, name, surname, username, city, street, zipCode, description);

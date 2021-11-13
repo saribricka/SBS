@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.model.product.ProductImpl;
+
 class DiscountImpl implements Discount {
 	
 	float discount;
