@@ -1,6 +1,6 @@
 package main.java.model.user;
 
-interface User {
+public interface User {
 
 	/**
 	 * 
@@ -29,4 +29,15 @@ interface User {
 	 */
 	String updateMyProfile(int id, String name, String surname, String username, String city, String street, int zipCode, String selfDescription);
 		
+	
+	public enum UserType{        
+    /**
+     * The user is a cashier
+     */
+    CASHIER,
+    /**
+     * The user is an admin
+     */
+    ADMIN
+    }
 }
