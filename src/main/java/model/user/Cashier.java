@@ -1,6 +1,6 @@
 package main.java.model.user;
 
-public interface Cashier extends User {
+public interface Cashier{
 
 	/** Cart CRUD functionalities */	
 	String getProductInfo(int productId, int brandId);

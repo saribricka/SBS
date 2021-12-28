@@ -1,10 +1,12 @@
 package main.java.model.user;
 
-public class CashierImpl extends UserImpl implements Cashier {
+import main.java.model.user.AdminImpl.AdminBuilder;
+import main.java.model.user.User.AbstractUserBuilder;
 
-	public CashierImpl(int id, String name, String surname, String username, String city, String street, int zipCode, String description) {
-		super(id, name, surname, username, city, street, zipCode, description);
-		this.isAdmin = false;
+public class CashierImpl extends User implements Cashier {
+
+	public CashierImpl(CashierBuilder builder) {
+		super(builder);
 	}
 
 	@Override
@@ -30,4 +32,19 @@ public class CashierImpl extends UserImpl implements Cashier {
 		// TODO Auto-generated method stub
 		
 	}	
+	
+	public abstract static class CashierBuilder extends AbstractUserBuilder<User.AbstractUserBuilder<CashierBuilder>> {
+		
+		public CashierBuilder isAdmin() {
+			this.isAdmin = false;
+			return this;
+		}
+		
+		//Return the constructed object
+		@Override
+		public CashierImpl build() {
+			return new CashierImpl(this);
+		}
+		
+	}
 }

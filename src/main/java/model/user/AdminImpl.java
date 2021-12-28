@@ -1,12 +1,12 @@
 package main.java.model.user;
 
 import main.java.model.product.ProductImpl;
+import main.java.model.user.User.AbstractUserBuilder;
 
-public class AdminImpl extends UserImpl implements Admin{
+public class AdminImpl extends User implements Admin{
 
-	public AdminImpl(int id, String name, String surname, String username, String city, String street, int zipCode, String description) {
-		super(id, name, surname, username, city, street, zipCode, description);
-		this.isAdmin = true;
+	public AdminImpl(AdminBuilder builder) {
+		super(builder);
 	}
 
 	@Override
@@ -52,4 +52,18 @@ public class AdminImpl extends UserImpl implements Admin{
 		
 	}
 
+	public abstract static class AdminBuilder extends AbstractUserBuilder<User.AbstractUserBuilder<AdminBuilder>> {
+		
+		public AdminBuilder isAdmin() {
+			this.isAdmin = true;
+			return this;
+		}
+		
+		//Return the constructed object
+		@Override
+		public AdminImpl build() {
+			return new AdminImpl(this);
+		}
+		
+	}
 }

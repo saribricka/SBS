@@ -2,7 +2,7 @@ package main.java.model.user;
 
 import main.java.model.product.ProductImpl;
 
-public interface Admin extends User{
+public interface Admin{
 	
 	/** Cashier CRUD functionalities */
 	
