@@ -1,8 +1,6 @@
 package main.java.controller;
 
 import main.java.model.Model;
-import main.java.model.user.Admin;
-import main.java.model.user.Cashier;
 import main.java.view.View;
 
 public class AbstractController implements Controller {
@@ -41,22 +39,6 @@ public class AbstractController implements Controller {
      */
     protected boolean isUserLogged() {
         return this.getModel().getLoggedUser().isPresent();
-    }
-	
-	/**
-     * 
-     * @return true if a teacher is logged
-     */
-    protected boolean isUserAdmin() {
-        return this.isUserLogged() && this.getModel().getLoggedUser().get() instanceof Admin;
-    }
-    
-    /**
-     * 
-     * @return true if a student is logged
-     */
-    protected boolean isUserCashier() {
-        return this.isUserLogged() && this.getModel().getLoggedUser().get() instanceof Cashier;
     }
     
 	 

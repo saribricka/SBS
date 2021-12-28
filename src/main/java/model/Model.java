@@ -2,7 +2,6 @@ package main.java.model;
 
 import java.util.Optional;
 
-import main.java.model.user.User;
 
 public interface Model {
 
