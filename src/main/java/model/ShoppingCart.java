@@ -10,6 +10,8 @@ public interface ShoppingCart {
 	
 	double getTotalAmount();
 	
+	public double getDiscountedAmount();
+	
 	void addDiscount(double discount);
 	
 	void printInvoice();

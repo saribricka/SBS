@@ -1,5 +1,7 @@
 package test.java.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -21,7 +23,6 @@ public class ItemTest {
 	    
 	    ShoppingCart cart = new ShoppingCartImpl();
 	    
-	    /* add the item to the cart */
 	    cart.addToCart(i1);
 	    cart.addToCart(i2);
 	    cart.addToCart(i3);
@@ -42,5 +43,8 @@ public class ItemTest {
 	    
 	    cart.addDiscount(0.1);	    
 	    cart.printInvoice();
+	    
+	    assertEquals(cart.getTotalAmount(), 100.0);
+        assertEquals(cart.getDiscountedAmount(), 90.0);
 	}
 }

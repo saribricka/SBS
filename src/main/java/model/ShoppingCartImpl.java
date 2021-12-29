@@ -59,6 +59,7 @@ public class ShoppingCartImpl implements ShoppingCart {
 		return this.totalAmount;
 	}
 
+	@Override
 	public double getDiscountedAmount() {
 		this.toDiscount = this.totalAmount * this.discount;
 		this.discountedAmount = this.totalAmount - this.toDiscount;
