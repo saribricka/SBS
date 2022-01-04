@@ -43,7 +43,20 @@ public class UserTest {
         assertEquals(admin.getDescription(), Optional.empty());
         
         assertEquals(cashier.getName(), "Jay");
-        assertEquals(cashier.isAdmin(), false);
-       
+        assertEquals(cashier.isAdmin(), false);       
     }
+	
+	@Test
+	@DisplayName("toString test.")
+	public void toStringTest() {
+		final User sara = new UserImpl.UserBuilder()
+				.name("Sara")
+				.lastname("Briccoli")
+                .city("Faenza")
+                .address("Vittorio Veneto 2/3")
+                .description(null)
+                .isAdmin(true)
+                .build();
+		System.out.println(sara.toString());
+	}
 }

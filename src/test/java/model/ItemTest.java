@@ -20,11 +20,11 @@ public class ItemTest {
 	@Test
     @DisplayName("Amount and Discount test.")
     public void amountAndDiscountTest() {
-		Item i1 = new ItemImpl("Olive Oil Brisighello 1l", 3, 100.0, null, null, null);
-	    Item i2 = new ItemImpl("Cheese Slices", 2, 50.0, null, null, null);
-	    Item i3 = new ItemImpl("Bread", 1, 5.0, null, null, null);
-	    Item i4 = new ItemImpl("Eggs", 50, 10.0, null, null, null);
-	    Item i5 = new ItemImpl("Soya Drink", 2, 100.0, null, null, null);
+		Item i1 = new ItemImpl(null, "Olive Oil Brisighello 1l", 3, 100.0, null, null, null);
+	    Item i2 = new ItemImpl(null, "Cheese Slices", 2, 50.0, null, null, null);
+	    Item i3 = new ItemImpl(null, "Bread", 1, 5.0, null, null, null);
+	    Item i4 = new ItemImpl(null, "Eggs", 50, 10.0, null, null, null);
+	    Item i5 = new ItemImpl(null, "Soya Drink", 2, 100.0, null, null, null);
 	    
 	    ShoppingCart cart = new ShoppingCartImpl();
 	    
@@ -58,8 +58,8 @@ public class ItemTest {
 	public void dateTest() throws ParseException {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
 		
-		Item i1 = new ItemImpl(null, 0, 0, new Date(2015, 8, 17), null, null);
-		Item i2 = new ItemImpl(null, 0, 0, null, new Date(2021, 1, 4), null);
+		Item i1 = new ItemImpl(null, null, 0, 0, new Date(2015, 8, 17), null, null);
+		Item i2 = new ItemImpl(null, null, 0, 0, null, new Date(2021, 1, 4), null);
 		
 		System.out.println("method: " + i2.getExpirationDate());
 		try {

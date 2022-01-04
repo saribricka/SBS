@@ -24,25 +24,6 @@ public class UserImpl implements User{
 	}
 	
 	@Override
-	public void logIn(String username, String password) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String logOut() {
-		// TODO Auto-generated method stub
-		return "succesfully logged out";
-	}
-
-	@Override
-	public String updateMyProfile(int id, String firstname, String lastname, String city,
-			String address, String selfDescription) {
-		// TODO Auto-generated method stub
-		return "profile succesfully updated";
-	}
-
-	@Override
 	public String getName() {
 		return this.firstname;
 	}

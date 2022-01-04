@@ -26,9 +26,10 @@ public class ItemImpl implements Item{
 //		this.receivedDate = stringToDate(builder.receivedDate);
 //	}
 	
-	public ItemImpl(String productName, int quantity, double unitPrice, Date receivedDate,
+	public ItemImpl(String barcode, String productName, int quantity, double unitPrice, Date receivedDate,
 			Date expirationDate, ItemCategory category) {
-		this.barcode = UUID.randomUUID().toString();
+//		this.barcode = UUID.randomUUID().toString();
+		this.barcode = barcode;
 		this.productName = productName;
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
@@ -37,10 +38,11 @@ public class ItemImpl implements Item{
 		this.category = category;
 	}
 	
+	@Override
 	public String toString() {
-		String s = this.productName + ":";
-		s = s + this.quantity + "\n";
-		return s;
+		return "\n\nbarcode=" + barcode + ",\nproductName=" + productName + ",\nquantity=" + quantity
+				+ ",\nunitPrice=" + unitPrice + ",\nreceivedDate=" + receivedDate 
+				+ ",\nexpirationDate=" + expirationDate + ",\ncategory=" + category;
 	}
 
 	@Override
