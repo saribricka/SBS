@@ -23,6 +23,8 @@ public interface User {
 	public int getId();
 
 	public boolean isAdmin();
+	
+	public boolean isCustomer();
 
 	public String toString();
 }

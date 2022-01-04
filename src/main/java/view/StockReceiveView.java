@@ -46,7 +46,7 @@ public class StockReceiveView extends JFrame{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblEnterNewQuantity = new JLabel("Enter new quantity:");
+		JLabel lblEnterNewQuantity = new JLabel("Quantity:");
 		lblEnterNewQuantity.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblEnterNewQuantity.setBounds(12, 46, 118, 24);
 		contentPane.add(lblEnterNewQuantity);
@@ -93,7 +93,7 @@ public class StockReceiveView extends JFrame{
 		textField_ReceiveDate.setBounds(142, 78, 116, 22);
 		contentPane.add(textField_ReceiveDate);
 		
-		JLabel lblExpiredDate = new JLabel("Expired Date:");
+		JLabel lblExpiredDate = new JLabel("Expiration Date:");
 		lblExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblExpiredDate.setBounds(12, 112, 118, 24);
 		contentPane.add(lblExpiredDate);

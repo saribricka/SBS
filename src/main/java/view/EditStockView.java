@@ -77,12 +77,12 @@ public class EditStockView extends JFrame{
 	label_Quantity.setBounds(10, 183, 79, 22);
 	contentPane.add(label_Quantity);
 	
-	JLabel label_ReceivedDate = new JLabel("Received Date :");
+	JLabel label_ReceivedDate = new JLabel("Received Date:");
 	label_ReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
 	label_ReceivedDate.setBounds(10, 226, 116, 16);
 	contentPane.add(label_ReceivedDate);
 	
-	JLabel label_ExpiredDate = new JLabel("Expired Date:");
+	JLabel label_ExpiredDate = new JLabel("Expiration Date:");
 	label_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
 	label_ExpiredDate.setBounds(10, 258, 116, 16);
 	contentPane.add(label_ExpiredDate);

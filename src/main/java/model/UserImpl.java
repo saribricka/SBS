@@ -10,7 +10,7 @@ public class UserImpl implements User{
 	Optional<String> address;
 	Optional<String> city; 
 	private final int id;
-	protected final boolean isAdmin;
+	protected final boolean isAdmin, isCustomer;
 	
 	public UserImpl(UserBuilder builder) {
 		this.id = builder.id;
@@ -20,6 +20,7 @@ public class UserImpl implements User{
 		this.address = builder.address;
 		this.description = builder.description;
 		this.isAdmin = builder.isAdmin;
+		this.isCustomer = builder.isCustomer;
 	}
 	
 	@Override
@@ -77,19 +78,25 @@ public class UserImpl implements User{
 	}
 	
 	@Override
+	public boolean isCustomer() {
+		return this.isCustomer;
+	}
+	
+	@Override
 	public String toString() {
 		return "UserImpl [firstname=" + firstname + ", lastname=" + lastname + ", description=" + description
-				+ ", address=" + address + ", city=" + city + ", id=" + id + ", isAdmin=" + isAdmin + "]";
-	}
+				+ ", address=" + address + ", city=" + city + ", id=" + id + ", isAdmin=" + isAdmin + ", isCustomer="
+				+ isCustomer + "]";
+	}	
 
-	public static class UserBuilder{
+	public static class UserBuilder {
 		
 		private String firstname, lastname;
 		private Optional<String> city  = Optional.empty();
 		private Optional<String> address = Optional.empty();
 		private Optional<String> description = Optional.empty(); 
 		private int id;
-		protected boolean isAdmin;
+		protected boolean isAdmin, isCustomer;
 		
 		public UserBuilder name(String firstname) {
 			this.firstname = firstname;
@@ -118,6 +125,11 @@ public class UserImpl implements User{
 		
 		public UserBuilder isAdmin(boolean isAdmin) {
 			this.isAdmin = isAdmin;
+			return this;
+		}
+		
+		public UserBuilder isCustomer(boolean isCustomer) {
+			this.isCustomer = isCustomer;
 			return this;
 		}
 		
