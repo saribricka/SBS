@@ -1,9 +1,11 @@
 package main.java.model.file;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,10 +87,15 @@ public class FileItemImpl implements FileStrategy{
     		e.printStackTrace();
     	}
     }
-    	
+    
+    private void createFile() {
+		// TODO Auto-generated method stub
+		
+	}
+    
 	@Override
-	public Set<String> fileReader(String fileName) {		
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+	public Set<String> fileReader() {		
+		try (BufferedReader reader = new BufferedReader(new FileReader(ITEM_FILE))) {
 			String line = reader.readLine();
 			while (line != null) {
 			    if (line.isEmpty()) {
@@ -108,8 +115,25 @@ public class FileItemImpl implements FileStrategy{
 	}
 
 	@Override
-	public boolean writeInFile(String string) {
-		// TODO Auto-generated method stub
+	public boolean writeInFile(String objectToString) {
+		try (BufferedWriter w = new BufferedWriter(new FileWriter(ITEM_FILE))) {
+//            for (final Products p : this.company.getProducts()) {
+//                w.write(CODE_STR + p.getCode());
+//                w.newLine();
+//                w.write(STEP_STR + p.getStepType());
+//                w.newLine();
+//                w.write(NAME_STR + p.getName());
+//                w.newLine();
+//                w.write(DESCRIPTION_STR + p.getDescription());
+//                w.newLine();
+//                w.write(PRICELITRE_STR + p.getPricePerLitre());
+//                w.newLine();
+//                w.write(USAGE500MQ_STR + p.getLitersPer500Mq());
+//                w.newLine();
+//            }
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
 		return false;
 	}
 

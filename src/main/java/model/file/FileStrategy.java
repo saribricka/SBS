@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.Set;
 
 public interface FileStrategy {
-
-	Set<String> fileReader(String fileName);
 	
-	boolean writeInFile(final String string);
+	Set<String> fileReader();
+	
+	boolean writeInFile(final String objectToString);
 	
 	String searchInFile(String string);
 	

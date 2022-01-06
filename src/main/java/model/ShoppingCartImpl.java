@@ -76,7 +76,7 @@ public class ShoppingCartImpl implements ShoppingCart {
 		ListIterator<Item> iterator = items.listIterator();
 		while(iterator.hasNext()) {
 			Item item = iterator.next();
-			System.out.print(item.getProductName() + "\t");
+			System.out.print(item.getName() + "\t");
 			System.out.print(item.getQuantity() + "\t");
 			System.out.print(item.getUnitPrice() + "\t");
 			System.out.println(item.getUnitPrice() * item.getQuantity());

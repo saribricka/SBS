@@ -5,16 +5,16 @@ import java.util.Date;
 public interface Item {
 
 	/**
+	 * Get name of selected interface object.
+	 * @return a string with the name.
+	 */
+	public String getName();
+	
+	/**
 	 * Get barcode of selected item.
 	 * @return a string with the barcode.
 	 */
 	public String getBarcode();
-	
-	/**
-	 * Get name of selected item.
-	 * @return a string with the name.
-	 */
-	public String getProductName();
 	
 	/**
 	 * Get quantity of selected item.

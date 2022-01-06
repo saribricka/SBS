@@ -1,5 +1,6 @@
 package main.java.model;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +12,7 @@ import main.java.model.UserImpl.UserBuilder;
 
 public class ItemImpl implements Item{
 	
+	private static final char ATTR_SEP = File.pathSeparatorChar;
 	private String barcode;
 	private String productName;
 	private int quantity;
@@ -40,9 +42,9 @@ public class ItemImpl implements Item{
 	
 	@Override
 	public String toString() {
-		return "\n\nbarcode=" + barcode + ",\nproductName=" + productName + ",\nquantity=" + quantity
-				+ ",\nunitPrice=" + unitPrice + ",\nreceivedDate=" + receivedDate 
-				+ ",\nexpirationDate=" + expirationDate + ",\ncategory=" + category;
+		return "\n" + barcode + ATTR_SEP + productName + ATTR_SEP + quantity
+				+ ATTR_SEP + unitPrice + ATTR_SEP + receivedDate 
+				+ ATTR_SEP + expirationDate + ATTR_SEP + category;
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class ItemImpl implements Item{
 	}
 
 	@Override
-	public String getProductName() {
+	public String getName() {
 		return this.productName;
 	}
 

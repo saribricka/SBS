@@ -1,18 +1,21 @@
 package main.java.model;
 
+import java.io.File;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public class UserImpl implements User{
 
+	private static final char ATTR_SEP = File.pathSeparatorChar;
 	private final String firstname, lastname;
 	Optional<String> description;
 	Optional<String> address;
 	Optional<String> city; 
-	private final int id;
+	private static int id = 0;
 	protected final boolean isAdmin, isCustomer;
 	
-	public UserImpl(UserBuilder builder) {
+	private UserImpl(UserBuilder builder) {
 		this.id = builder.id;
 		this.firstname = builder.firstname;
 		this.lastname = builder.lastname;
@@ -21,6 +24,10 @@ public class UserImpl implements User{
 		this.description = builder.description;
 		this.isAdmin = builder.isAdmin;
 		this.isCustomer = builder.isCustomer;
+	}
+	
+	private static int incrementId() {
+		return id++;
 	}
 	
 	@Override
@@ -65,9 +72,9 @@ public class UserImpl implements User{
 	
 	@Override
 	public String toString() {
-		return "UserImpl [firstname=" + firstname + ", lastname=" + lastname + ", description=" + description
-				+ ", address=" + address + ", city=" + city + ", id=" + id + ", isAdmin=" + isAdmin + ", isCustomer="
-				+ isCustomer + "]";
+		return "\n" + id + ATTR_SEP + firstname + ATTR_SEP + lastname + ATTR_SEP + description
+				+ ATTR_SEP + address + ATTR_SEP + city + ATTR_SEP + id 
+				+ ATTR_SEP + isAdmin + ATTR_SEP	+ isCustomer;
 	}	
 
 	public static class UserBuilder {
@@ -78,6 +85,10 @@ public class UserImpl implements User{
 		private Optional<String> description = Optional.empty(); 
 		private int id;
 		protected boolean isAdmin, isCustomer;
+		
+		public UserBuilder() {
+			this.id = incrementId();
+		}
 		
 		public UserBuilder name(String firstname) {
 			this.firstname = firstname;
