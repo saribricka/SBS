@@ -72,9 +72,10 @@ public class UserImpl implements User{
 	
 	@Override
 	public String toString() {
-		return "\n" + id + ATTR_SEP + firstname + ATTR_SEP + lastname + ATTR_SEP + description
+		String s = "\n" + id + ATTR_SEP + firstname + ATTR_SEP + lastname + ATTR_SEP + description
 				+ ATTR_SEP + address + ATTR_SEP + city + ATTR_SEP + id 
 				+ ATTR_SEP + isAdmin + ATTR_SEP	+ isCustomer;
+		return s.toLowerCase();
 	}	
 
 	public static class UserBuilder {

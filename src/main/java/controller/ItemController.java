@@ -5,12 +5,17 @@ import main.java.model.ItemImpl;
 
 public interface ItemController {
 	
-	void addItem(ItemImpl newItem);
+	boolean addItem(Item newItem);
 	
+	/**
+	 * Must be used after the check on the existence
+	 * @param barcode
+	 * @return the existing Item with the corresponding barcode
+	 */
 	Item searchItem(String barcode);
 	
-	void updateItem(ItemImpl updatedItem);
+	void updateItem(Item updatedItem);
 	
-	void deleteItem(String barcode);
+	boolean deleteItem(String barcode);
 
 }

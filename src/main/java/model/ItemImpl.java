@@ -42,9 +42,10 @@ public class ItemImpl implements Item{
 	
 	@Override
 	public String toString() {
-		return "\n" + barcode + ATTR_SEP + productName + ATTR_SEP + quantity
+		String s = barcode + ATTR_SEP + productName + ATTR_SEP + quantity
 				+ ATTR_SEP + unitPrice + ATTR_SEP + receivedDate 
 				+ ATTR_SEP + expirationDate + ATTR_SEP + category;
+		return s.toLowerCase();
 	}
 
 	@Override

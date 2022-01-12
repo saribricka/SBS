@@ -9,13 +9,9 @@ public interface FileStrategy {
 	
 	boolean writeInFile(final String objectToString);
 	
-	String searchInFile(String string);
+	String searchInFile(String target);
 	
-	boolean deleteLine(String string);
+	boolean deleteLine(String target);
 	
-	void emptyFile();
-	
-	File getFile();
-	
-	void setFile(String fileName);
+	boolean emptyFile();
 }

@@ -1,0 +1,10 @@
+
+mv01;veg mayo;100;3.65;null;null;sauce
+abc;alpicot;50;0.15;null;null;fruits
+cb;crunchy;50;2.6;null;null;snacks
+
+
+
+
+hhh1;;60;2.0;null;null;canning
+0001;;0;0.0;null;null;bio

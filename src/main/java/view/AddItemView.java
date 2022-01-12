@@ -5,28 +5,49 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.InternationalFormatter;
+import javax.swing.text.NumberFormatter;
+
+import org.jdatepicker.*;
+
+import main.java.controller.ItemController;
+import main.java.controller.ItemControllerImpl;
+import main.java.model.Item;
+import main.java.model.ItemCategory;
+import main.java.model.ItemImpl;
+import main.java.model.file.FileItemImpl;
+import main.java.model.file.FileStrategy;
 
 public class AddItemView extends JFrame{
 
 	private JPanel contentPane;
 	private JTextField textField_ID;
+	private JTextField textField_ProductName;
 	private JTextField textField_Quantity;
 	private JTextField textField_Price;
-	private JTextField textField_Supplier;
-	private JTextField textField_ProductName;
-	private JTextField textField_ReceivedDate;
+	private JDatePicker textField_ReceivedDate;
 	private JTextField textField_ExpiredDate;
-	private JTextField textField_CostPrice;
+	private String barcode, name;
+	private int quantity;
+	private double price;
+	private Date received, expiration;
+	private ItemCategory category;
 
 	/**
 	 * Create the frame.
@@ -46,12 +67,12 @@ public class AddItemView extends JFrame{
 		contentPane.setLayout(null);
 		
 		
-		JLabel lblProductId = new JLabel("Product ID:");
+		JLabel lblProductId = new JLabel("Product ID: *");
 		lblProductId.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProductId.setBounds(12, 13, 100, 22);
 		contentPane.add(lblProductId);
 				
-		JLabel lblCategory = new JLabel("Category:");
+		JLabel lblCategory = new JLabel("Category: *");
 		lblCategory.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblCategory.setBounds(12, 54, 100, 16);
 		contentPane.add(lblCategory);
@@ -71,15 +92,15 @@ public class AddItemView extends JFrame{
 		lblPrice.setBounds(12, 153, 100, 16);
 		contentPane.add(lblPrice);
 		
-		JLabel lblReceivedDate = new JLabel("Received Date:");
-		lblReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblReceivedDate.setBounds(12, 192, 120, 16);
-		contentPane.add(lblReceivedDate);
-		
-		JLabel lblExpiredDate = new JLabel("Expiration Date:");
-		lblExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblExpiredDate.setBounds(12, 227, 120, 16);
-		contentPane.add(lblExpiredDate);								
+//		JLabel lblReceivedDate = new JLabel("Received Date:");
+//		lblReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblReceivedDate.setBounds(12, 192, 120, 16);
+//		contentPane.add(lblReceivedDate);
+//		
+//		JLabel lblExpiredDate = new JLabel("Expiration Date:");
+//		lblExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblExpiredDate.setBounds(12, 227, 120, 16);
+//		contentPane.add(lblExpiredDate);								
 		
 		textField_ID = new JTextField();
 		textField_ID.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -89,7 +110,7 @@ public class AddItemView extends JFrame{
 		
 		JComboBox comboBox_category = new JComboBox();
 		comboBox_category.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_category.setModel(new DefaultComboBoxModel(new String[] {"Select", "Bio", "Vegetables", "Fruits", "Canning", "Sauce", "Snacks", "Bakery", "Cleaning", "Beverage", "Spice", "Grain", "Dairy"}));
+		comboBox_category.setModel(new DefaultComboBoxModel(new String[] {"Select", "Bio", "Vegetables", "Fruits", "Canning", "Sauce", "Snacks", "Bakery", "Cleaning", "Beverage", "Spice", "Grain", "Diary"}));
 		comboBox_category.setBounds(134, 48, 116, 25);
 		contentPane.add(comboBox_category);		
 		
@@ -99,39 +120,71 @@ public class AddItemView extends JFrame{
 		textField_ProductName.setBounds(134, 83, 116, 22);
 		contentPane.add(textField_ProductName);
 		
-		textField_Quantity = new JTextField();
+		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
+		intFormatter.setValueClass(Integer.class);
+	    intFormatter.setMinimum(0);
+	    intFormatter.setMaximum(Integer.MAX_VALUE);
+	    intFormatter.setAllowsInvalid(false);
+		textField_Quantity = new JFormattedTextField(intFormatter);
 		textField_Quantity.setFont(new Font("Tahoma", Font.BOLD, 14));
 		textField_Quantity.setColumns(10);
 		textField_Quantity.setBounds(134, 118, 116, 22);
 		contentPane.add(textField_Quantity);
 		
-		textField_Price = new JTextField();
+		NumberFormat format = DecimalFormat.getInstance();
+		format.setMaximumFractionDigits(2);
+		format.setMinimumFractionDigits(2);
+		format.setRoundingMode(RoundingMode.HALF_UP);
+		InternationalFormatter decFormatter = new InternationalFormatter(format);
+		decFormatter.setMinimum(0.0);
+		decFormatter.setMaximum(Double.MAX_VALUE);
+		decFormatter.setAllowsInvalid(false);
+		textField_Price = new JFormattedTextField(decFormatter);
 		textField_Price.setFont(new Font("Tahoma", Font.BOLD, 14));
 		textField_Price.setColumns(10);
 		textField_Price.setBounds(134, 153, 116, 22);
 		contentPane.add(textField_Price);
 					
-		textField_ReceivedDate = new JTextField();
-		textField_ReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_ReceivedDate.setColumns(10);
-		textField_ReceivedDate.setBounds(134, 192, 116, 22);
-		contentPane.add(textField_ReceivedDate);
+//		textField_ReceivedDate = new JDatePicker();
+//		textField_ReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		textField_ReceivedDate.setColumns(10);
+//		textField_ReceivedDate.setBounds(134, 192, 116, 22);
+//		contentPane.add((JComponent) textField_ReceivedDate);
 		
-		textField_ExpiredDate = new JTextField();
-		textField_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_ExpiredDate.setColumns(10);
-		textField_ExpiredDate.setBounds(134, 227, 116, 22);
-		contentPane.add(textField_ExpiredDate);
+//		textField_ExpiredDate = new JTextField();
+//		textField_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		textField_ExpiredDate.setColumns(10);
+//		textField_ExpiredDate.setBounds(134, 227, 116, 22);
+//		contentPane.add(textField_ExpiredDate);
 				
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent a) {
 				try
 				{
+					barcode = textField_ID.getText();
+					category = ItemCategory.valueOf(String.valueOf(comboBox_category.getSelectedItem()).toUpperCase());
+					name = textField_ProductName.getText();					
+					quantity = Integer.parseInt(textField_Quantity.getText());
+					price = Double.parseDouble(textField_Price.getText());
 					
+					ItemController controller = new ItemControllerImpl();
+					ItemImpl i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
+					
+					if (controller.addItem(i)) {
+						textField_ID.setText("");
+						comboBox_category.setSelectedIndex(0);
+						textField_ProductName.setText("");
+						textField_Quantity.setText("0");
+						textField_Price.setText("0.00");
+						JOptionPane.showMessageDialog(null, "The Product was added to the database");
+					} else {
+						textField_ID.setText("");					
+						JOptionPane.showMessageDialog(null, "The ID is already in the database");
+					}					
 				}
 				catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error please check all filds date must be in fotmat: DD-MM-YYYY");
+					e.printStackTrace();
 				}				
 			}});
 		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 14));
