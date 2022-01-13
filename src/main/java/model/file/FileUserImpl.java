@@ -21,24 +21,25 @@ public class FileUserImpl implements FileStrategy{
     private Set<String> list = new TreeSet<>();
     
 	private File createFile() {
-    	try {
-    	      File myObj = new File(USER_FILE);
-    	      if (myObj.createNewFile()) {
-    	        System.out.println("File created: " + myObj.getName());
-    	      } else {
-    	        System.out.println("File already exists.");
-    	      }
-    	      return myObj;
-    	    } catch (IOException e) {
-    	      e.printStackTrace();
-    	      return null;
-    	    }		
+		try {
+			File myObj = new File(USER_FILE);
+  	      	if (myObj.createNewFile()) {
+  	      		System.out.println("File created: " + myObj.getName());
+  	      	} else {
+  	      		System.err.println("File already exists.");
+  	      	}
+  	      	return myObj;
+  	    } catch (IOException e) {
+  	    	e.printStackTrace();
+  	    	return null;
+  	    }			
 	}
     
 	@Override
 	public Set<String> fileReader() {
 		try(BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
 			String line;
+			list.clear();
 			while ((line = reader.readLine()) != null) {
 				if (!line.isEmpty()) {	                   
 					list.add(line);
@@ -55,6 +56,7 @@ public class FileUserImpl implements FileStrategy{
 	public boolean writeInFile(String objectToString) {
 		createFile(); //it also checks if the file exists
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE, true))) {
+			writer.newLine();
 			writer.write(objectToString);
 			writer.flush();
 			writer.close();
@@ -67,19 +69,18 @@ public class FileUserImpl implements FileStrategy{
 
 	@Override
 	public String searchInFile(String target) {
-		try(BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-            	if (!line.isEmpty() && line.contains(target.toLowerCase())) {
-            		reader.close();
-                    return line;
-            	}
-            }
-            reader.close();
-        } catch (IOException e) {
+		try {        	       
+			Set<String> lines = fileReader();
+	        for(String line : lines) {
+	        	if(line.contains(target.toLowerCase())) {
+	        		return line;
+	        	}
+	        }
+	        return null;
+        } catch(Exception e) {
         	e.printStackTrace();
+	        return null;        	
         }
-        return null;
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class FileUserImpl implements FileStrategy{
 		    File temp = new File("_temp_");
 		    BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
 		    List<String> out = Files.lines(file.toPath())
-		        .filter(line -> !line.contains(target))
+		        .filter(line -> !line.contains(target.toLowerCase()))
 		        .collect(Collectors.toList());
 		    
 			Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);

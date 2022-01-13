@@ -5,97 +5,87 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.util.Optional;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
+
+import main.java.controller.ItemController;
+import main.java.controller.ItemControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.ItemCategory;
+import main.java.model.ItemImpl;
+import main.java.model.User;
+import main.java.model.UserImpl;
+import main.java.model.UserRole;
 
 public class AddUserView extends JFrame{
 	private JPanel contentPane;
-	private JTextField textField_WorkerId;
-	private JTextField textField_FirstName;
+	private JTextField textField_Id;
+	private JTextField textField_Name;
 	private JTextField textField_LastName;
-	private JTextField textField_Email;
-	private JTextField textField_Address;
-	private JTextField textField_Phone;
-	private int JListIndex = 0;
+	private JTextField textField_City;
+	private JTextField textField_Description;
+	private JComboBox comboBox_Role = new JComboBox();
 
-	JComboBox comboBox_Title = new JComboBox();
-	JComboBox comboBox_Gender = new JComboBox();
-	private JTextField textField_StartedWorkDay;
-	private JTextField textField_DateOfBirth;
-
+	private String name, lastname, city, description;
+	private UserRole role;
+	private int id;
 	
 	public AddUserView() {
 //		File logoImage = new File("AddUserView.png");
 //		String imagePath = logoImage.getPath();
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-		setTitle("Details Of Users");
+		setTitle("Add User");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 868, 560);
+		setBounds(620, 280, 550, 450);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblWorkerId = new JLabel("WorkerID:");
-		lblWorkerId.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblWorkerId.setBounds(12, 13, 79, 22);
-		contentPane.add(lblWorkerId);
+		JLabel lblId = new JLabel("ID: *");
+		lblId.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblId.setBounds(12, 13, 79, 22);
+		contentPane.add(lblId);
 		
-		JLabel lblFirstName = new JLabel("FirstName:");
+		JLabel lblFirstName = new JLabel("Name:");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFirstName.setBounds(12, 48, 79, 22);
 		contentPane.add(lblFirstName);
 		
 		JLabel lblLastName = new JLabel("LastName:");
 		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblLastName.setBounds(12, 81, 79, 22);
+		lblLastName.setBounds(12, 81, 100, 22);
 		contentPane.add(lblLastName);
 		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblEmail.setBounds(12, 116, 79, 22);
-		contentPane.add(lblEmail);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCity.setBounds(12, 116, 80, 22);
+		contentPane.add(lblCity);
 		
-		JLabel lblStartedWorkDay = new JLabel("Started Work Day:");
-		lblStartedWorkDay.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblStartedWorkDay.setBounds(12, 151, 130, 22);
-		contentPane.add(lblStartedWorkDay);
+		JLabel lblRole = new JLabel("Role:");
+		lblRole.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblRole.setBounds(12, 151, 80, 22);
+		contentPane.add(lblRole);
 		
-		JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
-		lblDateOfBirth.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblDateOfBirth.setBounds(12, 186, 97, 22);
-		contentPane.add(lblDateOfBirth);
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDescription.setBounds(12, 186, 100, 22);
+		contentPane.add(lblDescription);		
 		
-		JLabel lblAddress = new JLabel("Address:");
-		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblAddress.setBounds(12, 221, 68, 16);
-		contentPane.add(lblAddress);
-		
-		JLabel lblTelephone = new JLabel("Telephone:");
-		lblTelephone.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTelephone.setBounds(12, 259, 79, 16);
-		contentPane.add(lblTelephone);
-		
-		JLabel lblJob = new JLabel("Job:");
-		lblJob.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblJob.setBounds(12, 300, 56, 16);
-		contentPane.add(lblJob);
-		
-		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblGender.setBounds(12, 335, 56, 16);
-		contentPane.add(lblGender);
-		
-
 		JButton btnBack = new JButton("Back");
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnBack.addActionListener(new ActionListener() {
@@ -105,87 +95,89 @@ public class AddUserView extends JFrame{
 				screen.display();				
 			}
 		});
-		
-		btnBack.setBounds(741, 475, 97, 25);
+		btnBack.setBounds(395, 375, 97, 25);
 		contentPane.add(btnBack);
 		
-		textField_WorkerId = new JTextField();
-		textField_WorkerId.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_WorkerId.setColumns(10);
-		textField_WorkerId.setBounds(143, 12, 144, 22);
-		contentPane.add(textField_WorkerId);
+		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
+		intFormatter.setValueClass(Integer.class);
+	    intFormatter.setMinimum(0);
+	    intFormatter.setMaximum(Integer.MAX_VALUE);
+	    intFormatter.setAllowsInvalid(false);
+	    textField_Id = new JFormattedTextField(intFormatter);
+		textField_Id.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Id.setColumns(10);
+		textField_Id.setBounds(143, 12, 144, 22);
+		contentPane.add(textField_Id);		
 		
-		
-		textField_FirstName = new JTextField();
-		textField_FirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_FirstName.setColumns(10);
-		textField_FirstName.setBounds(143, 47, 144, 22);
-		contentPane.add(textField_FirstName);
-	
-		
+		textField_Name = new JTextField();
+		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(143, 47, 144, 22);
+		contentPane.add(textField_Name);
+			
 		textField_LastName = new JTextField();
 		textField_LastName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		textField_LastName.setColumns(10);
 		textField_LastName.setBounds(143, 80, 144, 22);
 		contentPane.add(textField_LastName);
 		
-		textField_Email = new JTextField();
-		textField_Email.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Email.setColumns(10);
-		textField_Email.setBounds(143, 115, 144, 22);
-		contentPane.add(textField_Email);
+		textField_City = new JTextField();
+		textField_City.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_City.setColumns(10);
+		textField_City.setBounds(143, 115, 144, 22);
+		contentPane.add(textField_City);
 		
-		textField_Address = new JTextField();
-		textField_Address.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Address.setBounds(143, 221, 144, 22);
-		contentPane.add(textField_Address);
+		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
+		comboBox_Role.setModel(new DefaultComboBoxModel(new String[] {"Select", "Manager", "Cashier", "Customer"}));
+		comboBox_Role.setBounds(143, 151, 144, 22);
+		contentPane.add(comboBox_Role);
 		
-		textField_Phone = new JTextField();
-		textField_Phone.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Phone.setColumns(10);
-		textField_Phone.setBounds(143, 255, 144, 22);
-		contentPane.add(textField_Phone);
+		textField_Description = new JTextField();
+		textField_Description.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Description.setColumns(10);
+		textField_Description.setBounds(143, 186, 144, 50);
+		contentPane.add(textField_Description);
 		
-		
-		comboBox_Title.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_Title.setModel(new DefaultComboBoxModel(new String[] {"Select", "Manager", "Cashier", "Usher merchandise", "Stock keeper", "Security guard"}));
-		comboBox_Title.setBounds(143, 296, 144, 22);
-		contentPane.add(comboBox_Title);
-		
-		comboBox_Gender.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_Gender.setModel(new DefaultComboBoxModel(new String[] {"Select", "Male", "Female", "Non-binary"}));
-		comboBox_Gender.setBounds(143, 331, 144, 22);
-		contentPane.add(comboBox_Gender);
-		
-
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					name = textField_Name.getText();	
+					lastname = textField_LastName.getText();	
+					city = textField_City.getText();
+					role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+					description = textField_Description.getText();
 					
-				}
-				catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Error please check all filds date must be in fotmat: DD-MM-YYYY");
-				}
-			
+					UserController controller = new UserControllerImpl();	
+					User user = new UserImpl.UserBuilder(id)
+							.name(name)
+							.lastname(lastname)
+			                .city(city)
+			                .role(role)
+			                .description(description)
+			                .build();
+					
+					if (controller.addUser(user)) {
+						textField_Id.setText("0");
+						textField_Name.setText("");
+						textField_LastName.setText("");
+						textField_City.setText("");
+						comboBox_Role.setSelectedIndex(0);
+						textField_Description.setText("");
+						JOptionPane.showMessageDialog(null, "The User was added to the database");
+					} else {
+						textField_Id.setText("0");					
+						JOptionPane.showMessageDialog(null, "The ID is already in the database");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}			
 			}
 		});
-		btnAdd.setBounds(12, 378, 97, 25);
-		contentPane.add(btnAdd);	
-		
-		textField_StartedWorkDay = new JTextField();
-		textField_StartedWorkDay.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_StartedWorkDay.setColumns(10);
-		textField_StartedWorkDay.setBounds(143, 150, 144, 22);
-		contentPane.add(textField_StartedWorkDay);
-		
-		textField_DateOfBirth = new JTextField();
-		textField_DateOfBirth.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_DateOfBirth.setColumns(10);
-		textField_DateOfBirth.setBounds(143, 185, 144, 22);
-		contentPane.add(textField_DateOfBirth);
+		btnAdd.setBounds(395, 48, 97, 25);
+		contentPane.add(btnAdd);
 		
 		JLabel lblPicture = new JLabel("");
 //		File UsersAdd = new File("AddUserView.png");

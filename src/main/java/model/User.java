@@ -20,13 +20,9 @@ public interface User {
 
 	public Optional<String> getCity();
 
-	public Optional<String> getAddress();
+	public UserRole getRole();
 
-	public Optional<String> getDescription();	
-
-	public boolean isAdmin();
-	
-	public boolean isCustomer();
+	public Optional<String> getDescription();
 
 	public String toString();
 }

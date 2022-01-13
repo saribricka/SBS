@@ -52,12 +52,11 @@ public class AddItemView extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public AddItemView() {
 //		File logoImage = new File("AddItemView.jpg");
 //		String imagePath = logoImage.getPath();
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-		setTitle("Details Of Products");
+		setTitle("Add Product");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 550, 450);
 		contentPane = new JPanel();
@@ -72,7 +71,7 @@ public class AddItemView extends JFrame{
 		lblProductId.setBounds(12, 13, 100, 22);
 		contentPane.add(lblProductId);
 				
-		JLabel lblCategory = new JLabel("Category: *");
+		JLabel lblCategory = new JLabel("Category:");
 		lblCategory.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblCategory.setBounds(12, 54, 100, 16);
 		contentPane.add(lblCategory);
@@ -169,7 +168,7 @@ public class AddItemView extends JFrame{
 					price = Double.parseDouble(textField_Price.getText());
 					
 					ItemController controller = new ItemControllerImpl();
-					ItemImpl i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
+					Item i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
 					
 					if (controller.addItem(i)) {
 						textField_ID.setText("");

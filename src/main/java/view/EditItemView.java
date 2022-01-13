@@ -242,12 +242,9 @@ public class EditItemView extends JFrame{
 							}
 						}						
 					}																			
-				}
-				catch (Exception ex)
-				{
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-
 		}});
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnSearch.setBounds(395, 48, 97, 25);

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import main.java.model.User;
 import main.java.model.UserImpl;
+import main.java.model.UserRole;
 
 
 public class UserTest {
@@ -19,43 +20,38 @@ public class UserTest {
     @DisplayName("User Builder working correctly.")
     public void testBuilderFields() {
 				
-		final User admin = new UserImpl.UserBuilder()
+		final User admin = new UserImpl.UserBuilder(2)
 				.name("Sara")
 				.lastname("Briccoli")
                 .city("Faenza")
-                .address("Vittorio Veneto 2/3")
+                .role(UserRole.MANAGER)
                 .description(null)
-                .isAdmin(true)
                 .build();
 		
-		final User cashier = new UserImpl.UserBuilder()
+		final User cashier = new UserImpl.UserBuilder(3)
 				.name("Jay")
-                .isAdmin(false)
                 .build();
         
-		System.out.println(admin.getAddress() + " " + admin.getDescription());
+		System.out.println(admin.getRole() + " " + admin.getDescription());
 		
         assertEquals(admin.getName(), "Sara");
         assertEquals(admin.getLastname(), "Briccoli");
-        assertEquals(admin.isAdmin(), true);
         assertEquals(admin.getCity(), Optional.of("Faenza"));
-        assertEquals(admin.getAddress(), Optional.ofNullable("Vittorio Veneto 2/3")); 
+        assertEquals(admin.getRole(), UserRole.MANAGER); 
         assertEquals(admin.getDescription(), Optional.empty());
         
-        assertEquals(cashier.getName(), "Jay");
-        assertEquals(cashier.isAdmin(), false);       
+        assertEquals(cashier.getName(), "Jay");   
     }
 	
 	@Test
 	@DisplayName("toString test.")
 	public void toStringTest() {
-		final User sara = new UserImpl.UserBuilder()
+		final User sara = new UserImpl.UserBuilder(4)
 				.name("Sara")
 				.lastname("Briccoli")
                 .city("Faenza")
-                .address("Vittorio Veneto 2/3")
+                .role(UserRole.MANAGER)
                 .description(null)
-                .isAdmin(true)
                 .build();
 		System.out.println(sara.toString());
 	}

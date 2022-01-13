@@ -10,24 +10,17 @@ public class UserImpl implements User{
 	private static final char ATTR_SEP = File.pathSeparatorChar;
 	private final String firstname, lastname;
 	Optional<String> description;
-	Optional<String> address;
 	Optional<String> city; 
-	private static int id = 0;
-	protected final boolean isAdmin, isCustomer;
+	private int id;
+	private UserRole role;
 	
 	private UserImpl(UserBuilder builder) {
 		this.id = builder.id;
 		this.firstname = builder.firstname;
 		this.lastname = builder.lastname;
 		this.city = builder.city;
-		this.address = builder.address;
+		this.role = builder.role;
 		this.description = builder.description;
-		this.isAdmin = builder.isAdmin;
-		this.isCustomer = builder.isCustomer;
-	}
-	
-	private static int incrementId() {
-		return id++;
 	}
 	
 	@Override
@@ -46,8 +39,8 @@ public class UserImpl implements User{
 	}
 
 	@Override
-	public Optional<String> getAddress() {
-		return this.address;
+	public UserRole getRole() {
+		return this.role;
 	}
 
 	@Override
@@ -59,22 +52,11 @@ public class UserImpl implements User{
 	public int getId() {
 		return this.id;
 	}
-
-	@Override
-	public boolean isAdmin() {
-		return this.isAdmin;
-	}
-	
-	@Override
-	public boolean isCustomer() {
-		return this.isCustomer;
-	}
 	
 	@Override
 	public String toString() {
-		String s = "\n" + id + ATTR_SEP + firstname + ATTR_SEP + lastname + ATTR_SEP + description
-				+ ATTR_SEP + address + ATTR_SEP + city + ATTR_SEP + id 
-				+ ATTR_SEP + isAdmin + ATTR_SEP	+ isCustomer;
+		String s = String.valueOf(id) + ATTR_SEP + firstname + ATTR_SEP + lastname
+				 + ATTR_SEP + description.get() + ATTR_SEP + role + ATTR_SEP + city.get();
 		return s.toLowerCase();
 	}	
 
@@ -82,13 +64,12 @@ public class UserImpl implements User{
 		
 		private String firstname, lastname;
 		private Optional<String> city  = Optional.empty();
-		private Optional<String> address = Optional.empty();
+		private UserRole role;
 		private Optional<String> description = Optional.empty(); 
 		private int id;
-		protected boolean isAdmin, isCustomer;
 		
-		public UserBuilder() {
-			this.id = incrementId();
+		public UserBuilder(int id) {
+			this.id = id;
 		}
 		
 		public UserBuilder name(String firstname) {
@@ -106,23 +87,13 @@ public class UserImpl implements User{
 			return this;
 		}
 		
-		public UserBuilder address(String address) {
-			this.address = Optional.ofNullable(address);
+		public UserBuilder role(UserRole role) {
+			this.role = role;
 			return this;
 		}
 		
 		public UserBuilder description(String description) {
 			this.description = Optional.ofNullable(description);
-			return this;
-		}
-		
-		public UserBuilder isAdmin(boolean isAdmin) {
-			this.isAdmin = isAdmin;
-			return this;
-		}
-		
-		public UserBuilder isCustomer(boolean isCustomer) {
-			this.isCustomer = isCustomer;
 			return this;
 		}
 		

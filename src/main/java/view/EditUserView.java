@@ -5,28 +5,42 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
+
+import main.java.controller.ItemController;
+import main.java.controller.ItemControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.Item;
+import main.java.model.User;
+import main.java.model.UserImpl;
+import main.java.model.UserRole;
 
 public class EditUserView extends JFrame{
 
-	private JTextField textField_WorkerId;
-	private JTextField textField_FirstName;
+	private JPanel contentPane;
+	private JTextField textField_Id;
+	private JTextField textField_Name;
 	private JTextField textField_LastName;
-	private JTextField textField_Email;
-	private JTextField textField_startrdWorkDay;
-	private JTextField textField_BirthdayDate;
-	private JTextField textField_Phone;
-	private JTextField textField_Titel;
-	private JTextField textField_Address;
-	private JTextField textField_Gender;
-	private JTextField textField_Salary;
+	private JTextField textField_City;
+	private JTextField textField_Description;
+	private JComboBox comboBox_Role = new JComboBox();
+	
+	private String name, lastname, city, description;
+	private UserRole role;
+	private int id;
 	
 	/**
 	 * Create the frame.
@@ -38,64 +52,44 @@ public class EditUserView extends JFrame{
 		setTitle("Edit Users");
 		getContentPane().setBackground(Color.ORANGE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 868, 560);
-		JPanel contentPane = new JPanel();
+		setBounds(620, 280, 550, 450);
+		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		
-		JLabel lblUserid = new JLabel("WorkerID:");
+		JLabel lblUserid = new JLabel("ID: *");
 		lblUserid.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblUserid.setBounds(10, 43, 79, 22);
+		lblUserid.setBounds(10, 43, 80, 22);
 		contentPane.add(lblUserid);
 		
-		JLabel lblFirstName = new JLabel("First name:");
+		JLabel lblFirstName = new JLabel("Name:");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblFirstName.setBounds(10, 82, 79, 22);
+		lblFirstName.setBounds(10, 82, 80, 22);
 		contentPane.add(lblFirstName);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
 		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblLastName.setBounds(10, 115, 79, 22);
+		lblLastName.setBounds(10, 115, 120, 22);
 		contentPane.add(lblLastName);
 		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblEmail.setBounds(10, 148, 79, 22);
-		contentPane.add(lblEmail);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCity.setBounds(10, 148, 80, 22);
+		contentPane.add(lblCity);
 		
-		JLabel lblStartedWorkiDay = new JLabel("started work day:");
-		lblStartedWorkiDay.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblStartedWorkiDay.setBounds(10, 181, 118, 22);
-		contentPane.add(lblStartedWorkiDay);
+		JLabel lblRole = new JLabel("Role:");
+		lblRole.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblRole.setBounds(10, 185, 80, 22);
+		contentPane.add(lblRole);
 		
-		JLabel lblBirthdayDate = new JLabel("Birthday date:");
-		lblBirthdayDate.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblBirthdayDate.setBounds(10, 224, 102, 22);
-		contentPane.add(lblBirthdayDate);
-		
-		JLabel lblAddress = new JLabel("Phone Number:");
-		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblAddress.setBounds(10, 266, 102, 22);
-		contentPane.add(lblAddress);
-		
-		JLabel lblTitle = new JLabel("Job:");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTitle.setBounds(10, 301, 79, 22);
-		contentPane.add(lblTitle);
-		
-		JLabel lblAddress_1 = new JLabel("Address:");
-		lblAddress_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblAddress_1.setBounds(10, 339, 79, 22);
-		contentPane.add(lblAddress_1);
-		
-		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblGender.setBounds(10, 372, 79, 22);
-		contentPane.add(lblGender);
-		
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDescription.setBounds(10, 224, 100, 22);
+		contentPane.add(lblDescription);
+
 		JButton btnBack = new JButton("Back");
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnBack.addActionListener(new ActionListener() {
@@ -105,25 +99,30 @@ public class EditUserView extends JFrame{
 				screen.display();
 			}
 		});
-		btnBack.setBounds(749, 464, 89, 23);
+		btnBack.setBounds(400, 350, 89, 23);
 		contentPane.add(btnBack);
 		
-		JLabel lblPleaseFillId = new JLabel("Please fill ID number and click Search");
+		JLabel lblPleaseFillId = new JLabel("Please fill ID and click Search");
 		lblPleaseFillId.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblPleaseFillId.setBounds(10, 11, 240, 22);
 		contentPane.add(lblPleaseFillId);
 		
-		textField_WorkerId = new JTextField();
-		textField_WorkerId.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_WorkerId.setColumns(10);
-		textField_WorkerId.setBounds(131, 43, 161, 22);
-		contentPane.add(textField_WorkerId);
+		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
+		intFormatter.setValueClass(Integer.class);
+	    intFormatter.setMinimum(0);
+	    intFormatter.setMaximum(Integer.MAX_VALUE);
+	    intFormatter.setAllowsInvalid(false);
+	    textField_Id = new JFormattedTextField(intFormatter);
+		textField_Id.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Id.setColumns(10);
+		textField_Id.setBounds(131, 43, 161, 22);
+		contentPane.add(textField_Id);
 		
-		textField_FirstName = new JTextField();
-		textField_FirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_FirstName.setColumns(10);
-		textField_FirstName.setBounds(131, 80, 161, 22);
-		contentPane.add(textField_FirstName);
+		textField_Name = new JTextField();
+		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(131, 80, 161, 22);
+		contentPane.add(textField_Name);
 		
 		textField_LastName = new JTextField();
 		textField_LastName.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -131,126 +130,88 @@ public class EditUserView extends JFrame{
 		textField_LastName.setBounds(131, 113, 161, 22);
 		contentPane.add(textField_LastName);
 		
-		textField_Email = new JTextField();
-		textField_Email.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Email.setColumns(10);
-		textField_Email.setBounds(131, 147, 161, 22);
-		contentPane.add(textField_Email);
+		textField_City = new JTextField();
+		textField_City.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_City.setColumns(10);
+		textField_City.setBounds(131, 147, 161, 22);
+		contentPane.add(textField_City);
 		
-		textField_startrdWorkDay = new JTextField();
-		textField_startrdWorkDay.setEditable(false);
-		textField_startrdWorkDay.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_startrdWorkDay.setColumns(10);
-		textField_startrdWorkDay.setBounds(131, 181, 161, 22);
-		contentPane.add(textField_startrdWorkDay);
+		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
+		comboBox_Role.setModel(new DefaultComboBoxModel(new String[] {"Select", "Manager", "Cashier", "Customer"}));
+		comboBox_Role.setBounds(131, 181, 161, 22);
+		contentPane.add(comboBox_Role);
 		
-		textField_BirthdayDate = new JTextField();
-		textField_BirthdayDate.setEditable(false);
-		textField_BirthdayDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_BirthdayDate.setColumns(10);
-		textField_BirthdayDate.setBounds(131, 223, 161, 22);
-		contentPane.add(textField_BirthdayDate);
-		
-		textField_Phone = new JTextField();
-		textField_Phone.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Phone.setColumns(10);
-		textField_Phone.setBounds(131, 266, 161, 22);
-		contentPane.add(textField_Phone);
-		
-		textField_Titel = new JTextField();
-		textField_Titel.setEditable(false);
-		textField_Titel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Titel.setColumns(10);
-		textField_Titel.setBounds(131, 301, 161, 22);
-		contentPane.add(textField_Titel);
-		
-		textField_Address = new JTextField();
-		textField_Address.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Address.setColumns(10);
-		textField_Address.setBounds(131, 339, 161, 22);
-		contentPane.add(textField_Address);
-		
-		textField_Gender = new JTextField();
-		textField_Gender.setEditable(false);
-		textField_Gender.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Gender.setColumns(10);
-		textField_Gender.setBounds(131, 372, 161, 22);
-		contentPane.add(textField_Gender);
-		
-		textField_Salary = new JTextField();
-		textField_Salary.setEditable(false);
-		textField_Salary.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Salary.setColumns(10);
-		textField_Salary.setBounds(131, 405, 161, 22);
-		contentPane.add(textField_Salary);
-		
-		JLabel lblSalary = new JLabel("Salary:");
-		lblSalary.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSalary.setBounds(10, 405, 79, 22);
-		contentPane.add(lblSalary);
+		textField_Description = new JTextField();
+		textField_Description.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Description.setColumns(10);
+		textField_Description.setBounds(131, 223, 161, 50);
+		contentPane.add(textField_Description);
 			
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				try
-				{
-//					User temporaryUser = creatUser(textField_WorkerId.getText(), textField_FirstName.getText(), 
-//							textField_LastName.getText(), textField_Gender.getText(),
-//							textField_startrdWorkDay.getText(), textField_Address.getText(),
-//							textField_Phone.getText(), textField_Email.getText(),
-//							textField_Titel.getText(), 
-//							textField_BirthdayDate.getText());
-//		
-//					updateUser(textField_WorkerId.getText(), textField_Address.getText(),textField_Email.getText(), textField_FirstName.getText(), textField_LastName.getText(), textField_Phone.getName());
-//					textField_WorkerId.setText("");
-//					textField_FirstName.setText("");
-//					textField_LastName.setText("");
-//					textField_Email.setText("");
-//					textField_startrdWorkDay.setText("");
-//					textField_BirthdayDate.setText("");
-//					textField_Phone.setText("");
-//					textField_Address.setText("");
-//					textField_Titel.setText("");
-//					textField_Gender.setText("");
-//					textField_Salary.setText("");
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					name = textField_Name.getText();	
+					lastname = textField_LastName.getText();	
+					city = textField_City.getText();
+					role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+					description = textField_Description.getText();
+					
+					UserController controller = new UserControllerImpl();	
+					User user = new UserImpl.UserBuilder(id)
+							.name(name)
+							.lastname(lastname)
+			                .city(city)
+			                .role(role)
+			                .description(description)
+			                .build();
+					
+					controller.updateUser(user);
+					
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_City.setText("");
+					textField_Description.setText("");
+					JOptionPane.showMessageDialog(null, "The User was updated");					
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
-				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Error please check all filds date must be in fotmat: DD-MM-YYYY");
-				}
-		
 		}});
-		btnUpdate.setBounds(749, 133, 89, 23);
+		btnUpdate.setBounds(400, 181, 89, 23);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try
-				{
-//					deleteUser(textField_WorkerId.getText());
-				}
-				catch (Exception ex)
-				{
-					JOptionPane.showMessageDialog(null, "The user is not in the data base");
-				}
-				
-				textField_WorkerId.setText("");
-				textField_FirstName.setText("");
-				textField_LastName.setText("");
-				textField_Email.setText("");
-				textField_startrdWorkDay.setText("");
-				textField_BirthdayDate.setText("");
-				textField_Phone.setText("");;
-				textField_Address.setText("");
-				textField_Titel.setText("");
-				textField_Gender.setText("");
-				textField_Salary.setText("");
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					
+					UserController controller = new UserControllerImpl();
+					boolean check = controller.deleteUser(id);
+					
+					if(!check) {
+						textField_Id.setText("0");
+						JOptionPane.showMessageDialog(null, "The User was not found");
+					} else {						
+						textField_Id.setText("0");
+						textField_Name.setText("");
+						textField_LastName.setText("");
+						comboBox_Role.setSelectedIndex(0);
+						textField_City.setText("");
+						textField_Description.setText("");		
+						JOptionPane.showMessageDialog(null, "The User was successfully deleted");
+					}																			
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}								
 			}
 		});
-		btnDelete.setBounds(749, 188, 89, 23);
+		btnDelete.setBounds(400, 249, 89, 23);
 		contentPane.add(btnDelete);
 		
 
@@ -258,51 +219,50 @@ public class EditUserView extends JFrame{
 		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try 
-				{
-//					User SearchedUser = searchUser(textField_WorkerId.getText());
-//					textField_WorkerId.setText(SearchedUser.getUserId());
-//					textField_FirstName.setText(SearchedUser.getUserFirstName());
-//					textField_LastName.setText(SearchedUser.getUserLastName());
-//					textField_Email.setText(SearchedUser.getUserEmail());
-//					textField_startrdWorkDay.setText(SearchedUser.getUserStartedWorkDay());
-//					textField_BirthdayDate.setText(SearchedUser.getUserBithDate());
-//					textField_Phone.setText(SearchedUser.getUserPhone());
-//					textField_Address.setText(SearchedUser.getUserAddress());
-//					textField_Titel.setText(SearchedUser.getUserJob());
-//					textField_Gender.setText(SearchedUser.getUserGender());
-//					textField_Salary.setText(SearchedUser.getSalary());
-
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					
+					UserController controller = new UserControllerImpl();
+					User foundUser = controller.searchUser(id);
+					
+					if(foundUser == null) {
+						textField_Id.setText("0");
+						JOptionPane.showMessageDialog(null, "The User was not found");
+					} else {						
+						textField_Id.setText(String.valueOf(foundUser.getId()));
+						textField_Name.setText(foundUser.getName());
+						textField_LastName.setText(foundUser.getLastname());
+						textField_City.setText(foundUser.getCity().get());
+						textField_Description.setText(foundUser.getDescription().get());
+						
+						for(int i=0; i<comboBox_Role.getItemCount(); i++) {
+							if(comboBox_Role.getItemAt(i).toString().toLowerCase()
+									.equals(foundUser.getRole().toString().toLowerCase())) {
+								comboBox_Role.setSelectedIndex(i);
+							}
+						}						
+					}																			
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
-				catch (Exception ex)
-				{
-					JOptionPane.showMessageDialog(null, "The user is not in the data base");
-				}
-
-
 			}
 		});
-		btnSearch.setBounds(749, 27, 89, 23);
+		btnSearch.setBounds(400, 43, 89, 23);
 		contentPane.add(btnSearch);
 		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textField_WorkerId.setText("");
-				textField_FirstName.setText("");;
-				textField_LastName.setText("");;
-				textField_Email.setText("");;
-				textField_startrdWorkDay.setText("");
-				textField_BirthdayDate.setText("");
-				textField_Phone.setText("");;
-				textField_Address.setText("");;
-				textField_Titel.setText("");
-				textField_Gender.setText("");
-				textField_Salary.setText("");
+				textField_Id.setText("0");
+				textField_Name.setText("");
+				textField_LastName.setText("");
+				comboBox_Role.setSelectedIndex(0);
+				textField_City.setText("");
+				textField_Description.setText("");
 			}
 		});
-		btnClear.setBounds(749, 80, 89, 23);
+		btnClear.setBounds(400, 115, 89, 23);
 		contentPane.add(btnClear);
 		
 		JLabel lblPicture = new JLabel("");
@@ -310,9 +270,7 @@ public class EditUserView extends JFrame{
 //		String UserEditPath = UsersEdit.getPath();
 //		lblPicture.setIcon(new ImageIcon(UserEditPath));
 		lblPicture.setBounds(299, -3, 551, 465);
-		contentPane.add(lblPicture);
-		
-
+		contentPane.add(lblPicture);		
 	}
 	
 	public void display() {

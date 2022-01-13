@@ -19,7 +19,7 @@ public class ItemControllerImpl implements ItemController{
 	private double price;
 	private ItemCategory category;
 	
-	FileStrategy file = new FileItemImpl();
+	private FileStrategy file = new FileItemImpl();
 	private static ItemControllerImpl single_instance = null;
 	
 	public static ItemControllerImpl getInstance() {
