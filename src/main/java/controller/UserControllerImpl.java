@@ -38,7 +38,6 @@ public class UserControllerImpl implements UserController{
 			file.writeInFile(newUser.toString());
 			return true;
 		} else {
-			System.err.println("ERROR: Item barcode already in use.");
 			return false;
 		}
 	}

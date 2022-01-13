@@ -95,11 +95,7 @@ public class FileItemImpl implements FileStrategy{
     private File createFile() {
     	try {
     	      File myObj = new File(ITEM_FILE);
-    	      if (myObj.createNewFile()) {
-    	        System.out.println("File created: " + myObj.getName());
-    	      } else {
-    	        System.err.println("File already exists.");
-    	      }
+    	      myObj.createNewFile();
     	      return myObj;
     	    } catch (IOException e) {
     	      e.printStackTrace();

@@ -19,11 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import main.java.controller.ItemController;
-import main.java.controller.ItemControllerImpl;
 import main.java.controller.UserController;
 import main.java.controller.UserControllerImpl;
-import main.java.model.Item;
 import main.java.model.User;
 import main.java.model.UserImpl;
 import main.java.model.UserRole;

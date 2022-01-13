@@ -1,8 +1,5 @@
 package main.java.controller;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-
 import org.junit.platform.commons.util.StringUtils;
 
 import main.java.model.Item;
@@ -35,7 +32,6 @@ public class ItemControllerImpl implements ItemController{
 			file.writeInFile(newItem.toString());
 			return true;
 		} else {
-			System.err.println("ERROR: Item barcode already in use.");
 			return false;
 		}
 	}
