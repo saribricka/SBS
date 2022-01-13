@@ -12,53 +12,51 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.awt.event.*;
 
 public class LoginView extends JFrame {
 
-	private JFrame frmLogin;
-	private JTextField usrname;
+	private JPanel contentPane;
+	private JTextField JTextField_Username;
 	int attempts = 3;
-	private JPasswordField psw;
+	private JPasswordField JPassword;
 	
 	public LoginView() {
-		frmLogin = new JFrame();
 //		File logoImage = new File("project_logo.png");
 //		String imagePath = logoImage.getPath();
 //		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-		frmLogin.setFont(new Font("Serif", Font.BOLD, 14));
-		frmLogin.setTitle("Login");
-		frmLogin.getContentPane().setBackground(Color.WHITE);
-		frmLogin.setBounds(620, 280, 600, 400);
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmLogin.getContentPane().setLayout(null);
+//		setFont(new Font("Serif", Font.BOLD, 14));		
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(620, 280, 600, 400);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		JLabel lblWelcomeToHitpos = new JLabel("Welcome to SBS");
 		lblWelcomeToHitpos.setFont(new Font("Rockwell Nova Extra Bold", Font.BOLD, 20));
-		lblWelcomeToHitpos.setBounds(159, 13, 303, 51);
-		frmLogin.getContentPane().add(lblWelcomeToHitpos);
-		
-		JLabel lblPleaseSignIn = new JLabel("Please sign in");
-		lblPleaseSignIn.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPleaseSignIn.setBounds(39, 81, 139, 41);
-		frmLogin.getContentPane().add(lblPleaseSignIn);
+		lblWelcomeToHitpos.setBounds(200, 15, 300, 60);
+		contentPane.add(lblWelcomeToHitpos);
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblUsername.setBounds(12, 123, 121, 33);
-		frmLogin.getContentPane().add(lblUsername);
+		lblUsername.setBounds(175, 115, 100, 45);
+		contentPane.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPassword.setBounds(12, 157, 121, 33);
-		frmLogin.getContentPane().add(lblPassword);
+		lblPassword.setBounds(175, 145, 100, 45);
+		contentPane.add(lblPassword);
 		
-		usrname = new JTextField();
-		usrname.setBounds(107, 128, 116, 22);
-		frmLogin.getContentPane().add(usrname);
-		usrname.setColumns(10);
+		JTextField_Username = new JTextField();
+		JTextField_Username.setBounds(250, 120, 120, 25);
+		contentPane.add(JTextField_Username);
+		JTextField_Username.setColumns(10);
 		
 		JCheckBox chckbxShowPassword = new JCheckBox("Show Password");
 		chckbxShowPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -66,31 +64,29 @@ public class LoginView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			 if(chckbxShowPassword.isSelected())
 			 {
-				 psw.setEchoChar((char)0);
+				 JPassword.setEchoChar((char)0);
 			 }else
 			 {
-				psw.setEchoChar('*');
+				JPassword.setEchoChar('*');
 			 }
 			}
 		});
 		chckbxShowPassword.setBackground(Color.WHITE);
-		chckbxShowPassword.setBounds(107, 200, 139, 25);
-		frmLogin.getContentPane().add(chckbxShowPassword);
-		
-		
+		chckbxShowPassword.setBounds(200, 250, 140, 25);
+		contentPane.add(chckbxShowPassword);				
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String Username = usrname.getText();
-				String Password = psw.getText();
+				String Username = JTextField_Username.getText();
+				String Password = JPassword.getText();
 				while(attempts != 0) 
 				{						
 				if (Username.equals ("A") && Password.equals ("A"))
 				{
 					HomeView mMenu =new HomeView(true);{
-						frmLogin.setVisible(false);
+						setVisible(false);
 						mMenu.repaint();
 						mMenu.display();
 					}
@@ -99,10 +95,10 @@ public class LoginView extends JFrame {
 				else
 				{
 					attempts--;
-					JOptionPane.showMessageDialog(frmLogin, "Invalid username or password "+ attempts+" attempts remaning");
+					JOptionPane.showMessageDialog(null, "Invalid username or password "+ attempts+" attempts remaning");
 					if (attempts == 0) 
 					{
-						JOptionPane.showMessageDialog(frmLogin, "Please Contact maintenance");
+						JOptionPane.showMessageDialog(null, "Please Contact maintenance");
 						System.exit(0);
 					}
 				}
@@ -110,8 +106,8 @@ public class LoginView extends JFrame {
 				}
 				
 				}});
-		btnLogin.setBounds(39, 240, 116, 41);
-		frmLogin.getContentPane().add(btnLogin);
+		btnLogin.setBounds(140, 320, 120, 40);
+		contentPane.add(btnLogin);
 		
 		
 		JButton btnCancel = new JButton("Exit");
@@ -121,19 +117,19 @@ public class LoginView extends JFrame {
 			System.exit(0);;
 			}
 		});
-		btnCancel.setBounds(183, 240, 121, 41);
-		frmLogin.getContentPane().add(btnCancel);
+		btnCancel.setBounds(280, 320, 120, 40);
+		contentPane.add(btnCancel);
 		
 		JLabel lblPicture = new JLabel("");
 //		File logoImage = new File("project_logo.png");
-	//	String imagePath = logoImage.getPath();
+//		String imagePath = logoImage.getPath();
 //		lblPicture.setIcon(new ImageIcon(imagePath));
 		lblPicture.setBounds(235, 67, 356, 291);
-		frmLogin.getContentPane().add(lblPicture);
+		contentPane.add(lblPicture);
 		
-		psw = new JPasswordField();
-		psw.setBounds(105, 158, 118, 22);
-		frmLogin.getContentPane().add(psw);
+		JPassword = new JPasswordField();
+		JPassword.setBounds(250, 150, 120, 25);
+		contentPane.add(JPassword);
 		
 		JButton btnNewButton = new JButton("");
 		btnNewButton.setForeground(Color.WHITE);
@@ -152,7 +148,7 @@ public class LoginView extends JFrame {
 		btnNewButton.setBackground(Color.WHITE);
 //		btnNewButton.setIcon(new ImageIcon(LoginView.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-information.png")));
 		btnNewButton.setBounds(533, 13, 37, 41);
-		frmLogin.getContentPane().add(btnNewButton);
+		contentPane.add(btnNewButton);
 	}
 	
 	private static boolean login(String Username,String Password)
@@ -187,12 +183,10 @@ public class LoginView extends JFrame {
 	}
 	
 	public void display() {
-		frmLogin.setVisible(true);
-		frmLogin.setResizable(true);     
-        setLocationRelativeTo(null);   
-		frmLogin.setMinimumSize(new Dimension(500,500));
-        final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        frmLogin.setSize((int) (dimension.getWidth()*(0.6)) , (int)(dimension.getHeight() * 0.6));
+		setVisible(true);
+        setResizable(true);      
+        setLocationRelativeTo(null);  
+        setMinimumSize(new Dimension(500,500));
     }
 	
 
