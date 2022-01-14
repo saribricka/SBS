@@ -107,7 +107,7 @@ public class EditItemView extends JFrame{
 		contentPane.add(textField_ID);
 		
 		JComboBox comboBox_Category = new JComboBox();
-		comboBox_Category.setModel(new DefaultComboBoxModel(new String[] {"Select", "Bio", "Vegetables", "Fruits", "Canning", "Sauce", "Snacks", "Bakery", "Cleaning", "Beverage", "Spice", "Grain", "Diary"}));
+		comboBox_Category.setModel(new DefaultComboBoxModel(ItemCategory.values()));
 		comboBox_Category.setFont(new Font("Tahoma", Font.BOLD, 14));
 		comboBox_Category.setBounds(152, 83, 116, 25);
 		contentPane.add(comboBox_Category);
@@ -189,8 +189,10 @@ public class EditItemView extends JFrame{
 					barcode = textField_ID.getText();
 					category = ItemCategory.valueOf(String.valueOf(comboBox_Category.getSelectedItem()).toUpperCase());
 					name = textField_Name.getText();					
-					quantity = Integer.parseInt(textField_Quantity.getText());
-					price = Double.parseDouble(textField_Price.getText());
+					String strQ = textField_Quantity.getText();
+					quantity = (!strQ.isEmpty()) ? Integer.parseInt(strQ) : 0;
+					String strP = textField_Price.getText();
+					price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
 					
 					ItemController controller = new ItemControllerImpl();
 					ItemImpl itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
@@ -260,16 +262,15 @@ public class EditItemView extends JFrame{
 					var check = controller.deleteItem(barcode);
 
 					if(!check) {
-						textField_ID.setText("");
 						JOptionPane.showMessageDialog(null, "The Product was not found");
-					} else {
-						textField_ID.setText("");
-						comboBox_Category.setSelectedIndex(0);
-						textField_Name.setText("");
-						textField_Quantity.setText("0");
-						textField_Price.setText("0.00");	
+					} else {						
 						JOptionPane.showMessageDialog(null, "The Product was deleted from the database");
-					}									
+					}	
+					textField_ID.setText("");
+					comboBox_Category.setSelectedIndex(0);
+					textField_Name.setText("");
+					textField_Quantity.setText("0");
+					textField_Price.setText("0.00");
 				}
 				catch (Exception e1) {
 					e1.printStackTrace();

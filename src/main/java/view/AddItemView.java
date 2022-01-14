@@ -109,7 +109,7 @@ public class AddItemView extends JFrame{
 		
 		JComboBox comboBox_category = new JComboBox();
 		comboBox_category.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_category.setModel(new DefaultComboBoxModel(new String[] {"Select", "Bio", "Vegetables", "Fruits", "Canning", "Sauce", "Snacks", "Bakery", "Cleaning", "Beverage", "Spice", "Grain", "Diary"}));
+		comboBox_category.setModel(new DefaultComboBoxModel(ItemCategory.values()));
 		comboBox_category.setBounds(134, 48, 116, 25);
 		contentPane.add(comboBox_category);		
 		
@@ -163,9 +163,11 @@ public class AddItemView extends JFrame{
 				{
 					barcode = textField_ID.getText();
 					category = ItemCategory.valueOf(String.valueOf(comboBox_category.getSelectedItem()).toUpperCase());
-					name = textField_ProductName.getText();					
-					quantity = Integer.parseInt(textField_Quantity.getText());
-					price = Double.parseDouble(textField_Price.getText());
+					name = textField_ProductName.getText();		
+					String strQ = textField_Quantity.getText();
+					quantity = (!strQ.isEmpty()) ? Integer.parseInt(strQ) : 0;
+					String strP = textField_Price.getText();
+					price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
 					
 					ItemController controller = new ItemControllerImpl();
 					Item i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
