@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,15 +22,31 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.InvoiceController;
+import main.java.controller.InvoiceControllerImpl;
+import main.java.controller.ItemController;
+import main.java.controller.ItemControllerImpl;
+import main.java.controller.ShopController;
+import main.java.controller.ShopControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.Item;
+import main.java.model.User;
+
 public class InvoiceView extends JFrame{
 
 	private JPanel contentPane;
 	private JTextField textFieldCustomerId;
-	private JTextField textFieldTotalPrice;
+	private JTextField textField_TotalPrice;
 	private JTextField textFieldPay;
-	private JTextField textField_Amount;
-	String[] m_SelectCatgoey = {"Select Category"};
+	private JTextField textField_Quantity;
 
+	UserController userController = new UserControllerImpl();
+	ItemController itemController = new ItemControllerImpl();
+	ShopController shopController = new ShopControllerImpl();
+	InvoiceController invoiceController = new InvoiceControllerImpl();
+	Set<Integer> quantityModel;
+		
 	/**
 	 * Create the frame.
 	 */	
@@ -40,208 +57,215 @@ public class InvoiceView extends JFrame{
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));		
 		setTitle("Invoice Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 1369, 512);
+		setBounds(620, 280, 1300, 520);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel labelCudtomerID = new JLabel("Customer ID:");
-		labelCudtomerID.setFont(new Font("Tahoma", Font.BOLD, 13));
-		labelCudtomerID.setBounds(445, 16, 96, 16);
-		contentPane.add(labelCudtomerID);
+		invoiceController.newInvoice();
+				
+		JTextArea invoiceArea = new JTextArea();
+		invoiceArea.setBackground(new Color(211, 211, 211));
+		invoiceArea.setEditable(false);
+		String row = "Id" + "\t" + "Product" + "\t" + "Quantity" + "\t" + "UnitPrice" + "\n";
+		invoiceArea.setText(row);
 		
-		textFieldCustomerId = new JTextField();
-		textFieldCustomerId.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textFieldCustomerId.setColumns(10);
-		textFieldCustomerId.setBounds(573, 12, 114, 22);
-		contentPane.add(textFieldCustomerId);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 18, 343, 450);
+		JScrollPane scrollPane = new JScrollPane(invoiceArea);
+		scrollPane.setBounds(15, 15, 345, 420);
 		contentPane.add(scrollPane);
 		
-		JTextArea text_Receipt = new JTextArea();
-		scrollPane.setViewportView(text_Receipt);
-		text_Receipt.setBackground(new Color(211, 211, 211));
-		text_Receipt.setEditable(false);
-//		text_Receipt.setText(.getFirstLineInInvoice() + .getInvoiceSeparatLine());
+		JLabel lblComment = new JLabel("Search for CustomerID, check data clicking 'Check User'");
+		lblComment.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblComment.setBounds(370, 15, 442, 16);
+		contentPane.add(lblComment);
+						
+		JLabel lblCustomer = new JLabel("User ID:");
+		lblCustomer.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCustomer.setBounds(385, 46, 100, 20);
+		contentPane.add(lblCustomer);
 		
-		JLabel lblTotalPrice = new JLabel("Total price:");
-		lblTotalPrice.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTotalPrice.setBounds(1033, 16, 76, 16);
-		contentPane.add(lblTotalPrice);
+		JComboBox<Integer> comboBox_CustomerId = new JComboBox<>();
+		comboBox_CustomerId.setModel(new DefaultComboBoxModel(userController.getAllId().toArray()));
+		comboBox_CustomerId.setBounds(505, 46, 100, 20);
+		contentPane.add(comboBox_CustomerId);
 		
-		textFieldTotalPrice = new JTextField();
-		textFieldTotalPrice.setEditable(false);
-		textFieldTotalPrice.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textFieldTotalPrice.setColumns(10);
-		textFieldTotalPrice.setBounds(1033, 44, 82, 22);
-		contentPane.add(textFieldTotalPrice);
-		
-		
-		textFieldPay = new JTextField();
-		textFieldPay.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textFieldPay.setColumns(10);
-		textFieldPay.setBounds(1033, 171, 82, 22);
-		contentPane.add(textFieldPay);
-		
-		JComboBox comboBoxProducts = new JComboBox();
-		comboBoxProducts.setBounds(445, 84, 96, 20);
-		contentPane.add(comboBoxProducts);
-		
-		JComboBox comboBoxCategory = new JComboBox();
-//		comboBoxCategory.setModel(new DefaultComboBoxModel(.getCategoryList()));
-		comboBoxCategory.setBounds(445, 46, 96, 20);
-		contentPane.add(comboBoxCategory);
-		
-		JButton btnSelect = new JButton("Select");
-		btnSelect.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnSelect.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
+		JButton btnCheck = new JButton("Check User");
+		btnCheck.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnCheck.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				comboBoxProducts.setModel(new DefaultComboBoxModel(.getProductsToComboBox((String)comboBoxCategory.getSelectedItem())));
+				try {
+					int customerId = Integer.parseInt((String) comboBox_CustomerId.getSelectedItem());
+										
+					User foundUser = userController.searchUser(customerId);
+					
+					if(foundUser == null) {
+						comboBox_CustomerId.setSelectedIndex(0);
+						JOptionPane.showMessageDialog(null, "The User was not found");
+					} else {						
+						JOptionPane.showMessageDialog(null, "The User is " + foundUser.toString());						
+					}																			
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
-		btnSelect.setBounds(571, 46, 116, 23);
-		contentPane.add(btnSelect);
-				
-		textField_Amount = new JTextField();
-		textField_Amount.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Amount.setColumns(10);
-		textField_Amount.setBounds(445, 122, 96, 22);
-		contentPane.add(textField_Amount);
+		btnCheck.setBounds(620, 46, 120, 23);
+		contentPane.add(btnCheck);
 		
-		JButton btnAdd = new JButton("Add");
+		JLabel lblComment2 = new JLabel("Search for Item ID, choose quantity and click Add");
+		lblComment2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblComment2.setBounds(370, 84, 442, 16);
+		contentPane.add(lblComment2);
+		
+		JComboBox<String> comboBox_ItemId = new JComboBox<>();
+		JComboBox<Integer> comboBox_Quantity = new JComboBox<>();
+		comboBox_ItemId.setBounds(370, 122, 120, 23);
+		comboBox_ItemId.setModel(new DefaultComboBoxModel(itemController.getAllId().toArray()));
+		quantityModel = itemController.fromOneToQuantity(itemController.searchItem(comboBox_ItemId.getSelectedItem().toString()));
+		comboBox_ItemId.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					quantityModel = itemController.fromOneToQuantity(itemController.searchItem(comboBox_ItemId.getSelectedItem().toString()));
+					comboBox_Quantity.setModel(new DefaultComboBoxModel(quantityModel.toArray()));
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}			
+		});
+		contentPane.add(comboBox_ItemId);			
+		
+		comboBox_Quantity.setModel(new DefaultComboBoxModel(quantityModel.toArray()));	
+		comboBox_Quantity.setBounds(505, 122, 100, 23);
+		contentPane.add(comboBox_Quantity);
+		
+		JButton btnAdd = new JButton("Add to Cart");
 		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
-//					text_Receipt.setText(text_Receipt.getText() + .addProductToInvoice((String)comboBoxProducts.getSelectedItem(), Integer.parseInt(textField_Amount.getText())));
-					comboBoxCategory.setSelectedIndex(0);
-					comboBoxProducts.setModel(new DefaultComboBoxModel(m_SelectCatgoey));
-					textField_Amount.setText("");
-//					textFieldTotalPrice.setText(.getInvoiceTotalPrice());
+				try {
+					String custId = comboBox_CustomerId.getSelectedItem().toString();
+					String itemId = comboBox_ItemId.getSelectedItem().toString();
+					String itemQty = comboBox_Quantity.getSelectedItem().toString();
 					
-				}
-				catch (Exception E)
-				{
-					JOptionPane.showMessageDialog(null/*new JFrame()*/, E.getMessage());
+					String invoiceLine = invoiceController.createInvoiceItem(itemId, itemQty);
+					invoiceController.addToCart(invoiceLine);
+					
+					String tot = String.valueOf(invoiceController.calculateTotal());
+					textField_TotalPrice.setText(tot);
+					invoiceArea.append(invoiceLine);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			}
 		});
-		btnAdd.setBounds(571, 122, 116, 23);
+		btnAdd.setBounds(620, 122, 120, 23);
 		contentPane.add(btnAdd);
 		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnClear.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				comboBoxCategory.setSelectedIndex(0);
-				comboBoxProducts.setModel(new DefaultComboBoxModel(m_SelectCatgoey));
-				textField_Amount.setText("");
-				
+				comboBox_CustomerId.setSelectedIndex(0);
+				comboBox_Quantity.setSelectedIndex(0);
+				comboBox_ItemId.setSelectedIndex(0);
 			}
 		});
-		btnClear.setBounds(571, 84, 116, 23);
+		btnClear.setBounds(370, 193, 120, 23);
 		contentPane.add(btnClear);
-		
-		JButton btnNewButtonPay = new JButton("Pay");
-		btnNewButtonPay.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButtonPay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
-					//(double i_AmountToPay, String i_CustomerId, String i_InvoiveData, double i_Totalprice)
-//					String finalInvoice = .payInvoice(Double.parseDouble(textFieldPay.getText()), textFieldCustomerId.getText(), text_Receipt.getText(),Double.parseDouble(textFieldTotalPrice.getText()) );
-					comboBoxCategory.setSelectedIndex(0);
-					comboBoxProducts.setModel(new DefaultComboBoxModel(m_SelectCatgoey));
-					textField_Amount.setText("");
-//					text_Receipt.setText(finalInvoice);
-				}
-				catch (Exception E)
-				{
-					JOptionPane.showMessageDialog(null/*new JFrame()*/, E.getMessage());
+
+		JButton btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {		
+				try {
+					invoiceArea.print();	
+				} catch (PrinterException e1) {
+					JOptionPane.showMessageDialog(null, "No Printer Found");
 				}
 			}
 		});
-		btnNewButtonPay.setBounds(1033, 214, 89, 23);
-		contentPane.add(btnNewButtonPay);
+		btnPrint.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnPrint.setBounds(505, 193, 100, 23);
+		contentPane.add(btnPrint);
+		
+		JButton btnNewInvoice = new JButton("New Invoice");
+		btnNewInvoice.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewInvoice.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				invoiceController.newInvoice();
+				comboBox_CustomerId.setSelectedIndex(0);
+				comboBox_Quantity.setSelectedIndex(0);
+				comboBox_ItemId.setSelectedIndex(0);
+				textField_TotalPrice.setText("");
+				invoiceArea.setText(row);
+			}
+		});
+		btnNewInvoice.setBounds(620, 193, 120, 23);
+		contentPane.add(btnNewInvoice);
+
+		JLabel lblTotalPrice = new JLabel("Total price:");
+		lblTotalPrice.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTotalPrice.setBounds(820, 200, 90, 25);
+		contentPane.add(lblTotalPrice);
+		
+		textField_TotalPrice = new JTextField();
+		textField_TotalPrice.setEditable(false);
+		textField_TotalPrice.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_TotalPrice.setColumns(10);
+		textField_TotalPrice.setBounds(820, 230, 90, 25);
+		contentPane.add(textField_TotalPrice);
+		
+		JButton btnPay = new JButton("Pay");
+		btnPay.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnPay.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int userId = Integer.parseInt(String.valueOf(comboBox_CustomerId.getSelectedItem()));
+				Double tot = Double.parseDouble(textField_TotalPrice.getText());
+				if(shopController.addPayment(userId, tot)) {
+					JOptionPane.showMessageDialog(null, "Operation ended successfully!");
+					invoiceController.newInvoice();
+					comboBox_CustomerId.setSelectedIndex(0);
+					comboBox_Quantity.setSelectedIndex(0);
+					comboBox_ItemId.setSelectedIndex(0);
+					textField_TotalPrice.setText("");
+					invoiceArea.setText(row);
+				} else {
+					JOptionPane.showMessageDialog(null, "Something went wrong! Try again");
+				}
+			}
+		});
+		btnPay.setBounds(820, 270, 90, 25);
+		contentPane.add(btnPay);
 		
 		JButton btnBack = new JButton("Back");
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnBack.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				CashierView screen = new CashierView();
 				screen.display();
 			}
 		});
-		btnBack.setBounds(1033, 446, 89, 23);
+		btnBack.setBounds(820, 400, 90, 25);
 		contentPane.add(btnBack);
-		
-		JButton btnNewInvoice = new JButton("New Invoice");
-		btnNewInvoice.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewInvoice.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				text_Receipt.setText("");
-				textField_Amount.setText("");
-				textFieldCustomerId.setText("");
-				textFieldPay.setText("");
-				textFieldTotalPrice.setText("");
-				comboBoxCategory.setSelectedIndex(0);
-				comboBoxProducts.setModel(new DefaultComboBoxModel(m_SelectCatgoey));
-//				text_Receipt.setText(.getFirstLineInInvoice() + .getInvoiceSeparatLine());
-				
-			}
-		});
-		
-		JButton btnPrint = new JButton("Print");
-		btnPrint.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {		
-		     					try
-								{
-		     						text_Receipt.print();	
-								}
-								
-								catch (PrinterException e1)
-								{
-									System.err.format("No Printer Found", e1.getMessage());
-								}
-			}
-		});
-		btnPrint.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnPrint.setBounds(573, 158, 114, 23);
-		contentPane.add(btnPrint);
-		btnNewInvoice.setBounds(573, 193, 114, 23);
-		contentPane.add(btnNewInvoice);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Cash");
-		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		rdbtnNewRadioButton.setBackground(Color.WHITE);
-		rdbtnNewRadioButton.setBounds(1033, 83, 109, 23);
-		contentPane.add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnCredit = new JRadioButton("Credit");
-		rdbtnCredit.setFont(new Font("Tahoma", Font.BOLD, 13));
-		rdbtnCredit.setBackground(Color.WHITE);
-		rdbtnCredit.setBounds(1033, 129, 109, 23);
-		contentPane.add(rdbtnCredit);
-		
-		JLabel lblPicture = new JLabel("");
+						
+//		JLabel lblPicture = new JLabel("");
 //		File InvoiceScreen = new File("InvoiceScreen.jpg");
 //		String InvoiceScreenPath = InvoiceScreen.getPath();
-		
-		JLabel lblComment = new JLabel("Please select category and click on select button to see products");
-		lblComment.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblComment.setBounds(365, 234, 442, 16);
-		contentPane.add(lblComment);
+				
 //		lblPicture.setIcon(new ImageIcon(InvoiceScreenPath));
-		lblPicture.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPicture.setBounds(376, 0, 775, 480);
-		contentPane.add(lblPicture);		
+//		lblPicture.setFont(new Font("Tahoma", Font.BOLD, 13));
+//		lblPicture.setBounds(376, 0, 775, 480);
+//		contentPane.add(lblPicture);		
 	}
 	
 	public void display() {

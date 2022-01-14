@@ -1,6 +1,10 @@
 package main.java.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.platform.commons.util.StringUtils;
 
@@ -105,6 +109,12 @@ public class UserControllerImpl implements UserController{
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public Set<String> getAllId() {
+		Set<String> ls = file.getAllId();
+		return ls;
 	}
 
 }

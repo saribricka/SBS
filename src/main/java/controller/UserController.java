@@ -1,5 +1,8 @@
 package main.java.controller;
 
+import java.util.List;
+import java.util.Set;
+
 import main.java.model.User;
 
 public interface UserController {
@@ -31,5 +34,11 @@ public interface UserController {
 	 * @return false is something went wrong.
 	 */
 	boolean deleteUser(int userId);
+	
+	/**
+	 * Get the id of every user contained in the database
+	 * @return a list of strings with all the id
+	 */
+	Set<String> getAllId();
 	
 }

@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,71 +27,9 @@ import main.java.model.ItemImpl;
 public class FileItemImpl implements FileStrategy{
 
     private static final String ITEM_FILE = "Item.txt";
-//    private static final String SEP = File.separator;
-//    private static final String BAR = "barcode=";
-//    private static final String NAME = "productName=";
-//    private static final String QTY = "quantity=";
-//    private static final String PRICE = "unitPrice=";
-//    private static final String RECEIVED = "receivedDate=";
-//    private static final String EXPIRATION = "expirationDate=";
-//    private static final String CAT = "category=";
     
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-	private File file;
     private Set<String> list = new TreeSet<>();
-//    private ItemControllerImpl itemC = ItemControllerImpl.getInstance();
-//    private final List<String> barcodeList = new ArrayList<>();
-//    private final List<String> nameList = new ArrayList<>();
-//    private final List<Integer> quantityList = new ArrayList<>();
-//    private final List<Double> unitPriceList = new ArrayList<>();
-//    private final List<Date> receivedDateList = new ArrayList<>();
-//    private final List<Date> expirationDateList = new ArrayList<>();
-//    private final List<ItemCategory> categoryList = new ArrayList<>();
-    
-    
-//    public void load() {
-//    	try (BufferedReader reader = new BufferedReader(new FileReader(ITEM_FILE))) {			
-//			reader.lines().forEach(l -> {
-//				if (l != null) {
-//					if (l.contains(BAR)) {
-//						barcodeList.add(l.substring(BAR.length()));
-//					}else if (l.contains(NAME)) {
-//						nameList.add(l.substring(NAME.length()));
-//					}else if (l.contains(QTY)) {
-//						quantityList.add(Integer.valueOf(l.substring(QTY.length())));
-//					}else if (l.contains(PRICE)) {
-//						unitPriceList.add(Double.valueOf(l.substring(PRICE.length())));
-//					}else if (l.contains(RECEIVED)) {
-//						try {
-//							receivedDateList.add(dateFormatter.parse(l.substring(RECEIVED.length())));
-//						} catch (ParseException e) {
-//							e.printStackTrace();
-//						}
-//					}else if (l.contains(EXPIRATION)) {
-//						try {
-//							expirationDateList.add(dateFormatter.parse(l.substring(EXPIRATION.length())));
-//						} catch (ParseException e) {
-//							e.printStackTrace();
-//						}
-//					}else if (l.contains(CAT)) {
-//						String cat = l.substring(CAT.length());
-//						ItemCategory[] allCats = ItemCategory.values();
-//						for(var c : allCats) {
-//							if(c.toString().equals(cat)) {
-//								categoryList.add(c);
-//							}
-//						}						
-//					}
-//				}
-//			});
-//			for (int i = 0; i < barcodeList.size(); i++) {
-//                this.itemC.addItem(new ItemImpl(barcodeList.get(i), nameList.get(i), quantityList.get(i),
-//                		unitPriceList.get(i), receivedDateList.get(i), expirationDateList.get(i), categoryList.get(i)));
-//            }
-//    	} catch (final IOException e) {
-//    		e.printStackTrace();
-//    	}
-//    }
     
     private File createFile() {
     	try {
@@ -179,6 +118,20 @@ public class FileItemImpl implements FileStrategy{
             e.printStackTrace();
             return false;
         }
+	}
+
+	@Override
+	public Set<String> getAllId() {
+		Set<String> ides = new HashSet<>();
+		Set<String> lines = fileReader();
+		String id;
+		
+		for(String line : lines) {
+			String[] data = line.split(";");			
+			id = data[0];
+			ides.add(id);
+		}
+		return ides;
 	}
 
 }

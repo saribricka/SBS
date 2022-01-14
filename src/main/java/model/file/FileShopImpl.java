@@ -2,39 +2,24 @@ package main.java.model.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
-public class FileUserImpl implements FileStrategy{
-	
-	private static final String USER_FILE = "User.txt";
+public class FileShopImpl implements FileStrategy {
+
+	private static final String SHOP_FILE = "Shop.txt";
     private Set<String> list = new TreeSet<>();
-    
-	private File createFile() {
-		try {
-			File myObj = new File(USER_FILE);
-  	      	myObj.createNewFile();
-  	      	return myObj;
-  	    } catch (IOException e) {
-  	    	e.printStackTrace();
-  	    	return null;
-  	    }			
-	}
     
 	@Override
 	public Set<String> fileReader() {
-		try(BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
+		try(BufferedReader reader = new BufferedReader(new FileReader(SHOP_FILE))) {
 			String line;
 			list.clear();
 			while ((line = reader.readLine()) != null) {
@@ -51,19 +36,17 @@ public class FileUserImpl implements FileStrategy{
 
 	@Override
 	public boolean writeInFile(String objectToString) {
-		createFile(); //it also checks if the file exists
-		try(BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE, true))) {
-			writer.newLine();
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter(SHOP_FILE, true))) {
 			writer.write(objectToString);
 			writer.flush();
 			writer.close();
 			return true;
-		} catch (IOException e) {
-		    e.printStackTrace();
-		    return false;
-		}				
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
-
+		
 	@Override
 	public String searchInFile(String target) {
 		try {        	       
@@ -81,26 +64,17 @@ public class FileUserImpl implements FileStrategy{
 	}
 
 	@Override
+	/**
+	 * Disabled in shop payments.
+	 */
 	public boolean deleteLine(String target) {
-		try {
-			File file = createFile();
-		    File temp = new File("_temp_");
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
-		    List<String> out = Files.lines(file.toPath())
-		        .filter(line -> !line.contains(target.toLowerCase()))
-		        .collect(Collectors.toList());
-		    
-			Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}		
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public boolean emptyFile() {		
-        try(PrintWriter writer = new PrintWriter(USER_FILE)) {
+	public boolean emptyFile() {
+		try(PrintWriter writer = new PrintWriter(SHOP_FILE)) {
             writer.print("");
             writer.close();
             return true;
@@ -117,12 +91,11 @@ public class FileUserImpl implements FileStrategy{
 		String id;
 		
 		for(String line : lines) {
-			String[] data = line.split(";");			
+			String[] data = line.split("\t");			
 			id = data[0];
 			ides.add(id);
 		}
 		return ides;
 	}
-	
 
 }

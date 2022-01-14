@@ -1,5 +1,8 @@
 package main.java.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.platform.commons.util.StringUtils;
 
 import main.java.model.Item;
@@ -91,6 +94,22 @@ public class ItemControllerImpl implements ItemController{
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public Set<String> getAllId() {
+		Set<String> ls = file.getAllId();
+		return ls;
+	}
+
+	@Override
+	public Set<Integer> fromOneToQuantity(Item item) {
+		Set<Integer> qtys = new HashSet<>();
+		int quantity = item.getQuantity();
+		for(int i=1; i<=quantity; i++) {
+			qtys.add(i);
+		}
+		return qtys;
 	}
 
 }

@@ -14,4 +14,6 @@ public interface FileStrategy {
 	boolean deleteLine(String target);
 	
 	boolean emptyFile();
+	
+	Set<String> getAllId();
 }

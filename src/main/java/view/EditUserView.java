@@ -28,12 +28,13 @@ import main.java.model.UserRole;
 public class EditUserView extends JFrame{
 
 	private JPanel contentPane;
-	private JTextField textField_Id;
 	private JTextField textField_Name;
 	private JTextField textField_LastName;
 	private JTextField textField_City;
 	private JTextField textField_Description;
 	private JComboBox comboBox_Role = new JComboBox();
+	
+	UserController controller = new UserControllerImpl();	
 	
 	private String name, lastname, city, description;
 	private UserRole role;
@@ -104,16 +105,10 @@ public class EditUserView extends JFrame{
 		lblPleaseFillId.setBounds(10, 11, 240, 22);
 		contentPane.add(lblPleaseFillId);
 		
-		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
-		intFormatter.setValueClass(Integer.class);
-	    intFormatter.setMinimum(0);
-	    intFormatter.setMaximum(Integer.MAX_VALUE);
-	    intFormatter.setAllowsInvalid(false);
-	    textField_Id = new JFormattedTextField(intFormatter);
-		textField_Id.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Id.setColumns(10);
-		textField_Id.setBounds(131, 43, 161, 22);
-		contentPane.add(textField_Id);
+		JComboBox<Integer> comboBox_ItemId = new JComboBox<>();
+		comboBox_ItemId.setModel(new DefaultComboBoxModel(controller.getAllId().toArray()));
+		comboBox_ItemId.setBounds(131, 43, 161, 22);
+		contentPane.add(comboBox_ItemId);
 		
 		textField_Name = new JTextField();
 		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -149,14 +144,13 @@ public class EditUserView extends JFrame{
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					id = Integer.parseInt(textField_Id.getText());
+					id = Integer.parseInt(String.valueOf(comboBox_ItemId.getSelectedItem()));
 					name = textField_Name.getText();	
 					lastname = textField_LastName.getText();	
 					city = textField_City.getText();
 					role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
 					description = textField_Description.getText();
 					
-					UserController controller = new UserControllerImpl();	
 					User user = new UserImpl.UserBuilder(id)
 							.name(name)
 							.lastname(lastname)
@@ -167,7 +161,7 @@ public class EditUserView extends JFrame{
 					
 					controller.updateUser(user);
 					
-					textField_Id.setText("0");
+					comboBox_ItemId.setSelectedIndex(0);
 					textField_Name.setText("");
 					textField_LastName.setText("");
 					comboBox_Role.setSelectedIndex(0);
@@ -186,9 +180,8 @@ public class EditUserView extends JFrame{
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					id = Integer.parseInt(textField_Id.getText());
+					id = Integer.parseInt(String.valueOf(comboBox_ItemId.getSelectedItem()));
 					
-					UserController controller = new UserControllerImpl();
 					boolean check = controller.deleteUser(id);
 					
 					if(!check) {
@@ -196,7 +189,7 @@ public class EditUserView extends JFrame{
 					} else {								
 						JOptionPane.showMessageDialog(null, "The User was successfully deleted");
 					}	
-					textField_Id.setText("0");
+					comboBox_ItemId.setSelectedIndex(0);
 					textField_Name.setText("");
 					textField_LastName.setText("");
 					comboBox_Role.setSelectedIndex(0);
@@ -216,16 +209,14 @@ public class EditUserView extends JFrame{
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					id = Integer.parseInt(textField_Id.getText());
+					id = Integer.parseInt(String.valueOf(comboBox_ItemId.getSelectedItem()));
 					
-					UserController controller = new UserControllerImpl();
 					User foundUser = controller.searchUser(id);
 					
 					if(foundUser == null) {
-						textField_Id.setText("0");
+						comboBox_ItemId.setSelectedIndex(0);
 						JOptionPane.showMessageDialog(null, "The User was not found");
-					} else {						
-						textField_Id.setText(String.valueOf(foundUser.getId()));
+					} else {
 						textField_Name.setText(foundUser.getName());
 						textField_LastName.setText(foundUser.getLastname());
 						textField_City.setText(foundUser.getCity().get());
@@ -250,7 +241,7 @@ public class EditUserView extends JFrame{
 		btnClear.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textField_Id.setText("0");
+				comboBox_ItemId.setSelectedIndex(0);
 				textField_Name.setText("");
 				textField_LastName.setText("");
 				comboBox_Role.setSelectedIndex(0);

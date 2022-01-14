@@ -34,19 +34,15 @@ import main.java.model.file.FileStrategy;
 public class EditItemView extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField_ID;
 	private JTextField textField_Name;
-	private JTextField textField_Supplier;
 	private JTextField textField_Quantity;
 	private JTextField textField_Price;
-	private JTextField textField_ReceivedDate;
-	private JTextField textField_ExpiredDate;
-	private JTextField textField_CostPrice;
 	private String barcode, name;
 	private int quantity;
 	private double price;
-	private Date received, expiration;
 	private ItemCategory category;
+	
+	ItemController controller = new ItemControllerImpl();
 	
 	/**
 	 * Create the frame.
@@ -100,11 +96,10 @@ public class EditItemView extends JFrame{
 //		label_ExpiredDate.setBounds(18, 257, 150, 22);
 //		contentPane.add(label_ExpiredDate);
 		
-		textField_ID = new JTextField();
-		textField_ID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_ID.setColumns(10);
-		textField_ID.setBounds(152, 48, 116, 22);
-		contentPane.add(textField_ID);
+		JComboBox<Integer> comboBox_ItemId = new JComboBox<>();
+		comboBox_ItemId.setModel(new DefaultComboBoxModel(controller.getAllId().toArray()));
+		comboBox_ItemId.setBounds(152, 48, 116, 22);
+		contentPane.add(comboBox_ItemId);
 		
 		JComboBox comboBox_Category = new JComboBox();
 		comboBox_Category.setModel(new DefaultComboBoxModel(ItemCategory.values()));
@@ -171,7 +166,7 @@ public class EditItemView extends JFrame{
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
-				textField_ID.setText("");
+				comboBox_ItemId.setSelectedIndex(0);
 				comboBox_Category.setSelectedIndex(0);
 				textField_Name.setText("");
 				textField_Quantity.setText("0");
@@ -186,7 +181,7 @@ public class EditItemView extends JFrame{
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					barcode = textField_ID.getText();
+					barcode = String.valueOf(comboBox_ItemId.getSelectedItem());
 					category = ItemCategory.valueOf(String.valueOf(comboBox_Category.getSelectedItem()).toUpperCase());
 					name = textField_Name.getText();					
 					String strQ = textField_Quantity.getText();
@@ -194,11 +189,10 @@ public class EditItemView extends JFrame{
 					String strP = textField_Price.getText();
 					price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
 					
-					ItemController controller = new ItemControllerImpl();
 					ItemImpl itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
 					controller.updateItem(itemToAdd);
 															
-					textField_ID.setText("");
+					comboBox_ItemId.setSelectedIndex(0);
 					comboBox_Category.setSelectedIndex(0);
 					textField_Name.setText("");
 					textField_Quantity.setText("0");
@@ -223,16 +217,14 @@ public class EditItemView extends JFrame{
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 				try {
-					barcode = textField_ID.getText();
+					barcode = String.valueOf(comboBox_ItemId.getSelectedItem());
 					
-					ItemController controller = new ItemControllerImpl();
 					Item foundItem = controller.searchItem(barcode);
 					
 					if(foundItem == null) {
-						textField_ID.setText("");
+						comboBox_ItemId.setSelectedIndex(0);
 						JOptionPane.showMessageDialog(null, "The Product was not found");
-					} else {						
-						textField_ID.setText(foundItem.getBarcode());
+					} else {
 						textField_Name.setText(foundItem.getName());
 						textField_Quantity.setText(String.valueOf(foundItem.getQuantity()));
 						textField_Price.setText(String.valueOf(foundItem.getUnitPrice()));
@@ -256,9 +248,8 @@ public class EditItemView extends JFrame{
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					barcode = textField_ID.getText();
+					barcode = String.valueOf(comboBox_ItemId.getSelectedItem());
 					
-					ItemController controller = new ItemControllerImpl();
 					var check = controller.deleteItem(barcode);
 
 					if(!check) {
@@ -266,7 +257,7 @@ public class EditItemView extends JFrame{
 					} else {						
 						JOptionPane.showMessageDialog(null, "The Product was deleted from the database");
 					}	
-					textField_ID.setText("");
+					comboBox_ItemId.setSelectedIndex(0);
 					comboBox_Category.setSelectedIndex(0);
 					textField_Name.setText("");
 					textField_Quantity.setText("0");

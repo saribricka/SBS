@@ -36,6 +36,8 @@ public class EditCustomerView extends JFrame{
 	private JTextField textField_Description;
 	private JComboBox comboBox_Role = new JComboBox();
 	
+	UserController controller = new UserControllerImpl();
+	
 	private String name, lastname, city, description;
 	private UserRole role;
 	private int id;
@@ -100,10 +102,10 @@ public class EditCustomerView extends JFrame{
 		btnBack.setBounds(400, 350, 89, 23);
 		contentPane.add(btnBack);
 		
-		JLabel lblPleaseFillId = new JLabel("Please fill ID and click Search");
-		lblPleaseFillId.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblPleaseFillId.setBounds(10, 11, 240, 22);
-		contentPane.add(lblPleaseFillId);
+		JLabel lblComment = new JLabel("Please fill ID and click Search");
+		lblComment.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblComment.setBounds(10, 11, 240, 22);
+		contentPane.add(lblComment);
 		
 		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
 		intFormatter.setValueClass(Integer.class);
@@ -153,7 +155,6 @@ public class EditCustomerView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					id = Integer.parseInt(textField_Id.getText());
-					UserController controller = new UserControllerImpl();
 					User foundUser = controller.searchUser(id);
 					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
 						name = textField_Name.getText();	
@@ -196,7 +197,6 @@ public class EditCustomerView extends JFrame{
 				try {
 					id = Integer.parseInt(textField_Id.getText());
 					
-					UserController controller = new UserControllerImpl();
 					User foundUser = controller.searchUser(id);
 					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
 						boolean check = controller.deleteUser(id);						
@@ -228,8 +228,7 @@ public class EditCustomerView extends JFrame{
 				try {
 					id = Integer.parseInt(textField_Id.getText());
 					
-					UserController controller = new UserControllerImpl();
-					User foundUser = controller.searchUser(id); //debuggare qui dentro
+					User foundUser = controller.searchUser(id); 
 					
 					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
 						textField_Id.setText(String.valueOf(foundUser.getId()));

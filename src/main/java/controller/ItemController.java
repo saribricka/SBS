@@ -1,5 +1,7 @@
 package main.java.controller;
 
+import java.util.Set;
+
 import main.java.model.Item;
 import main.java.model.ItemImpl;
 
@@ -33,4 +35,16 @@ public interface ItemController {
 	 */
 	boolean deleteItem(String barcode);
 
+	/**
+	 * Get the id of every item contained in the database
+	 * @return a list of strings with all the id
+	 */
+	Set<String> getAllId();
+	
+	/**
+	 * Get quantity and all the numbers from one to argument
+	 * @param item
+	 * @return an array of all the values till quantity
+	 */
+	Set<Integer> fromOneToQuantity(Item item);
 }
