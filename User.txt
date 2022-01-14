@@ -3,5 +3,4 @@
 0;duke;cornacchia;;customer;roma
 
 
-4;sara;;;select;
-6;;bric;;select;
+2;phebe;buffay;;customer;newyork;end

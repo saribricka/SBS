@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,232 +18,270 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
+
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.User;
+import main.java.model.UserImpl;
+import main.java.model.UserRole;
 
 public class EditCustomerView extends JFrame{
 
-	private JTextField textField_FirstName;
+	private JPanel contentPane;
+	private JTextField textField_Id;
+	private JTextField textField_Name;
 	private JTextField textField_LastName;
-	private JTextField textField_CustomerID;
-	private JTextField textField_Email;
-	private JTextField textField_Address;
-	private JTextField textField_Telephone;
-	private JTextField textField_Gender;
-
-/**
+	private JTextField textField_City;
+	private JTextField textField_Description;
+	private JComboBox comboBox_Role = new JComboBox();
+	
+	private String name, lastname, city, description;
+	private UserRole role;
+	private int id;
+	
+	/**
 	 * Create the frame.
-	 */	
+	 */
 	public EditCustomerView() {
-//		File logoImage = new File("EditCustomerView.jpg");
+//		File logoImage = new File("EditUserView.png");
 //		String imagePath = logoImage.getPath();
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-		setTitle("Customer Edit");
+		setTitle("Edit Customer");
+		getContentPane().setBackground(Color.ORANGE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 1053, 520);
-		JPanel contentPane = new JPanel();
+		setBounds(620, 280, 550, 450);
+		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel label_FirstName = new JLabel("First name:");
-		label_FirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_FirstName.setBounds(15, 77, 79, 22);
-		contentPane.add(label_FirstName);
 		
-		textField_FirstName = new JTextField();
-		textField_FirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_FirstName.setColumns(10);
-		textField_FirstName.setBounds(120, 77, 139, 22);
-		contentPane.add(textField_FirstName);
+		JLabel lblUserid = new JLabel("ID: *");
+		lblUserid.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblUserid.setBounds(10, 43, 80, 22);
+		contentPane.add(lblUserid);
 		
-		JLabel label_LastName = new JLabel("Last name:");
-		label_LastName.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_LastName.setBounds(15, 112, 79, 22);
-		contentPane.add(label_LastName);
+		JLabel lblFirstName = new JLabel("Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblFirstName.setBounds(10, 82, 80, 22);
+		contentPane.add(lblFirstName);
 		
-		textField_LastName = new JTextField();
-		textField_LastName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_LastName.setColumns(10);
-		textField_LastName.setBounds(120, 112, 139, 22);
-		contentPane.add(textField_LastName);
+		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblLastName.setBounds(10, 115, 120, 22);
+		contentPane.add(lblLastName);
 		
-		textField_CustomerID = new JTextField();
-		textField_CustomerID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_CustomerID.setColumns(10);
-		textField_CustomerID.setBounds(120, 43, 139, 22);
-		contentPane.add(textField_CustomerID);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCity.setBounds(10, 148, 80, 22);
+		contentPane.add(lblCity);
 		
-		JLabel label_CustomerID = new JLabel("Customer ID:");
-		label_CustomerID.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_CustomerID.setBounds(15, 43, 93, 16);
-		contentPane.add(label_CustomerID);
+		JLabel lblRole = new JLabel("Role:");
+		lblRole.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblRole.setBounds(10, 185, 80, 22);
+		contentPane.add(lblRole);
 		
-		JLabel label_Email = new JLabel("Email:");
-		label_Email.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_Email.setBounds(15, 146, 79, 22);
-		contentPane.add(label_Email);
-		
-		textField_Email = new JTextField();
-		textField_Email.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Email.setColumns(10);
-		textField_Email.setBounds(120, 145, 139, 22);
-		contentPane.add(textField_Email);
-		
-		textField_Address = new JTextField();
-		textField_Address.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Address.setColumns(10);
-		textField_Address.setBounds(120, 180, 139, 22);
-		contentPane.add(textField_Address);
-		
-		JLabel label_Address = new JLabel("Address:");
-		label_Address.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_Address.setBounds(15, 181, 79, 22);
-		contentPane.add(label_Address);
-		
-		JLabel label_Telephone = new JLabel("Telephone:");
-		label_Telephone.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_Telephone.setBounds(15, 215, 79, 22);
-		contentPane.add(label_Telephone);
-		
-		textField_Telephone = new JTextField();
-		textField_Telephone.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Telephone.setColumns(10);
-		textField_Telephone.setBounds(120, 215, 139, 22);
-		contentPane.add(textField_Telephone);
-		
-		textField_Gender = new JTextField();
-		textField_Gender.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Gender.setColumns(10);
-		textField_Gender.setBounds(120, 250, 139, 22);
-		contentPane.add(textField_Gender);
-		
-		JButton button = new JButton("Back");
-		button.setFont(new Font("Tahoma", Font.BOLD, 13));
-		button.addActionListener(new ActionListener() {
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDescription.setBounds(10, 224, 100, 22);
+		contentPane.add(lblDescription);
+
+		JButton btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				CustomerView screen = new CustomerView();
 				screen.display();
 			}
 		});
-		button.setBounds(648, 427, 97, 25);
-		contentPane.add(button);
+		btnBack.setBounds(400, 350, 89, 23);
+		contentPane.add(btnBack);
 		
-
-	
-		JLabel label = new JLabel("Please fill ID number and click Search");
-		label.setFont(new Font("Tahoma", Font.BOLD, 12));
-		label.setBounds(15, 8, 240, 22);
-		contentPane.add(label);
-
+		JLabel lblPleaseFillId = new JLabel("Please fill ID and click Search");
+		lblPleaseFillId.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPleaseFillId.setBounds(10, 11, 240, 22);
+		contentPane.add(lblPleaseFillId);
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-//				deleteCustomrt(textField_CustomerID.getText());	
-//				textField_CustomerID.setText("");
-//				textField_FirstName.setText("");
-//				textField_LastName.setText("");
-//				textField_Email.setText("");
-//				textField_Telephone.setText("");
-//				textField_Address.setText("");
-//				textField_Gender.setText("");
-			}
-		});
-		btnDelete.setBounds(270, 145, 97, 25);
-		contentPane.add(btnDelete);
+		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
+		intFormatter.setValueClass(Integer.class);
+	    intFormatter.setMinimum(0);
+	    intFormatter.setMaximum(Integer.MAX_VALUE);
+	    intFormatter.setAllowsInvalid(false);
+	    textField_Id = new JFormattedTextField(intFormatter);
+		textField_Id.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Id.setColumns(10);
+		textField_Id.setBounds(131, 43, 161, 22);
+		contentPane.add(textField_Id);
 		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {			
-				try
-				{
-//					Customer searchedCustomer = searchCustomer(textField_CustomerID.getText());
-//					textField_FirstName.setText(searchedCustomer.getCustomerFirstName());
-//					textField_LastName.setText(searchedCustomer.getCustomerLastName());
-//					textField_Email.setText(searchedCustomer.getCustomerEmail());
-//					textField_Telephone.setText(searchedCustomer.getCustomerPhone());
-//					textField_Address.setText(searchedCustomer.getCustomerAddress());
-//					textField_Gender.setText(searchedCustomer.getCustomerGender());
-				}
-				catch (Exception ex)
-				{
-					JOptionPane.showMessageDialog(null, "The Customer is not in the data base");
-				}
-
-			}
-		});
-		btnSearch.setBounds(270, 78, 97, 25);
-		contentPane.add(btnSearch);
+		textField_Name = new JTextField();
+		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(131, 80, 161, 22);
+		contentPane.add(textField_Name);
 		
-
-		JButton btnClear = new JButton("Clear");
-		btnClear.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				textField_CustomerID.setText("");
-				textField_FirstName.setText("");
-				textField_LastName.setText("");
-				textField_Email.setText("");
-				textField_Telephone.setText("");
-				textField_Address.setText("");
-				textField_Gender.setText("");
-			}
-		});
-		btnClear.setBounds(270, 181, 97, 25);
-		contentPane.add(btnClear);
+		textField_LastName = new JTextField();
+		textField_LastName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_LastName.setColumns(10);
+		textField_LastName.setBounds(131, 113, 161, 22);
+		contentPane.add(textField_LastName);
 		
+		textField_City = new JTextField();
+		textField_City.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_City.setColumns(10);
+		textField_City.setBounds(131, 147, 161, 22);
+		contentPane.add(textField_City);
 		
+		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
+		comboBox_Role.setModel(new DefaultComboBoxModel(UserRole.values()));
+		comboBox_Role.setSelectedItem(UserRole.CUSTOMER);
+		comboBox_Role.enable(false);
+		comboBox_Role.setBounds(131, 181, 161, 22);
+		contentPane.add(comboBox_Role);
+		
+		textField_Description = new JTextField();
+		textField_Description.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Description.setColumns(10);
+		textField_Description.setBounds(131, 223, 161, 50);
+		contentPane.add(textField_Description);
+			
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				try
-				{
-//					Customer newCustomer = creatCustomer(textField_Gender.getText(), textField_Telephone.getText(), textField_Email.getText(),
-//							textField_Address.getText(), textField_FirstName.getText(), textField_LastName.getText(), 
-//							textField_CustomerID.getText());
-//					updateCustomer(newCustomer);
-//					
-//					textField_CustomerID.setText("");
-//					textField_FirstName.setText("");
-//					textField_LastName.setText("");
-//					textField_Email.setText("");
-//					textField_Telephone.setText("");
-//					textField_Address.setText("");
-//					textField_Gender.setText("");
-							
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					UserController controller = new UserControllerImpl();
+					User foundUser = controller.searchUser(id);
+					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
+						name = textField_Name.getText();	
+						lastname = textField_LastName.getText();	
+						city = textField_City.getText();
+						role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+						description = textField_Description.getText();
+											
+						User user = new UserImpl.UserBuilder(id)
+								.name(name)
+								.lastname(lastname)
+				                .city(city)
+				                .role(role)
+				                .description(description)
+				                .build();
+						
+						controller.updateUser(user);
+												
+						JOptionPane.showMessageDialog(null, "The Customer was updated");
+					} else {						
+						JOptionPane.showMessageDialog(null, "The Customer was not found");
+					}	
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_City.setText("");
+					textField_Description.setText("");
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
-				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Error please check all filds date must be in fotmat: DD-MM-YYYY");
+		}});
+		btnUpdate.setBounds(400, 181, 89, 23);
+		contentPane.add(btnUpdate);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					
+					UserController controller = new UserControllerImpl();
+					User foundUser = controller.searchUser(id);
+					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
+						boolean check = controller.deleteUser(id);						
+						if(check) {														
+							JOptionPane.showMessageDialog(null, "The Customer was successfully deleted");
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "The Customer was not found");
+					}
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_City.setText("");
+					textField_Description.setText("");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}								
+			}
+		});
+		btnDelete.setBounds(400, 249, 89, 23);
+		contentPane.add(btnDelete);
+		
+
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					
+					UserController controller = new UserControllerImpl();
+					User foundUser = controller.searchUser(id); //debuggare qui dentro
+					
+					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
+						textField_Id.setText(String.valueOf(foundUser.getId()));
+						textField_Name.setText(foundUser.getName());
+						textField_LastName.setText(foundUser.getLastname());
+						textField_City.setText(foundUser.getCity().get());
+						textField_Description.setText(foundUser.getDescription().get());
+						comboBox_Role.setSelectedItem(UserRole.CUSTOMER);						
+					} else {						
+						textField_Id.setText("0");
+						textField_Name.setText("");
+						textField_LastName.setText("");
+						comboBox_Role.setSelectedIndex(0);
+						textField_City.setText("");
+						textField_Description.setText("");
+						JOptionPane.showMessageDialog(null, "The Customer was not found");					
+					}																			
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 			}
 		});
-		btnUpdate.setBounds(270, 112, 97, 25);
-		contentPane.add(btnUpdate);
+		btnSearch.setBounds(400, 43, 89, 23);
+		contentPane.add(btnSearch);
 		
-		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblGender.setBounds(15, 250, 56, 16);
-		contentPane.add(lblGender);
+		JButton btnClear = new JButton("Clear");
+		btnClear.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textField_Id.setText("0");
+				textField_Name.setText("");
+				textField_LastName.setText("");
+				comboBox_Role.setSelectedIndex(0);
+				textField_City.setText("");
+				textField_Description.setText("");
+			}
+		});
+		btnClear.setBounds(400, 115, 89, 23);
+		contentPane.add(btnClear);
 		
 		JLabel lblPicture = new JLabel("");
-//		File CustomerEdit = new File("EditCustomerView.jpg");
-//		String CustomerEditPath = CustomerEdit.getPath();
-//		lblPicture.setIcon(new ImageIcon(CustomerEditPath));
-		lblPicture.setBounds(0, 0, 1047, 485);
-		contentPane.add(lblPicture);
-		
+//		File UsersEdit = new File("EditUserView.png");
+//		String UserEditPath = UsersEdit.getPath();
+//		lblPicture.setIcon(new ImageIcon(UserEditPath));
+		lblPicture.setBounds(299, -3, 551, 465);
+		contentPane.add(lblPicture);		
 	}
 	
 	public void display() {
         setVisible(true);
-        setResizable(true);  
-        setLocationRelativeTo(null);      
+        setResizable(true);   
+        setLocationRelativeTo(null);     
         setMinimumSize(new Dimension(500,500));
     }
 }

@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,160 +19,180 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.text.NumberFormatter;
+
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.User;
+import main.java.model.UserImpl;
+import main.java.model.UserRole;
 
 public class AddCustomerView extends JFrame{
 
 	private JPanel contentPane;
-	private JTextField textField_FirstName;
+	private JTextField textField_Id;
+	private JTextField textField_Name;
 	private JTextField textField_LastName;
-	private JTextField textField_CustomerId;
-	private JTextField textField_Email;
-	private JTextField textField_Address;
-	private JTextField textField_Telephone;
+	private JTextField textField_City;
+	private JTextField textField_Description;
+	private JComboBox comboBox_Role;
 
-	/**
-	 * Create the frame.
-	 */
+	private String name, lastname, city, description;
+	private UserRole role;
+	private int id;
+	
 	public AddCustomerView() {
-//		File logoImage = new File("AddCustomerView.jpg");
+//		File logoImage = new File("AddUserView.png");
 //		String imagePath = logoImage.getPath();
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-		setTitle("Details Of Customers");
+		setTitle("Add Customer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 763, 636);
+		setBounds(620, 280, 550, 450);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblFirstName = new JLabel("First name:");
-		lblFirstName.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblFirstName.setBounds(12, 13, 79, 22);
-		contentPane.add(lblFirstName);
-		
-		JLabel lblLastName = new JLabel("Last name:");
-		lblLastName.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblLastName.setBounds(12, 48, 79, 22);
-		contentPane.add(lblLastName);
-		
-		JLabel lblId = new JLabel("Customer ID:");
-		lblId.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblId.setBounds(12, 91, 76, 16);
+		JLabel lblId = new JLabel("ID: *");
+		lblId.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblId.setBounds(12, 13, 79, 22);
 		contentPane.add(lblId);
 		
-		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblEmail.setBounds(12, 120, 79, 22);
-		contentPane.add(lblEmail);
+		JLabel lblFirstName = new JLabel("Name:");
+		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblFirstName.setBounds(12, 48, 79, 22);
+		contentPane.add(lblFirstName);
 		
-		JLabel lblAddress = new JLabel("Address:");
-		lblAddress.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblAddress.setBounds(12, 155, 79, 22);
-		contentPane.add(lblAddress);
+		JLabel lblLastName = new JLabel("LastName:");
+		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblLastName.setBounds(12, 81, 100, 22);
+		contentPane.add(lblLastName);
 		
-		JLabel lblTelephone = new JLabel("Telephone:");
-		lblTelephone.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblTelephone.setBounds(12, 190, 79, 22);
-		contentPane.add(lblTelephone);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCity.setBounds(12, 116, 80, 22);
+		contentPane.add(lblCity);
 		
-		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblGender.setBounds(12, 228, 56, 16);
-		contentPane.add(lblGender);
+		JLabel lblRole = new JLabel("Role:");
+		lblRole.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblRole.setBounds(12, 151, 80, 22);
+		contentPane.add(lblRole);
 		
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDescription.setBounds(12, 186, 100, 22);
+		contentPane.add(lblDescription);		
 		
 		JButton btnBack = new JButton("Back");
-		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				CustomerView screen = new CustomerView();
-				screen.display();
+				screen.display();				
 			}
-			
 		});
-		
-		btnBack.setBounds(648, 561, 97, 25);
+		btnBack.setBounds(395, 375, 97, 25);
 		contentPane.add(btnBack);
 		
-		textField_FirstName = new JTextField();
-		textField_FirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_FirstName.setBounds(103, 13, 128, 22);
-		contentPane.add(textField_FirstName);
-		textField_FirstName.setColumns(10);
+		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
+		intFormatter.setValueClass(Integer.class);
+	    intFormatter.setMinimum(0);
+	    intFormatter.setMaximum(Integer.MAX_VALUE);
+	    intFormatter.setAllowsInvalid(false);
+	    textField_Id = new JFormattedTextField(intFormatter);
+		textField_Id.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Id.setColumns(10);
+		textField_Id.setBounds(143, 12, 144, 22);
+		contentPane.add(textField_Id);		
 		
+		textField_Name = new JTextField();
+		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(143, 47, 144, 22);
+		contentPane.add(textField_Name);
+			
 		textField_LastName = new JTextField();
 		textField_LastName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		textField_LastName.setColumns(10);
-		textField_LastName.setBounds(103, 48, 128, 22);
+		textField_LastName.setBounds(143, 80, 144, 22);
 		contentPane.add(textField_LastName);
 		
-		textField_CustomerId = new JTextField();
-		textField_CustomerId.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_CustomerId.setColumns(10);
-		textField_CustomerId.setBounds(103, 86, 128, 22);
-		contentPane.add(textField_CustomerId);
+		textField_City = new JTextField();
+		textField_City.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_City.setColumns(10);
+		textField_City.setBounds(143, 115, 144, 22);
+		contentPane.add(textField_City);
+				
+		comboBox_Role  = new JComboBox();
+		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
+		comboBox_Role.setModel(new DefaultComboBoxModel(UserRole.values()));
+		comboBox_Role.setSelectedItem(UserRole.CUSTOMER);
+		comboBox_Role.enable(false);
+		comboBox_Role.setBounds(143, 151, 144, 22);
+		contentPane.add(comboBox_Role);
 		
-		textField_Email = new JTextField();
-		textField_Email.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Email.setColumns(10);
-		textField_Email.setBounds(103, 118, 128, 22);
-		contentPane.add(textField_Email);
-		
-		textField_Address = new JTextField();
-		textField_Address.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Address.setColumns(10);
-		textField_Address.setBounds(103, 155, 128, 22);
-		contentPane.add(textField_Address);
-		
-		textField_Telephone = new JTextField();
-		textField_Telephone.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_Telephone.setBounds(103, 188, 128, 22);
-		contentPane.add(textField_Telephone);
-		textField_Telephone.setColumns(10);
-		
-		JList list = new JList();
-		list.setBounds(326, 190, -9, -56);
-		contentPane.add(list);
-		
-		JComboBox comboBox_Gender = new JComboBox();
-		comboBox_Gender.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_Gender.setModel(new DefaultComboBoxModel(new String[] {"Select", "Male", "Female", "Non-binary"}));
-		comboBox_Gender.setBounds(103, 225, 128, 22);
-		contentPane.add(comboBox_Gender);
-		
+		textField_Description = new JTextField();
+		textField_Description.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Description.setColumns(10);
+		textField_Description.setBounds(143, 186, 144, 50);
+		contentPane.add(textField_Description);
 		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				try
-				{
-
-				}
-				catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Error please check all filds date must be in fotmat: DD-MM-YYYY");
-				}
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					id = Integer.parseInt(textField_Id.getText());
+					name = textField_Name.getText();	
+					lastname = textField_LastName.getText();	
+					city = textField_City.getText();
+					role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+					description = textField_Description.getText();
+					
+					UserController controller = new UserControllerImpl();	
+					User user = new UserImpl.UserBuilder(id)
+							.name(name)
+							.lastname(lastname)
+			                .city(city)
+			                .role(role)
+			                .description(description)
+			                .build();
+					
+					if (controller.addUser(user)) {
+						JOptionPane.showMessageDialog(null, "The Customer was added to the database");
+					} else {										
+						JOptionPane.showMessageDialog(null, "The ID is already in the database");
+					}
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					textField_City.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_Description.setText("");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}			
 			}
 		});
-		btnAdd.setBounds(12, 273, 97, 25);
+		btnAdd.setBounds(395, 48, 97, 25);
 		contentPane.add(btnAdd);
 		
 		JLabel lblPicture = new JLabel("");
-//		File CustomerAdd = new File("AddCustomerView.jpg");
-//		String CustomerAddPath = CustomerAdd.getPath();
-//		lblPicture.setIcon(new ImageIcon(CustomerAddPath));
-		lblPicture.setBounds(231, 27, 526, 521);
+//		File UsersAdd = new File("AddUserView.png");
+//		String UserAddPath = UsersAdd.getPath();
+//		lblPicture.setIcon(new ImageIcon(UserAddPath));
+		lblPicture.setBounds(299, -3, 551, 465);
 		contentPane.add(lblPicture);
-	
+
 	}
 	
 	public void display() {
         setVisible(true);
-        setResizable(true);    
-        setLocationRelativeTo(null);    
+        setResizable(true);     
+        setLocationRelativeTo(null);   
         setMinimumSize(new Dimension(500,500));
     }
 }

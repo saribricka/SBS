@@ -31,6 +31,7 @@ import main.java.model.UserImpl;
 import main.java.model.UserRole;
 
 public class AddUserView extends JFrame{
+	
 	private JPanel contentPane;
 	private JTextField textField_Id;
 	private JTextField textField_Name;
@@ -128,7 +129,7 @@ public class AddUserView extends JFrame{
 		contentPane.add(textField_City);
 		
 		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_Role.setModel(new DefaultComboBoxModel(new String[] {"Select", "Manager", "Cashier", "Customer"}));
+		comboBox_Role.setModel(new DefaultComboBoxModel(UserRole.values()));
 		comboBox_Role.setBounds(143, 151, 144, 22);
 		contentPane.add(comboBox_Role);
 		
@@ -160,17 +161,16 @@ public class AddUserView extends JFrame{
 			                .build();
 					
 					if (controller.addUser(user)) {
-						textField_Id.setText("0");
-						textField_Name.setText("");
-						textField_LastName.setText("");
-						textField_City.setText("");
-						comboBox_Role.setSelectedIndex(0);
-						textField_Description.setText("");
 						JOptionPane.showMessageDialog(null, "The User was added to the database");
-					} else {
-						textField_Id.setText("0");					
+					} else {			
 						JOptionPane.showMessageDialog(null, "The ID is already in the database");
 					}
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					textField_City.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_Description.setText("");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}			

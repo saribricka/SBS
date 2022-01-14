@@ -134,7 +134,7 @@ public class EditUserView extends JFrame{
 		contentPane.add(textField_City);
 		
 		comboBox_Role.setFont(new Font("Tahoma", Font.BOLD, 14));
-		comboBox_Role.setModel(new DefaultComboBoxModel(new String[] {"Select", "Manager", "Cashier", "Customer"}));
+		comboBox_Role.setModel(new DefaultComboBoxModel(UserRole.values()));
 		comboBox_Role.setBounds(131, 181, 161, 22);
 		contentPane.add(comboBox_Role);
 		
@@ -192,17 +192,16 @@ public class EditUserView extends JFrame{
 					boolean check = controller.deleteUser(id);
 					
 					if(!check) {
-						textField_Id.setText("0");
 						JOptionPane.showMessageDialog(null, "The User was not found");
-					} else {						
-						textField_Id.setText("0");
-						textField_Name.setText("");
-						textField_LastName.setText("");
-						comboBox_Role.setSelectedIndex(0);
-						textField_City.setText("");
-						textField_Description.setText("");		
+					} else {								
 						JOptionPane.showMessageDialog(null, "The User was successfully deleted");
-					}																			
+					}	
+					textField_Id.setText("0");
+					textField_Name.setText("");
+					textField_LastName.setText("");
+					comboBox_Role.setSelectedIndex(0);
+					textField_City.setText("");
+					textField_Description.setText("");
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}								

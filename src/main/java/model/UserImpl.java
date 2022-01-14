@@ -55,8 +55,8 @@ public class UserImpl implements User{
 	
 	@Override
 	public String toString() {
-		String s = String.valueOf(id) + ATTR_SEP + firstname + ATTR_SEP + lastname
-				 + ATTR_SEP + description.get() + ATTR_SEP + role + ATTR_SEP + city.get();
+		String s = String.valueOf(id) + ATTR_SEP + firstname + ATTR_SEP + lastname + ATTR_SEP 
+				 + description.get() + ATTR_SEP + role + ATTR_SEP + city.get() + ATTR_SEP + "end";
 		return s.toLowerCase();
 	}	
 
