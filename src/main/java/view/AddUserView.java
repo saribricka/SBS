@@ -32,14 +32,18 @@ import main.java.model.UserRole;
 
 public class AddUserView extends JFrame{
 	
+	private static final long serialVersionUID = 8275224758133813065L;
+	
 	private JPanel contentPane;
 	private JTextField textField_Id;
 	private JTextField textField_Name;
 	private JTextField textField_LastName;
 	private JTextField textField_City;
 	private JTextField textField_Description;
-	private JComboBox comboBox_Role = new JComboBox();
+	private JComboBox<String> comboBox_Role = new JComboBox<>();
 
+	UserController controller = new UserControllerImpl();
+	
 	private String name, lastname, city, description;
 	private UserRole role;
 	private int id;
@@ -62,7 +66,7 @@ public class AddUserView extends JFrame{
 		lblId.setBounds(12, 13, 79, 22);
 		contentPane.add(lblId);
 		
-		JLabel lblFirstName = new JLabel("Name:");
+		JLabel lblFirstName = new JLabel("Name: *");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFirstName.setBounds(12, 48, 79, 22);
 		contentPane.add(lblFirstName);
@@ -144,33 +148,38 @@ public class AddUserView extends JFrame{
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					id = Integer.parseInt(textField_Id.getText());
+					String strId = textField_Id.getText();
 					name = textField_Name.getText();	
-					lastname = textField_LastName.getText();	
-					city = textField_City.getText();
-					role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
-					description = textField_Description.getText();
 					
-					UserController controller = new UserControllerImpl();	
-					User user = new UserImpl.UserBuilder(id)
-							.name(name)
-							.lastname(lastname)
-			                .city(city)
-			                .role(role)
-			                .description(description)
-			                .build();
-					
-					if (controller.addUser(user)) {
-						JOptionPane.showMessageDialog(null, "The User was added to the database");
-					} else {			
-						JOptionPane.showMessageDialog(null, "The ID is already in the database");
-					}
-					textField_Id.setText("0");
-					textField_Name.setText("");
-					textField_LastName.setText("");
-					textField_City.setText("");
-					comboBox_Role.setSelectedIndex(0);
-					textField_Description.setText("");
+					if (!strId.isBlank() && !name.isBlank()) {
+						id = Integer.parseInt(strId);
+						lastname = textField_LastName.getText();	
+						city = textField_City.getText();
+						role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+						description = textField_Description.getText();
+													
+						User user = new UserImpl.UserBuilder(id)
+								.name(name)
+								.lastname(lastname)
+				                .city(city)
+				                .role(role)
+				                .description(description)
+				                .build();
+						
+						if (controller.addUser(user)) {
+							JOptionPane.showMessageDialog(null, "The User was added to the database");
+						} else {			
+							JOptionPane.showMessageDialog(null, "The ID is already in the database");
+						}
+						textField_Id.setText("0");
+						textField_Name.setText("");
+						textField_LastName.setText("");
+						textField_City.setText("");
+						comboBox_Role.setSelectedIndex(0);
+						textField_Description.setText("");
+					} else {
+						JOptionPane.showMessageDialog(null, "User Id and Name must be filled to complete the operation.");
+					}					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}			

@@ -8,12 +8,10 @@ import java.awt.event.ActionListener;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,29 +22,27 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.InternationalFormatter;
 import javax.swing.text.NumberFormatter;
 
-import org.jdatepicker.*;
 
 import main.java.controller.ItemController;
 import main.java.controller.ItemControllerImpl;
 import main.java.model.Item;
 import main.java.model.ItemCategory;
 import main.java.model.ItemImpl;
-import main.java.model.file.FileItemImpl;
-import main.java.model.file.FileStrategy;
 
 public class AddItemView extends JFrame{
 
+	private static final long serialVersionUID = -4391439102930446102L;
+
+	ItemController controller = new ItemControllerImpl();
+	
 	private JPanel contentPane;
 	private JTextField textField_ID;
-	private JTextField textField_ProductName;
+	private JTextField textField_Name;
 	private JTextField textField_Quantity;
 	private JTextField textField_Price;
-	private JDatePicker textField_ReceivedDate;
-	private JTextField textField_ExpiredDate;
 	private String barcode, name;
 	private int quantity;
 	private double price;
-	private Date received, expiration;
 	private ItemCategory category;
 
 	/**
@@ -76,30 +72,20 @@ public class AddItemView extends JFrame{
 		lblCategory.setBounds(12, 54, 100, 16);
 		contentPane.add(lblCategory);
 		
-		JLabel lblFirstName = new JLabel("Name:");
+		JLabel lblFirstName = new JLabel("Name: *");
 		lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblFirstName.setBounds(12, 83, 100, 22);
 		contentPane.add(lblFirstName);
 		
-		JLabel lblQuantity = new JLabel("Quantity:");
+		JLabel lblQuantity = new JLabel("Quantity: *");
 		lblQuantity.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblQuantity.setBounds(12, 118, 100, 16);
 		contentPane.add(lblQuantity);
 		
-		JLabel lblPrice = new JLabel("Unit Price:");
+		JLabel lblPrice = new JLabel("Unit Price: *");
 		lblPrice.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblPrice.setBounds(12, 153, 100, 16);
-		contentPane.add(lblPrice);
-		
-//		JLabel lblReceivedDate = new JLabel("Received Date:");
-//		lblReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		lblReceivedDate.setBounds(12, 192, 120, 16);
-//		contentPane.add(lblReceivedDate);
-//		
-//		JLabel lblExpiredDate = new JLabel("Expiration Date:");
-//		lblExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		lblExpiredDate.setBounds(12, 227, 120, 16);
-//		contentPane.add(lblExpiredDate);								
+		contentPane.add(lblPrice);						
 		
 		textField_ID = new JTextField();
 		textField_ID.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -107,17 +93,17 @@ public class AddItemView extends JFrame{
 		textField_ID.setBounds(134, 13, 116, 22);
 		contentPane.add(textField_ID);
 		
-		JComboBox comboBox_category = new JComboBox();
+		JComboBox<String> comboBox_category = new JComboBox<>();
 		comboBox_category.setFont(new Font("Tahoma", Font.BOLD, 14));
 		comboBox_category.setModel(new DefaultComboBoxModel(ItemCategory.values()));
 		comboBox_category.setBounds(134, 48, 116, 25);
 		contentPane.add(comboBox_category);		
 		
-		textField_ProductName = new JTextField();
-		textField_ProductName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField_ProductName.setColumns(10);
-		textField_ProductName.setBounds(134, 83, 116, 22);
-		contentPane.add(textField_ProductName);
+		textField_Name = new JTextField();
+		textField_Name.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(134, 83, 116, 22);
+		contentPane.add(textField_Name);
 		
 		NumberFormatter intFormatter = new NumberFormatter(NumberFormat.getInstance());
 		intFormatter.setValueClass(Integer.class);
@@ -143,48 +129,39 @@ public class AddItemView extends JFrame{
 		textField_Price.setColumns(10);
 		textField_Price.setBounds(134, 153, 116, 22);
 		contentPane.add(textField_Price);
-					
-//		textField_ReceivedDate = new JDatePicker();
-//		textField_ReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		textField_ReceivedDate.setColumns(10);
-//		textField_ReceivedDate.setBounds(134, 192, 116, 22);
-//		contentPane.add((JComponent) textField_ReceivedDate);
-		
-//		textField_ExpiredDate = new JTextField();
-//		textField_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		textField_ExpiredDate.setColumns(10);
-//		textField_ExpiredDate.setBounds(134, 227, 116, 22);
-//		contentPane.add(textField_ExpiredDate);
 				
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-				try
-				{
+				try {
 					barcode = textField_ID.getText();
 					category = ItemCategory.valueOf(String.valueOf(comboBox_category.getSelectedItem()).toUpperCase());
-					name = textField_ProductName.getText();		
+					name = textField_Name.getText();		
 					String strQ = textField_Quantity.getText();
-					quantity = (!strQ.isEmpty()) ? Integer.parseInt(strQ) : 0;
 					String strP = textField_Price.getText();
-					price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
 					
-					ItemController controller = new ItemControllerImpl();
-					Item i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
-					
-					if (controller.addItem(i)) {
-						textField_ID.setText("");
-						comboBox_category.setSelectedIndex(0);
-						textField_ProductName.setText("");
-						textField_Quantity.setText("0");
-						textField_Price.setText("0.00");
-						JOptionPane.showMessageDialog(null, "The Product was added to the database");
+					if (!barcode.isBlank() && !name.isBlank() && !strQ.isBlank() && !strP.isBlank()) {
+						quantity = Integer.parseInt(strQ);
+						price = Double.parseDouble(strP);
+						
+						Item i = new ItemImpl(barcode, name, quantity, price, null, null, category);					
+						
+						if (controller.addItem(i)) {
+							textField_ID.setText("");
+							comboBox_category.setSelectedIndex(0);
+							textField_Name.setText("");
+							textField_Quantity.setText("0");
+							textField_Price.setText("0.00");
+							JOptionPane.showMessageDialog(null, "The Product was added to the database");
+						} else {
+							textField_ID.setText("");					
+							JOptionPane.showMessageDialog(null, "The ID is already in the database");
+						}
 					} else {
-						textField_ID.setText("");					
-						JOptionPane.showMessageDialog(null, "The ID is already in the database");
-					}					
-				}
-				catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "The fields with * must be filled to complete the operation.");
+					}
+										
+				} catch (Exception e) {
 					e.printStackTrace();
 				}				
 			}});
@@ -204,13 +181,13 @@ public class AddItemView extends JFrame{
 		btnBack.setBounds(395, 375, 97, 25);
 		contentPane.add(btnBack);
 		
-		JLabel lblPicture = new JLabel("");
-		lblPicture.setBackground(Color.WHITE);
+//		JLabel lblPicture = new JLabel("");
+//		lblPicture.setBackground(Color.WHITE);
 //		File AddItemView = new File("AddItemView.jpg");
 //		String ProductAddPath = AddItemView.getPath();
 //		lblPicture.setIcon(new ImageIcon(ProductAddPath));
-		lblPicture.setBounds(267, 13, 525, 462);
-		contentPane.add(lblPicture);
+//		lblPicture.setBounds(267, 13, 525, 462);
+//		contentPane.add(lblPicture);
 	}
 	
 	public void display() {

@@ -2,3 +2,4 @@
 1;tofu;55;2.8;null;null;bio
 3;veg mayo;100;2.2;null;null;sauce
 4;pens;5;1.5;null;null;diary
+llll;arancia rossa;70;0.8;null;null;fruits
