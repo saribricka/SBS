@@ -1,32 +1,45 @@
 package main.java.controller;
 
-import java.io.File;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
+import main.java.model.User;
 import main.java.model.file.FileShopImpl;
 import main.java.model.file.FileStrategy;
 
 public class ShopControllerImpl implements ShopController {
 
-	private static final char ATTR_SEP = File.pathSeparatorChar;
 	private FileStrategy fileShop = new FileShopImpl();
+	private UserController userController = new UserControllerImpl();
 
 	@Override
 	public boolean addPayment(int userId, Double tot) {
-		String time = Instant.now().toString();
-		String paymentLine = "start" + ATTR_SEP + userId + ATTR_SEP + tot + ATTR_SEP + time + ATTR_SEP + "end" + "\n";
+		DateTimeFormatter formatter = DateTimeFormatter
+				.ofPattern("yyyy-MM-dd HH:mm:ss")
+				.withZone(ZoneId.from(ZoneOffset.UTC));
+		String time = formatter.format(Instant.now());
+		User u = userController.searchUser(userId);
+		String paymentLine = time + "\t" + userId + "\t" + u.getName() + " " + u.getLastname() + "\t" + tot + "\n";
 		return fileShop.writeInFile(paymentLine);
 	}
-	
+
 	@Override
-	public Set<String> searchByUser(String target){
-		return null;
+	public Set<String> showPayments() {
+		Set<String> payments = fileShop.fileReader();
+		return payments;
 	}
 	
-	
-	@Override
-	public Set<String> searchByDate(String target){
-		return null;
-	}
+//	@Override
+//	public Set<String> searchByUser(String target){
+//		return null;
+//	}
+//	
+//	
+//	@Override
+//	public Set<String> searchByDate(String target){
+//		return null;
+//	}
 }

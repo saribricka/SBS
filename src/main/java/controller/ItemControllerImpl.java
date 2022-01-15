@@ -112,4 +112,28 @@ public class ItemControllerImpl implements ItemController{
 		return qtys;
 	}
 
+	@Override
+	public int recalculateQuantity(String barcode, int nSold) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Set<String> showUnsold() {
+		Set<String> ides = getAllId();
+		Set<String> rows = new HashSet<>();
+		for(String id : ides) {
+			Item i = searchItem(id);
+			
+			String barcode = i.getBarcode();
+			String name = i.getName();
+			ItemCategory cat = i.getCategory();
+			int qty = i.getQuantity();
+			Double price = i.getUnitPrice();
+			
+			String row = barcode + "\t" + name + "\t" + cat + "\t" + qty + "\t" + price + "\n";
+			rows.add(row);
+		}
+		return rows;
+	}
 }

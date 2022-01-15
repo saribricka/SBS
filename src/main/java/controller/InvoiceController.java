@@ -6,8 +6,6 @@ public interface InvoiceController {
 	
 	Double calculateTotal();
 	
-	boolean recalculateQuantity();
-	
 	boolean addToCart(String cartLine);
 	
 	boolean newInvoice();

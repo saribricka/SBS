@@ -1,11 +1,8 @@
 package main.java.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +10,6 @@ import java.util.Scanner;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import java.awt.event.*;
 
@@ -26,10 +22,6 @@ public class LoginView extends JFrame {
 	private JPasswordField JPassword;
 	
 	public LoginView() {
-//		File logoImage = new File("project_logo.png");
-//		String imagePath = logoImage.getPath();
-//		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
-//		setFont(new Font("Serif", Font.BOLD, 14));		
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 600, 400);

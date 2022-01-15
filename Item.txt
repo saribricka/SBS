@@ -2,6 +2,5 @@
 
 
 
-1;marmellata;20;3.1;null;null;fruits
-4;corte dei mori rosso;50;8.6;null;null;beverage
-2;crunchy;100;3.2;null;null;snacks
+
+4;vino rosso;50;8.6;null;null;beverage

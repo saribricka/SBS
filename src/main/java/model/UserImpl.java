@@ -2,7 +2,6 @@ package main.java.model;
 
 import java.io.File;
 import java.util.Optional;
-import java.util.UUID;
 
 
 public class UserImpl implements User{

@@ -8,18 +8,15 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.text.NumberFormatter;
 
 import main.java.controller.UserController;
@@ -46,9 +43,6 @@ public class AddCustomerView extends JFrame{
 	private int id;
 	
 	public AddCustomerView() {
-//		File logoImage = new File("AddUserView.png");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
 		setTitle("Add Customer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 550, 450);
@@ -187,13 +181,6 @@ public class AddCustomerView extends JFrame{
 		});
 		btnAdd.setBounds(395, 48, 97, 25);
 		contentPane.add(btnAdd);
-		
-		JLabel lblPicture = new JLabel("");
-//		File UsersAdd = new File("AddUserView.png");
-//		String UserAddPath = UsersAdd.getPath();
-//		lblPicture.setIcon(new ImageIcon(UserAddPath));
-		lblPicture.setBounds(299, -3, 551, 465);
-		contentPane.add(lblPicture);
 
 	}
 	

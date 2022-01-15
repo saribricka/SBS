@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
-import java.util.Optional;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,12 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
-import main.java.controller.ItemController;
-import main.java.controller.ItemControllerImpl;
 import main.java.controller.UserController;
 import main.java.controller.UserControllerImpl;
-import main.java.model.ItemCategory;
-import main.java.model.ItemImpl;
 import main.java.model.User;
 import main.java.model.UserImpl;
 import main.java.model.UserRole;
@@ -49,9 +44,6 @@ public class AddUserView extends JFrame{
 	private int id;
 	
 	public AddUserView() {
-//		File logoImage = new File("AddUserView.png");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
 		setTitle("Add User");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 550, 450);
@@ -187,14 +179,6 @@ public class AddUserView extends JFrame{
 		});
 		btnAdd.setBounds(395, 48, 97, 25);
 		contentPane.add(btnAdd);
-		
-		JLabel lblPicture = new JLabel("");
-//		File UsersAdd = new File("AddUserView.png");
-//		String UserAddPath = UsersAdd.getPath();
-//		lblPicture.setIcon(new ImageIcon(UserAddPath));
-		lblPicture.setBounds(299, -3, 551, 465);
-		contentPane.add(lblPicture);
-
 	}
 	
 	public void display() {

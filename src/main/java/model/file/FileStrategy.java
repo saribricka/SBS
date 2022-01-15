@@ -1,6 +1,5 @@
 package main.java.model.file;
 
-import java.io.File;
 import java.util.Set;
 
 public interface FileStrategy {

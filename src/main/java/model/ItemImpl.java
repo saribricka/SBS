@@ -4,11 +4,6 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.UUID;
-
-import main.java.model.UserImpl.UserBuilder;
 
 public class ItemImpl implements Item{
 	
@@ -66,16 +61,6 @@ public class ItemImpl implements Item{
 	@Override
 	public double getUnitPrice() {
 		return this.unitPrice;
-	}
-	
-	@Override
-	public Date getReceivedDate() {
-		return receivedDate;
-	}
-
-	@Override
-	public Date getExpirationDate() {
-		return expirationDate;
 	}
 	
 	@Override

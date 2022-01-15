@@ -1,6 +1,5 @@
 package main.java.controller;
 
-import java.util.List;
 import java.util.Set;
 
 import main.java.model.User;

@@ -5,24 +5,32 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-public class StockReportView extends JFrame{
+import main.java.controller.ItemController;
+import main.java.controller.ItemControllerImpl;
+
+public class ItemReportView extends JFrame{
 
 	private static final long serialVersionUID = -5942256959100595530L;
 	private JPanel contentPane;
+	
+	private ItemController itemController = new ItemControllerImpl();
 
 	/**
 	 * Create the frame.
 	 */
-	public StockReportView() {
+	public ItemReportView() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(620, 280, 850, 650);
 		contentPane = new JPanel();
@@ -30,6 +38,7 @@ public class StockReportView extends JFrame{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Item Report");
 		
 		JButton btnCloseReport = new JButton("Close Report");
 		btnCloseReport.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -41,46 +50,34 @@ public class StockReportView extends JFrame{
 		btnCloseReport.setBounds(675, 554, 125, 25);
 		contentPane.add(btnCloseReport);
 		
-		JLabel label_top = new JLabel("HIT Mart Managment Systems");			
+		JLabel label_top = new JLabel("Item Managment Systems Report");			
 		label_top.setFont(new Font("Tahoma", Font.BOLD, 18));					
-		label_top.setBounds(51, 9, 285, 31);									
+		label_top.setBounds(50, 10, 320, 30);									
 		contentPane.add(label_top);												
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(34, 53, 766, 488);
 		contentPane.add(scrollPane);
 																				 
-		JTextArea text_StockReport = new JTextArea();									
-		scrollPane.setViewportView(text_StockReport);
-		text_StockReport.setEditable(false);
-		text_StockReport.setFont(new Font("Tahoma", Font.BOLD, 14));					
-		text_StockReport.setText("text area");
-	
-		
-//		text_StockReport.setText(.getStockReport());
-		
-		JButton btnSaveReport = new JButton("Save Report");
-		btnSaveReport.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnSaveReport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnSaveReport.setBounds(429, 554, 125, 25);
-		contentPane.add(btnSaveReport);
+		JTextArea Item_Area = new JTextArea();									
+		scrollPane.setViewportView(Item_Area);
+		Item_Area.setEditable(false);
+		Item_Area.setFont(new Font("Tahoma", Font.BOLD, 14));
+		String row = "Id" + "\t" + "Product" + "\t" + "Category" + "\t" + "Quantity" + "\t" + "UnitPrice" + "\n\n";
+		Item_Area.setText(row);
+		Set<String> unsold = itemController.showUnsold();
+		for (String u : unsold) {
+			Item_Area.append(u);
+		}
 		
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try
-			{
-					text_StockReport.print();	
-			}
-			
-			catch (java.awt.print.PrinterException e3)
-			{
-				System.err.format("No Printer Found", e3.getMessage());
-			}
+				try {
+					Item_Area.print();	
+				} catch (PrinterException e3) {
+					JOptionPane.showMessageDialog(null, "No Printer Found");
+				}
 			}
 		});
 		btnPrint.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -105,5 +102,5 @@ public class StockReportView extends JFrame{
         setResizable(true);       
         setLocationRelativeTo(null); 
         setMinimumSize(new Dimension(500,500));
-    }
+    }	
 }

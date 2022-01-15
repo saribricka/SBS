@@ -51,7 +51,7 @@ public class FileUserImpl implements FileStrategy{
 
 	@Override
 	public boolean writeInFile(String objectToString) {
-		createFile(); //it also checks if the file exists
+		createFile(); 
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE, true))) {
 			writer.newLine();
 			writer.write(objectToString);
@@ -87,8 +87,6 @@ public class FileUserImpl implements FileStrategy{
 	public boolean deleteLine(String target) {
 		try {
 			File file = createFile();
-		    File temp = new File("_temp_");
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
 		    List<String> out = Files.lines(file.toPath())
 		        .filter(line -> !line.contains(target.toLowerCase()))
 		        .collect(Collectors.toList());

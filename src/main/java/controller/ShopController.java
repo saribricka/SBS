@@ -6,7 +6,5 @@ public interface ShopController {
 	
 	boolean addPayment(int userId, Double tot);
 	
-	Set<String> searchByUser(String target);
-	
-	Set<String> searchByDate(String target);
+	Set<String> showPayments();
 }

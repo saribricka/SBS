@@ -71,7 +71,7 @@ public class InvoiceView extends JFrame{
 		scrollPane.setBounds(15, 15, 345, 420);
 		contentPane.add(scrollPane);
 		
-		JLabel lblComment = new JLabel("Search for CustomerID, check data clicking 'Check User'");
+		JLabel lblComment = new JLabel("Search for CustomerID, check data by clicking 'Check User'");
 		lblComment.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblComment.setBounds(370, 15, 442, 16);
 		contentPane.add(lblComment);
@@ -221,19 +221,24 @@ public class InvoiceView extends JFrame{
 		btnPay.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int userId = Integer.parseInt(String.valueOf(comboBox_CustomerId.getSelectedItem()));
-				Double tot = Double.parseDouble(textField_TotalPrice.getText());
-				if(shopController.addPayment(userId, tot)) {
-					JOptionPane.showMessageDialog(null, "Operation ended successfully!");
-					invoiceController.newInvoice();
-					comboBox_CustomerId.setSelectedIndex(0);
-					comboBox_Quantity.setSelectedIndex(0);
-					comboBox_ItemId.setSelectedIndex(0);
-					textField_TotalPrice.setText("");
-					invoiceArea.setText(row);
+				String strTot = textField_TotalPrice.getText();
+				if(!strTot.isBlank()) {
+					Double tot = Double.parseDouble(strTot);
+					int userId = Integer.parseInt(String.valueOf(comboBox_CustomerId.getSelectedItem()));				
+					if(shopController.addPayment(userId, tot)) {
+						JOptionPane.showMessageDialog(null, "Operation ended successfully!");
+						invoiceController.newInvoice();
+						comboBox_CustomerId.setSelectedIndex(0);
+						comboBox_Quantity.setSelectedIndex(0);
+						comboBox_ItemId.setSelectedIndex(0);
+						textField_TotalPrice.setText("");
+						invoiceArea.setText(row);
+					} else {
+						JOptionPane.showMessageDialog(null, "Something went wrong! Try again");
+					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Something went wrong! Try again");
-				}
+					JOptionPane.showMessageDialog(null, "Start by adding some items to the cart!");
+				}				
 			}
 		});
 		btnPay.setBounds(820, 270, 90, 25);

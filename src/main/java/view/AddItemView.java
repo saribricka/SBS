@@ -49,9 +49,6 @@ public class AddItemView extends JFrame{
 	 * Create the frame.
 	 */
 	public AddItemView() {
-//		File logoImage = new File("AddItemView.jpg");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
 		setTitle("Add Product");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 550, 450);
@@ -180,14 +177,6 @@ public class AddItemView extends JFrame{
 		});
 		btnBack.setBounds(395, 375, 97, 25);
 		contentPane.add(btnBack);
-		
-//		JLabel lblPicture = new JLabel("");
-//		lblPicture.setBackground(Color.WHITE);
-//		File AddItemView = new File("AddItemView.jpg");
-//		String ProductAddPath = AddItemView.getPath();
-//		lblPicture.setIcon(new ImageIcon(ProductAddPath));
-//		lblPicture.setBounds(267, 13, 525, 462);
-//		contentPane.add(lblPicture);
 	}
 	
 	public void display() {

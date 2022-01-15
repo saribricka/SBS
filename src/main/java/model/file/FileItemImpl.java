@@ -10,19 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-
-import main.java.controller.ItemControllerImpl;
-import main.java.model.ItemCategory;
-import main.java.model.ItemImpl;
 
 public class FileItemImpl implements FileStrategy{
 
@@ -96,8 +89,6 @@ public class FileItemImpl implements FileStrategy{
 	public boolean deleteLine(String target) {
 		try {
 			File file = createFile();
-		    File temp = new File("_temp_");
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
 		    List<String> out = Files.lines(file.toPath())
 		        .filter(line -> !line.contains(target.toLowerCase()))
 		        .collect(Collectors.toList());

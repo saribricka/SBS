@@ -1,20 +1,12 @@
 package main.java.controller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.junit.platform.commons.util.StringUtils;
 
-import main.java.model.Item;
-import main.java.model.ItemCategory;
-import main.java.model.ItemImpl;
 import main.java.model.User;
 import main.java.model.UserImpl;
 import main.java.model.UserRole;
-import main.java.model.file.FileItemImpl;
 import main.java.model.file.FileStrategy;
 import main.java.model.file.FileUserImpl;
 

@@ -2,14 +2,12 @@ package main.java.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -22,9 +20,6 @@ public class ItemView extends JFrame{
 	 * Create the frame.
 	 */
 	public ItemView() {
-//		File logoImage = new File("CONSUMER-PRODUCTS.jpg");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
 		setTitle("Product Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 905, 566);
@@ -69,11 +64,6 @@ public class ItemView extends JFrame{
 		btnEditUser.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnEditUser.setBounds(12, 51, 137, 25);
 		contentPane.add(btnEditUser);
-		
-		JLabel lblPicture = new JLabel("");
-//		lblPicture.setIcon(new ImageIcon(ConsumerProductsPath));
-		lblPicture.setBounds(0, 0, 899, 531);
-		contentPane.add(lblPicture);
 	}
 	
 	public void display() {

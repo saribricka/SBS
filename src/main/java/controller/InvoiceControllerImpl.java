@@ -41,12 +41,6 @@ public class InvoiceControllerImpl implements InvoiceController{
 	}
 
 	@Override
-	public boolean recalculateQuantity() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean addToCart(String cartLine) {
 		return fileInvoice.writeInFile(cartLine);
 	}
@@ -55,7 +49,6 @@ public class InvoiceControllerImpl implements InvoiceController{
 	public boolean newInvoice() {
 		return fileInvoice.emptyFile();
 	}
-
 	
 
 }

@@ -3,7 +3,6 @@ package main.java.controller;
 import java.util.Set;
 
 import main.java.model.Item;
-import main.java.model.ItemImpl;
 
 public interface ItemController {
 	
@@ -47,4 +46,18 @@ public interface ItemController {
 	 * @return an array of all the values till quantity
 	 */
 	Set<Integer> fromOneToQuantity(Item item);
+	
+	/**
+	 * For the sold item, calculate unsold stocks.
+	 * @param barcode
+	 * @param nSold
+	 * @return the new quantity.
+	 */
+	int recalculateQuantity(String barcode, int nSold);
+	
+	/**
+	 * Show all the stock.
+	 * @return all items in stock.
+	 */
+	Set<String> showUnsold();
 }

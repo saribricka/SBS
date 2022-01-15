@@ -1,7 +1,5 @@
 package main.java.model;
 
-import java.util.Date;
-
 public interface Item {
 
 	/**
@@ -27,19 +25,7 @@ public interface Item {
 	 * @return a double with price per unit.
 	 */
 	public double getUnitPrice();
-	
-	/**
-	 * Get received date of selected item.
-	 * @return Date
-	 */
-	Date getReceivedDate();
-	
-	/**
-	 * Get expiration date of selected item.
-	 * @return Date
-	 */
-	Date getExpirationDate();
-	
+		
 	/**
 	 * Get category of selected item.
 	 * @return category from enum ItemCategory.

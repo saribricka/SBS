@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,12 +15,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-public class SalaryView extends JFrame{
+import main.java.controller.ShopController;
+import main.java.controller.ShopControllerImpl;
+
+public class PurchaseReportView extends JFrame{
 
 	private static final long serialVersionUID = -48307813456949410L;
 	private JPanel contentPane;
+	private ShopController shopController = new ShopControllerImpl();
 	
-	public SalaryView() {
+	public PurchaseReportView() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(620, 280, 850, 650);
 		setTitle("Salaries Report");
@@ -28,6 +33,7 @@ public class SalaryView extends JFrame{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle("Purchase Report");
 		
 		JButton btnCloseReport = new JButton("Close Report");
 		btnCloseReport.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -39,39 +45,32 @@ public class SalaryView extends JFrame{
 		btnCloseReport.setBounds(675, 554, 125, 25);
 		contentPane.add(btnCloseReport);
 		
-		JLabel label_top = new JLabel("HIT Mart Managment Systems");			
+		JLabel label_top = new JLabel("Purchase Management Systems Report");			
 		label_top.setFont(new Font("Tahoma", Font.BOLD, 18));					
-		label_top.setBounds(51, 9, 285, 31);									
+		label_top.setBounds(50, 10, 450, 30);									
 		contentPane.add(label_top);												
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(34, 53, 766, 488);
 		contentPane.add(scrollPane);
 																				 
-		JTextArea text_Salaries = new JTextArea();									
-		scrollPane.setViewportView(text_Salaries);
-		text_Salaries.setEditable(false);
-		text_Salaries.setFont(new Font("Tahoma", Font.BOLD, 14));					
-		text_Salaries.setText("text area");
-	
-		
-//		text_Salaries.setText(.getSalariesReport());
-		
-		JButton btnSaveReport = new JButton("Save Report");
-		btnSaveReport.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnSaveReport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSaveReport.setBounds(429, 554, 125, 25);
-		contentPane.add(btnSaveReport);
+		JTextArea Purchase_Area = new JTextArea();									
+		scrollPane.setViewportView(Purchase_Area);
+		Purchase_Area.setEditable(false);
+		Purchase_Area.setFont(new Font("Tahoma", Font.BOLD, 14));	
+		String row = "Date" + "\t\t" + "User Id" + "\t" + "User Fullname" + "\t\t" + "TotPayed" + "\n\n";
+		Purchase_Area.setText(row);
+		Set<String> purchase = shopController.showPayments();
+		for (String u : purchase) {
+			Purchase_Area.append(u + "\n");
+		}		
 		
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					try
 				{
-						text_Salaries.print();	
+						Purchase_Area.print();	
 				}
 				
 				catch (java.awt.print.PrinterException e2)
