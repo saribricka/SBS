@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 public class ManagementView extends JFrame{
 
+	private static final long serialVersionUID = -9170551248090369195L;
 	private JPanel contentPane;
 
 	public ManagementView() {

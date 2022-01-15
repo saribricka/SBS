@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 public class ItemView extends JFrame{
 
+	private static final long serialVersionUID = -8594745175203264477L;
 	private JPanel contentPane;
 
 	/**

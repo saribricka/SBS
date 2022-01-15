@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 public class HomeView extends JFrame{
 
+	private static final long serialVersionUID = 6847662332522983305L;
 	private static final double PERCENT = 0.6;
 	private JPanel contentPane;
 	boolean visible=false;

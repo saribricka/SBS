@@ -17,8 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 public class CashierView extends JFrame{
 
+	private static final long serialVersionUID = -392773556724218338L;
 	private JPanel contentPane;
-	private JFrame SalesScreen;
 
 	/**
 	 * Create the frame.

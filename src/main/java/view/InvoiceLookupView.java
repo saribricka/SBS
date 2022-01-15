@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 public class InvoiceLookupView extends JFrame{
 
+	private static final long serialVersionUID = 572971527862399989L;
 	JPanel contentPane;
 	private JTextField textFieldCustomerId;
 	private JTextField textField_InvoiveNumber;

@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 public class UserView extends JFrame{
 
+	private static final long serialVersionUID = 4193666446055665724L;
 	private JPanel contentPane;
 
 	

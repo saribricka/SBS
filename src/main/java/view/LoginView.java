@@ -19,6 +19,7 @@ import java.awt.event.*;
 
 public class LoginView extends JFrame {
 
+	private static final long serialVersionUID = -72099129895597800L;
 	private JPanel contentPane;
 	private JTextField JTextField_Username;
 	int attempts = 3;

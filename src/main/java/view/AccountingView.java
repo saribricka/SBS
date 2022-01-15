@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 public class AccountingView extends JFrame{
 
+	private static final long serialVersionUID = 8308931027188591302L;
 	private JPanel contentPane;
 
 	/**

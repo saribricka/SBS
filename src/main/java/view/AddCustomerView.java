@@ -30,6 +30,7 @@ import main.java.model.UserRole;
 
 public class AddCustomerView extends JFrame{
 
+	private static final long serialVersionUID = 2826400392768057297L;
 	private JPanel contentPane;
 	private JTextField textField_Id;
 	private JTextField textField_Name;

@@ -2,7 +2,6 @@ package main.java.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 public class StockView extends JFrame{
 
+	private static final long serialVersionUID = 6529781551683213435L;
 	private JPanel contentPane;
 	
 	public StockView() {
