@@ -69,7 +69,10 @@ public class FileUserImpl implements FileStrategy{
 		try {        	       
 			Set<String> lines = fileReader();
 	        for(String line : lines) {
-	        	if(line.contains(target.toLowerCase())) {
+	        	String[] data = line.split(";");
+	    		int id = Integer.parseInt(data[0]);
+	    		int targetId = Integer.parseInt(target);
+	        	if(id == targetId) {
 	        		return line;
 	        	}
 	        }

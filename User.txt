@@ -1,7 +1,8 @@
 
 1;penny;briccoli;;manager;faenza
-0;duke;cornacchia;;customer;roma
-
-
 2;phebe;buffay;;customer;newyork;end
-8;matteo;;;manager;;end
+
+11;simonetta;cornacchia;la donna delle ceramiche;manager;faenza;end
+3;matteo;cicognani;l'amor stronzo della mia vita;manager;san louis obispo;end
+
+0;el duko;pistolero;we mejo der coroseo;customer;roma;end

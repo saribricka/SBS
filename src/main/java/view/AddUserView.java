@@ -168,15 +168,15 @@ public class AddUserView extends JFrame{
 						
 						if (controller.addUser(user)) {
 							JOptionPane.showMessageDialog(null, "The User was added to the database");
+							textField_Id.setText("0");
+							textField_Name.setText("");
+							textField_LastName.setText("");
+							textField_City.setText("");
+							comboBox_Role.setSelectedIndex(0);
+							textField_Description.setText("");
 						} else {			
 							JOptionPane.showMessageDialog(null, "The ID is already in the database");
 						}
-						textField_Id.setText("0");
-						textField_Name.setText("");
-						textField_LastName.setText("");
-						textField_City.setText("");
-						comboBox_Role.setSelectedIndex(0);
-						textField_Description.setText("");
 					} else {
 						JOptionPane.showMessageDialog(null, "User Id and Name must be filled to complete the operation.");
 					}					

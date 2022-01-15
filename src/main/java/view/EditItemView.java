@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -28,12 +27,10 @@ import main.java.controller.ItemControllerImpl;
 import main.java.model.Item;
 import main.java.model.ItemCategory;
 import main.java.model.ItemImpl;
-import main.java.model.file.FileItemImpl;
-import main.java.model.file.FileStrategy;
 
 public class EditItemView extends JFrame{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8607459578719762355L;
 	private JTextField textField_Name;
 	private JTextField textField_Quantity;
 	private JTextField textField_Price;
@@ -43,7 +40,10 @@ public class EditItemView extends JFrame{
 	private ItemCategory category;
 	
 	ItemController controller = new ItemControllerImpl();
+	Object[] idArray;
 	
+	JComboBox<Integer> comboBox_ItemId;
+	JComboBox<ItemCategory> comboBox_Category;
 	/**
 	 * Create the frame.
 	 */
@@ -86,22 +86,13 @@ public class EditItemView extends JFrame{
 		lblSellPrice.setBounds(18, 189, 100, 23);
 		contentPane.add(lblSellPrice);
 		
-//		JLabel lblReceivedDate = new JLabel("Received Date:");
-//		lblReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		lblReceivedDate.setBounds(18, 223, 150, 22);
-//		contentPane.add(lblReceivedDate);
-//		
-//		JLabel label_ExpiredDate = new JLabel("Expiration Date:");
-//		label_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		label_ExpiredDate.setBounds(18, 257, 150, 22);
-//		contentPane.add(label_ExpiredDate);
-		
-		JComboBox<Integer> comboBox_ItemId = new JComboBox<>();
-		comboBox_ItemId.setModel(new DefaultComboBoxModel(controller.getAllId().toArray()));
+		comboBox_ItemId = new JComboBox<>();
+		idArray = controller.getAllId().toArray();
+		comboBox_ItemId.setModel(new DefaultComboBoxModel(idArray));
 		comboBox_ItemId.setBounds(152, 48, 116, 22);
 		contentPane.add(comboBox_ItemId);
 		
-		JComboBox comboBox_Category = new JComboBox();
+		comboBox_Category = new JComboBox<>();
 		comboBox_Category.setModel(new DefaultComboBoxModel(ItemCategory.values()));
 		comboBox_Category.setFont(new Font("Tahoma", Font.BOLD, 14));
 		comboBox_Category.setBounds(152, 83, 116, 25);
@@ -138,19 +129,6 @@ public class EditItemView extends JFrame{
 		textField_Price.setBounds(152, 189, 116, 25);		
 		contentPane.add(textField_Price);
 		
-//		textField_ReceivedDate = new JTextField();
-//		textField_ReceivedDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		textField_ReceivedDate.setColumns(10);
-//		textField_ReceivedDate.setBounds(152, 223, 116, 22);		
-//		contentPane.add(textField_ReceivedDate);
-//		
-//		textField_ExpiredDate = new JTextField();
-//		textField_ExpiredDate.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		textField_ExpiredDate.setColumns(10);
-//		textField_ExpiredDate.setBounds(152, 257, 116, 22);		
-//		contentPane.add(textField_ExpiredDate);
-
-		
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -182,22 +160,28 @@ public class EditItemView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					barcode = String.valueOf(comboBox_ItemId.getSelectedItem());
-					category = ItemCategory.valueOf(String.valueOf(comboBox_Category.getSelectedItem()).toUpperCase());
-					name = textField_Name.getText();					
-					String strQ = textField_Quantity.getText();
-					quantity = (!strQ.isEmpty()) ? Integer.parseInt(strQ) : 0;
-					String strP = textField_Price.getText();
-					price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
-					
-					ItemImpl itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
-					controller.updateItem(itemToAdd);
-															
-					comboBox_ItemId.setSelectedIndex(0);
-					comboBox_Category.setSelectedIndex(0);
-					textField_Name.setText("");
-					textField_Quantity.setText("0");
-					textField_Price.setText("0.00");
-					JOptionPane.showMessageDialog(null, "The Product was updated");
+										
+					if(controller.searchItem(barcode) == null) {
+						comboBox_ItemId.setSelectedIndex(0);
+						JOptionPane.showMessageDialog(null, "The Product was not found");
+					} else { 
+						category = ItemCategory.valueOf(String.valueOf(comboBox_Category.getSelectedItem()).toUpperCase());
+						name = textField_Name.getText();					
+						String strQ = textField_Quantity.getText();
+						quantity = (!strQ.isEmpty()) ? Integer.parseInt(strQ) : 0;
+						String strP = textField_Price.getText();
+						price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
+						
+						ItemImpl itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
+						controller.updateItem(itemToAdd);
+																
+						comboBox_ItemId.setSelectedIndex(0);
+						comboBox_Category.setSelectedIndex(0);
+						textField_Name.setText("");
+						textField_Quantity.setText("0");
+						textField_Price.setText("0.00");
+						JOptionPane.showMessageDialog(null, "The Product was updated");
+					}								
 				}
 				catch (Exception e1) {
 					e1.printStackTrace();
@@ -230,8 +214,7 @@ public class EditItemView extends JFrame{
 						textField_Price.setText(String.valueOf(foundItem.getUnitPrice()));
 						
 						for(int i=0; i<comboBox_Category.getItemCount(); i++) {
-							if(comboBox_Category.getItemAt(i).toString().toLowerCase()
-									.equals(foundItem.getCategory().toString().toLowerCase())) {
+							if(comboBox_Category.getItemAt(i).equals(foundItem.getCategory())) {
 								comboBox_Category.setSelectedIndex(i);
 							}
 						}						
@@ -256,8 +239,9 @@ public class EditItemView extends JFrame{
 						JOptionPane.showMessageDialog(null, "The Product was not found");
 					} else {						
 						JOptionPane.showMessageDialog(null, "The Product was deleted from the database");
+						idArray = controller.getAllId().toArray();
+						comboBox_ItemId.setModel(new DefaultComboBoxModel(idArray));
 					}	
-					comboBox_ItemId.setSelectedIndex(0);
 					comboBox_Category.setSelectedIndex(0);
 					textField_Name.setText("");
 					textField_Quantity.setText("0");

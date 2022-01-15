@@ -129,14 +129,14 @@ public class AddItemView extends JFrame{
 		textField_Price.setColumns(10);
 		textField_Price.setBounds(134, 153, 116, 22);
 		contentPane.add(textField_Price);
-				
+		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				try {
 					barcode = textField_ID.getText();
 					category = ItemCategory.valueOf(String.valueOf(comboBox_category.getSelectedItem()).toUpperCase());
-					name = textField_Name.getText();		
+					name = textField_Name.getText();
 					String strQ = textField_Quantity.getText();
 					String strP = textField_Price.getText();
 					

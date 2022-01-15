@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -28,13 +27,14 @@ import main.java.model.UserRole;
 
 public class EditCustomerView extends JFrame{
 
+	private static final long serialVersionUID = -5302446014220983539L;
 	private JPanel contentPane;
 	private JTextField textField_Id;
 	private JTextField textField_Name;
 	private JTextField textField_LastName;
 	private JTextField textField_City;
 	private JTextField textField_Description;
-	private JComboBox comboBox_Role = new JComboBox();
+	private JComboBox<UserRole> comboBox_Role = new JComboBox<>();
 	
 	UserController controller = new UserControllerImpl();
 	
@@ -154,28 +154,34 @@ public class EditCustomerView extends JFrame{
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					id = Integer.parseInt(textField_Id.getText());
-					User foundUser = controller.searchUser(id);
-					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
-						name = textField_Name.getText();	
-						lastname = textField_LastName.getText();	
-						city = textField_City.getText();
-						role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
-						description = textField_Description.getText();
-											
-						User user = new UserImpl.UserBuilder(id)
-								.name(name)
-								.lastname(lastname)
-				                .city(city)
-				                .role(role)
-				                .description(description)
-				                .build();
+					String strId = textField_Id.getText();
+					if (!strId.isBlank()) {
+						id = Integer.parseInt(strId);
 						
-						controller.updateUser(user);
+						var foundUser = controller.searchUser(id);
+						if ((foundUser != null) && (foundUser.getRole().equals(UserRole.CUSTOMER))) {						
+							name = textField_Name.getText();	
+							lastname = textField_LastName.getText();	
+							city = textField_City.getText();
+							role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+							description = textField_Description.getText();
 												
-						JOptionPane.showMessageDialog(null, "The Customer was updated");
+							User user = new UserImpl.UserBuilder(id)
+									.name(name)
+									.lastname(lastname)
+					                .city(city)
+					                .role(role)
+					                .description(description)
+					                .build();
+							
+							controller.updateUser(user);
+													
+							JOptionPane.showMessageDialog(null, "The Customer was updated");
+						} else {						
+							JOptionPane.showMessageDialog(null, "The Customer was not found");
+						}
 					} else {						
-						JOptionPane.showMessageDialog(null, "The Customer was not found");
+						JOptionPane.showMessageDialog(null, "The Customer Id must be filled");
 					}	
 					textField_Id.setText("0");
 					textField_Name.setText("");
@@ -197,8 +203,8 @@ public class EditCustomerView extends JFrame{
 				try {
 					id = Integer.parseInt(textField_Id.getText());
 					
-					User foundUser = controller.searchUser(id);
-					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
+					var foundUser = controller.searchUser(id);
+					if ((foundUser != null) && (foundUser.getRole().equals(UserRole.CUSTOMER))) {
 						boolean check = controller.deleteUser(id);						
 						if(check) {														
 							JOptionPane.showMessageDialog(null, "The Customer was successfully deleted");
@@ -230,13 +236,13 @@ public class EditCustomerView extends JFrame{
 					
 					User foundUser = controller.searchUser(id); 
 					
-					if(foundUser.getRole().equals(UserRole.CUSTOMER)) {
+					if ((foundUser != null) && (foundUser.getRole().equals(UserRole.CUSTOMER))) {
 						textField_Id.setText(String.valueOf(foundUser.getId()));
 						textField_Name.setText(foundUser.getName());
 						textField_LastName.setText(foundUser.getLastname());
 						textField_City.setText(foundUser.getCity().get());
 						textField_Description.setText(foundUser.getDescription().get());
-						comboBox_Role.setSelectedItem(UserRole.CUSTOMER);						
+						comboBox_Role.setSelectedItem(UserRole.CUSTOMER);			
 					} else {						
 						textField_Id.setText("0");
 						textField_Name.setText("");

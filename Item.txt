@@ -1,5 +1,7 @@
 
-1;tofu;55;2.8;null;null;bio
-3;veg mayo;100;2.2;null;null;sauce
-4;pens;5;1.5;null;null;diary
-llll;arancia rossa;70;0.8;null;null;fruits
+
+
+
+1;marmellata;20;3.1;null;null;fruits
+4;corte dei mori rosso;50;8.6;null;null;beverage
+2;crunchy;100;3.2;null;null;snacks

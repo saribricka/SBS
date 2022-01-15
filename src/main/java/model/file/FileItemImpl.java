@@ -61,7 +61,7 @@ public class FileItemImpl implements FileStrategy{
 
 	@Override
 	public boolean writeInFile(String objectToString) {
-		createFile(); //it also checks if the file exists
+		createFile(); 
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(ITEM_FILE, true))) {
 			writer.newLine();
 			writer.write(objectToString);
@@ -79,7 +79,9 @@ public class FileItemImpl implements FileStrategy{
         try {        	       
 			Set<String> lines = fileReader();
 	        for(String line : lines) {
-	        	if(line.contains(target.toLowerCase())) {
+	        	String[] data = line.split(";");
+	    		String barcode = data[0];
+	        	if(barcode.contains(target.toLowerCase())) {
 	        		return line;
 	        	}
 	        }

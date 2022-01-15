@@ -25,6 +25,7 @@ import main.java.model.ItemImpl;
 
 public class EditStockView extends JFrame{
 
+	private static final long serialVersionUID = 4037535832925122455L;
 	private JPanel contentPane;
 	private JTextField textField_ProductID;
 	private JTextField textField_Name;

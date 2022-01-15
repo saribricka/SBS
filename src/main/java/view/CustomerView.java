@@ -26,7 +26,7 @@ public class CustomerView extends JFrame{
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
 		setTitle("Customer Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(620, 280, 912, 511);
+		setBounds(0, 0, 400, 350);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -54,7 +54,7 @@ public class CustomerView extends JFrame{
 				screen.display();
 			}
 		});
-		btnCancel.setBounds(815, 408, 83, 25);
+		btnCancel.setBounds(300, 370, 138, 25);
 		contentPane.add(btnCancel);
 		
 		JButton btnEditUser = new JButton("Edit Customer");
@@ -68,13 +68,6 @@ public class CustomerView extends JFrame{
 		});
 		btnEditUser.setBounds(10, 51, 138, 25);
 		contentPane.add(btnEditUser);
-		
-		JLabel lblPicture = new JLabel("");
-//		File CustomerScreen = new File("CustomerScreen.jpg");
-//		String CustomerScreenPath = CustomerScreen.getPath();
-//		lblPicture.setIcon(new ImageIcon(CustomerScreenPath));
-		lblPicture.setBounds(0, 0, 906, 476);
-		contentPane.add(lblPicture);
 	}
 	
 	public void display() {

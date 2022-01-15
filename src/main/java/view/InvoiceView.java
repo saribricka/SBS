@@ -2,7 +2,6 @@ package main.java.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,16 +28,16 @@ import main.java.controller.ShopController;
 import main.java.controller.ShopControllerImpl;
 import main.java.controller.UserController;
 import main.java.controller.UserControllerImpl;
-import main.java.model.Item;
 import main.java.model.User;
 
 public class InvoiceView extends JFrame{
 
+	private static final long serialVersionUID = 3240398240332114971L;
 	private JPanel contentPane;
-	private JTextField textFieldCustomerId;
 	private JTextField textField_TotalPrice;
-	private JTextField textFieldPay;
-	private JTextField textField_Quantity;
+	JComboBox<Integer> comboBox_CustomerId;
+	JComboBox<String> comboBox_ItemId;
+	JComboBox<Integer> comboBox_Quantity;
 
 	UserController userController = new UserControllerImpl();
 	ItemController itemController = new ItemControllerImpl();
@@ -50,11 +48,8 @@ public class InvoiceView extends JFrame{
 	/**
 	 * Create the frame.
 	 */	
-	//private JTextField textField;
 	public InvoiceView() {
-//		File logoImage = new File("InvoiceScreen.jpg");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));		
+		
 		setTitle("Invoice Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 1300, 520);
@@ -86,7 +81,7 @@ public class InvoiceView extends JFrame{
 		lblCustomer.setBounds(385, 46, 100, 20);
 		contentPane.add(lblCustomer);
 		
-		JComboBox<Integer> comboBox_CustomerId = new JComboBox<>();
+		comboBox_CustomerId = new JComboBox<>();
 		comboBox_CustomerId.setModel(new DefaultComboBoxModel(userController.getAllId().toArray()));
 		comboBox_CustomerId.setBounds(505, 46, 100, 20);
 		contentPane.add(comboBox_CustomerId);
@@ -120,8 +115,8 @@ public class InvoiceView extends JFrame{
 		lblComment2.setBounds(370, 84, 442, 16);
 		contentPane.add(lblComment2);
 		
-		JComboBox<String> comboBox_ItemId = new JComboBox<>();
-		JComboBox<Integer> comboBox_Quantity = new JComboBox<>();
+		comboBox_ItemId = new JComboBox<>();
+		comboBox_Quantity = new JComboBox<>();
 		comboBox_ItemId.setBounds(370, 122, 120, 23);
 		comboBox_ItemId.setModel(new DefaultComboBoxModel(itemController.getAllId().toArray()));
 		quantityModel = itemController.fromOneToQuantity(itemController.searchItem(comboBox_ItemId.getSelectedItem().toString()));
@@ -148,7 +143,6 @@ public class InvoiceView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					String custId = comboBox_CustomerId.getSelectedItem().toString();
 					String itemId = comboBox_ItemId.getSelectedItem().toString();
 					String itemQty = comboBox_Quantity.getSelectedItem().toString();
 					
@@ -256,16 +250,7 @@ public class InvoiceView extends JFrame{
 			}
 		});
 		btnBack.setBounds(820, 400, 90, 25);
-		contentPane.add(btnBack);
-						
-//		JLabel lblPicture = new JLabel("");
-//		File InvoiceScreen = new File("InvoiceScreen.jpg");
-//		String InvoiceScreenPath = InvoiceScreen.getPath();
-				
-//		lblPicture.setIcon(new ImageIcon(InvoiceScreenPath));
-//		lblPicture.setFont(new Font("Tahoma", Font.BOLD, 13));
-//		lblPicture.setBounds(376, 0, 775, 480);
-//		contentPane.add(lblPicture);		
+		contentPane.add(btnBack);		
 	}
 	
 	public void display() {
