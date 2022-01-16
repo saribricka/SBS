@@ -2,19 +2,35 @@ package main.java.model.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class FileShopImpl implements FileStrategy {
 
 	private static final String SHOP_FILE = "Shop.txt";
     private Set<String> list = new TreeSet<>();
+    
+    private File createFile() {
+    	try {
+    	      File myObj = new File(SHOP_FILE);
+    	      myObj.createNewFile();
+    	      return myObj;
+    	    } catch (IOException e) {
+    	      e.printStackTrace();
+    	      return null;
+    	    }		
+	}
     
 	@Override
 	public Set<String> fileReader() {
@@ -51,7 +67,9 @@ public class FileShopImpl implements FileStrategy {
 		try {        	       
 			Set<String> lines = fileReader();
 	        for(String line : lines) {
-	        	if(line.contains(target.toLowerCase())) {
+	        	String[] data = line.split("\t");
+	    		String barcode = data[0];
+	        	if(barcode.contains(target.toLowerCase())) {
 	        		return line;
 	        	}
 	        }
@@ -63,12 +81,19 @@ public class FileShopImpl implements FileStrategy {
 	}
 
 	@Override
-	/**
-	 * Disabled in shop payments.
-	 */
 	public boolean deleteLine(String target) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			File file = createFile();
+		    List<String> out = Files.lines(file.toPath())
+		        .filter(line -> !line.split("\t")[0].contains(target.toLowerCase()))
+		        .collect(Collectors.toList());
+		    
+			Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override

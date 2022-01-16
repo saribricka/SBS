@@ -49,6 +49,24 @@ public class InvoiceControllerImpl implements InvoiceController{
 	public boolean newInvoice() {
 		return fileInvoice.emptyFile();
 	}
+
+	@Override
+	public boolean checkout() {
+		try {
+			Set<String> cartLines = fileInvoice.fileReader();
+			for(String line : cartLines) {
+				String[] data = line.split("\t");
+				String id = data[0];
+				int qty = Integer.parseInt(data[2]);
+				itemController.recalculateQuantity(id, qty);
+			}
+			newInvoice();
+			return true;
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 
 }

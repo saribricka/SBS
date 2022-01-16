@@ -172,7 +172,7 @@ public class EditItemView extends JFrame{
 						String strP = textField_Price.getText();
 						price = (!strP.isEmpty()) ? Double.parseDouble(strP) : 0.0;
 						
-						ItemImpl itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
+						Item itemToAdd = new ItemImpl(barcode, name, quantity, price, null, null, category);
 						controller.updateItem(itemToAdd);
 																
 						comboBox_ItemId.setSelectedIndex(0);

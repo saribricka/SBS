@@ -3,4 +3,12 @@
 
 
 
-4;vino rosso;50;8.6;null;null;beverage
+
+2;cipolla;50;0.4;null;null;vegetables
+3;penna;100;0.5;null;null;diary
+
+1;tofu;18;3.2;null;null;bio
+
+4;vino rosso;46;8.6;null;null;beverage
+
+5;mayo veg;73;3.2;null;null;sauce

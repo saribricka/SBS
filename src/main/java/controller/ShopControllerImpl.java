@@ -31,15 +31,4 @@ public class ShopControllerImpl implements ShopController {
 		Set<String> payments = fileShop.fileReader();
 		return payments;
 	}
-	
-//	@Override
-//	public Set<String> searchByUser(String target){
-//		return null;
-//	}
-//	
-//	
-//	@Override
-//	public Set<String> searchByDate(String target){
-//		return null;
-//	}
 }

@@ -9,4 +9,6 @@ public interface InvoiceController {
 	boolean addToCart(String cartLine);
 	
 	boolean newInvoice();
+	
+	boolean checkout();
 }

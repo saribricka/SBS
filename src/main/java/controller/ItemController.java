@@ -53,7 +53,7 @@ public interface ItemController {
 	 * @param nSold
 	 * @return the new quantity.
 	 */
-	int recalculateQuantity(String barcode, int nSold);
+	void recalculateQuantity(String barcode, int nSold);
 	
 	/**
 	 * Show all the stock.

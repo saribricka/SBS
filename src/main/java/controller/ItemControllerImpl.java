@@ -113,9 +113,13 @@ public class ItemControllerImpl implements ItemController{
 	}
 
 	@Override
-	public int recalculateQuantity(String barcode, int nSold) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void recalculateQuantity(String barcode, int nSold) {
+		Item i = searchItem(barcode);
+		int oldQty = i.getQuantity();
+		int newQty = oldQty - nSold;
+		
+		Item itemToUpdate = new ItemImpl(i.getBarcode(), i.getName(), newQty, i.getUnitPrice(), null, null, i.getCategory());
+		updateItem(itemToUpdate);
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public class FileUserImpl implements FileStrategy{
 		try {
 			File file = createFile();
 		    List<String> out = Files.lines(file.toPath())
-		        .filter(line -> !line.contains(target.toLowerCase()))
+		        .filter(line -> !line.split(";")[0].contains(target.toLowerCase()))
 		        .collect(Collectors.toList());
 		    
 			Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);

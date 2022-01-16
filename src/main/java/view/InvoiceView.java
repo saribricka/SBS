@@ -225,9 +225,10 @@ public class InvoiceView extends JFrame{
 				if(!strTot.isBlank()) {
 					Double tot = Double.parseDouble(strTot);
 					int userId = Integer.parseInt(String.valueOf(comboBox_CustomerId.getSelectedItem()));				
-					if(shopController.addPayment(userId, tot)) {
+					boolean payCheck = shopController.addPayment(userId, tot);
+					boolean opCheck = invoiceController.checkout();
+					if(payCheck && opCheck) {
 						JOptionPane.showMessageDialog(null, "Operation ended successfully!");
-						invoiceController.newInvoice();
 						comboBox_CustomerId.setSelectedIndex(0);
 						comboBox_Quantity.setSelectedIndex(0);
 						comboBox_ItemId.setSelectedIndex(0);
