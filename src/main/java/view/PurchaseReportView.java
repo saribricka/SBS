@@ -17,14 +17,18 @@ import javax.swing.border.EmptyBorder;
 
 import main.java.controller.ShopController;
 import main.java.controller.ShopControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
 
 public class PurchaseReportView extends JFrame{
 
 	private static final long serialVersionUID = -48307813456949410L;
 	private JPanel contentPane;
 	private ShopController shopController = new ShopControllerImpl();
+	private UserController userController = new UserControllerImpl(); 
 	
-	public PurchaseReportView() {
+	public PurchaseReportView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(620, 280, 850, 650);
 		setTitle("Salaries Report");
@@ -89,7 +93,7 @@ public class PurchaseReportView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				AccountingView screen = new AccountingView();
+				AccountingView screen = new AccountingView(loggedId);
 				screen.display();
 			}
 		});

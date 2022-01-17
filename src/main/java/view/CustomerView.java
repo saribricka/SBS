@@ -11,18 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class CustomerView extends JFrame{
 
 	private static final long serialVersionUID = 206562391366914947L;
 	private JPanel contentPane;
-	
+	private UserController userController = new UserControllerImpl(); 
+		
 	/**
 	 * Create the frame.
 	 */
-	public CustomerView() {
-//		File logoImage = new File("CustomerScreen.jpg");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
+	public CustomerView (final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Customer Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 400, 350);
@@ -36,7 +38,7 @@ public class CustomerView extends JFrame{
 		btnAddUser.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AddCustomerView screen = new AddCustomerView();
+				AddCustomerView screen = new AddCustomerView(loggedId);
 				setVisible(false);
 				screen.display();			
 			}
@@ -48,7 +50,7 @@ public class CustomerView extends JFrame{
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ManagementView screen = new ManagementView();
+				ManagementView screen = new ManagementView(loggedId);
 				setVisible(false);
 				screen.display();
 			}
@@ -60,7 +62,7 @@ public class CustomerView extends JFrame{
 		btnEditUser.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				EditCustomerView screen = new EditCustomerView();
+				EditCustomerView screen = new EditCustomerView(loggedId);
 				setVisible(false);
 				screen.display();	
 			}

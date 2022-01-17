@@ -11,6 +11,9 @@ public class InvoiceControllerImpl implements InvoiceController{
 	private FileStrategy fileInvoice = new FileInvoiceImpl();
 	ItemController itemController = new ItemControllerImpl();
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String createInvoiceItem(String itemId, String qty) {
 		Item item = itemController.searchItem(itemId);
@@ -20,6 +23,9 @@ public class InvoiceControllerImpl implements InvoiceController{
 		return invoiceLine;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Double calculateTotal() {
 		Double cartTotal = 0.0;
@@ -40,16 +46,25 @@ public class InvoiceControllerImpl implements InvoiceController{
 		return cartTotal;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean addToCart(String cartLine) {
 		return fileInvoice.writeInFile(cartLine);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean newInvoice() {
 		return fileInvoice.emptyFile();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean checkout() {
 		try {

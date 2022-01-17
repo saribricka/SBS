@@ -13,9 +13,9 @@ import main.java.model.file.FileUserImpl;
 public class UserControllerImpl implements UserController{
 
 	private User user;
-	private String name, lastname, description, city;
+	private String password, name, lastname, description, city;
 	private UserRole role;
-	private int id;
+	private int id, loggedId;
 	protected boolean isAdmin, isCustomer;
 	
 	private FileStrategy file = new FileUserImpl();
@@ -28,8 +28,11 @@ public class UserControllerImpl implements UserController{
 		return single_instance;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean addUser(User newUser) {
+	public boolean addUser(final User newUser) {
 		if (!exists(newUser.getId())) {	
 			file.writeInFile(newUser.toString());
 			return true;
@@ -38,8 +41,11 @@ public class UserControllerImpl implements UserController{
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public User searchUser(int userId) {
+	public User searchUser(final int userId) {
 		String userLine = file.searchInFile(String.valueOf(userId));
 		if (!StringUtils.isBlank(userLine)) {	
 			User u = composeUser(userLine);
@@ -49,8 +55,11 @@ public class UserControllerImpl implements UserController{
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void updateUser(User updatedUser) {
+	public void updateUser(final User updatedUser) {
 		var id = updatedUser.getId();
 		if (exists(id)) {
 			deleteUser(id);
@@ -58,8 +67,11 @@ public class UserControllerImpl implements UserController{
 		addUser(updatedUser);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean deleteUser(int userId) {
+	public boolean deleteUser(final int userId) {
 		if (exists(userId)) {		
 			file.deleteLine(String.valueOf(userId));
 			return true;
@@ -67,17 +79,23 @@ public class UserControllerImpl implements UserController{
 		return false;
 	}
 	
-	private User composeUser(String userLine) {
+	/**
+	 * {@inheritDoc}
+	 * @param userLine
+	 * @return
+	 */
+	private User composeUser(final String userLine) {
 		String[] data = userLine.split(";");
 		
 		id = Integer.parseInt(data[0]);
+		password = data[6];
 		name = data[1];
 		lastname = data[2];
 		description = data[3];
 		role = UserRole.valueOf(data[4].toUpperCase());
 		city = data[5];
 		
-		user = new UserImpl.UserBuilder(id)
+		user = new UserImpl.UserBuilder(id, password)
 				.name(name)
 				.lastname(lastname)
                 .city(city)
@@ -88,7 +106,12 @@ public class UserControllerImpl implements UserController{
 		return user;		
 	}
 	
-	private boolean exists(int id) {
+	/**
+	 * {@inheritDoc}
+	 * @param id
+	 * @return
+	 */
+	private boolean exists(final int id) {
 		try {
 			String strId = String.valueOf(id);
 			String userLine = file.searchInFile(strId);
@@ -103,10 +126,30 @@ public class UserControllerImpl implements UserController{
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<String> getAllId() {
 		Set<String> ls = file.getAllId();
 		return ls;
 	}
+	
+	/**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getIdUserLogged() {
+       return this.loggedId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean setUserLogged(final int idLogged) {
+        this.loggedId = idLogged;
+        return true;
+    }
 
 }

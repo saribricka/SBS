@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.User;
+import main.java.model.UserRole;
 
 import java.awt.event.*;
 
@@ -18,8 +21,8 @@ public class LoginView extends JFrame {
 	private static final long serialVersionUID = -72099129895597800L;
 	private JPanel contentPane;
 	private JTextField JTextField_Username;
-	int attempts = 3;
 	private JPasswordField JPassword;
+	private UserController userController = new UserControllerImpl();
 	
 	public LoginView() {
 		setTitle("Login");
@@ -36,7 +39,7 @@ public class LoginView extends JFrame {
 		lblWelcomeToHitpos.setBounds(200, 15, 300, 60);
 		contentPane.add(lblWelcomeToHitpos);
 		
-		JLabel lblUsername = new JLabel("Username");
+		JLabel lblUsername = new JLabel("User ID");
 		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblUsername.setBounds(175, 115, 100, 45);
 		contentPane.add(lblUsername);
@@ -51,9 +54,14 @@ public class LoginView extends JFrame {
 		contentPane.add(JTextField_Username);
 		JTextField_Username.setColumns(10);
 		
+		JPassword = new JPasswordField();
+		JPassword.setBounds(250, 150, 120, 25);
+		contentPane.add(JPassword);
+		
 		JCheckBox chckbxShowPassword = new JCheckBox("Show Password");
 		chckbxShowPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
 		chckbxShowPassword.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			 if(chckbxShowPassword.isSelected())
 			 {
@@ -71,34 +79,35 @@ public class LoginView extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnLogin.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String Username = JTextField_Username.getText();
-				String Password = JPassword.getText();
-				while(attempts != 0) 
-				{						
-				if (Username.equals ("A") && Password.equals ("A"))
-				{
-					HomeView mMenu =new HomeView(true);{
-						setVisible(false);
-						mMenu.repaint();
-						mMenu.display();
-					}
-				}
-										
-				else
-				{
-					attempts--;
-					JOptionPane.showMessageDialog(null, "Invalid username or password "+ attempts+" attempts remaning");
-					if (attempts == 0) 
-					{
-						JOptionPane.showMessageDialog(null, "Please Contact maintenance");
-						System.exit(0);
-					}
-				}
-				return;
-				}
+				String userId_input = JTextField_Username.getText();
+				String psw_input = String.valueOf(JPassword.getPassword());
+				boolean checkIdDb = false;
 				
-				}});
+				Set<String> ides_db = userController.getAllId();
+				for(String strId : ides_db) {
+					if (userId_input.equals(strId)) {
+						checkIdDb = true;
+						int id = Integer.parseInt(strId);
+						User u = userController.searchUser(id);
+						String psw_db = u.getPassword();
+						if (psw_db.equals(psw_input) && (!u.getRole().equals(UserRole.CUSTOMER))) {
+							userController.setUserLogged(id);
+							HomeView menu =new HomeView(id);
+							setVisible(false);
+							menu.repaint();
+							menu.display();							
+						} else {
+							JOptionPane.showMessageDialog(null, "No authorization!");
+						}
+					}
+				}
+				if(!checkIdDb) {
+					JOptionPane.showMessageDialog(null, "User not found!");
+				}
+			}
+		});
 		btnLogin.setBounds(140, 320, 120, 40);
 		contentPane.add(btnLogin);
 		
@@ -106,73 +115,28 @@ public class LoginView extends JFrame {
 		JButton btnCancel = new JButton("Exit");
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			System.exit(0);;
 			}
 		});
 		btnCancel.setBounds(280, 320, 120, 40);
 		contentPane.add(btnCancel);
-		
-		JLabel lblPicture = new JLabel("");
-//		File logoImage = new File("project_logo.png");
-//		String imagePath = logoImage.getPath();
-//		lblPicture.setIcon(new ImageIcon(imagePath));
-		lblPicture.setBounds(235, 67, 356, 291);
-		contentPane.add(lblPicture);
-		
-		JPassword = new JPasswordField();
-		JPassword.setBounds(250, 150, 120, 25);
-		contentPane.add(JPassword);
-		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.addActionListener(new ActionListener() {
-			@SuppressWarnings("static-access")
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane jopt = new JOptionPane();
-			    String result;
-			    result = "Please Call Maintenance";
-			    JLabel resLabel = new JLabel(result);
-			    resLabel.setFont(new Font("Monospaced", Font.BOLD, 18));
-			    jopt.showMessageDialog( null, resLabel);
 				
+		JButton btnHelp = new JButton("?");
+		btnHelp.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btnHelp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			    JLabel resLabel = new JLabel("Please Call Maintenance");
+			    String help = "HELP";
+			    JOptionPane.showMessageDialog(null, resLabel, help, JOptionPane.QUESTION_MESSAGE);				
 			}
 		});
-		btnNewButton.setBackground(Color.WHITE);
-//		btnNewButton.setIcon(new ImageIcon(LoginView.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-information.png")));
-		btnNewButton.setBounds(533, 13, 37, 41);
-		contentPane.add(btnNewButton);
-	}
-	
-	private static boolean login(String Username,String Password)
-	{
-		File file = new File("UsersLogin.txt");
-		try
-		{		
-			Scanner input = new Scanner (file);
-			String data;
-			String [] sub_data;
-			
-			while(input.hasNext())
-			{
-				data=input.nextLine();
-				sub_data = data.split(",");
-			
-			if (sub_data[0].equals(Username) && sub_data[1].equals(Password))
-			{
-				return true;
-			}
-			else 
-				return false;
-			}
-		}
-	
-		catch (IOException e)
-		{
-			System.out.println("Error" +e);
-		}
-		
-		return false;
+		btnHelp.setForeground(Color.WHITE);
+		btnHelp.setBackground(Color.BLUE);
+		btnHelp.setBounds(533, 13, 50, 50);
+		contentPane.add(btnHelp);
 	}
 	
 	public void display() {

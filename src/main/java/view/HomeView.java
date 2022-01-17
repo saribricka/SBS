@@ -9,20 +9,28 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+import main.java.model.User;
+import main.java.model.UserRole;
 
 public class HomeView extends JFrame{
 
 	private static final long serialVersionUID = 6847662332522983305L;
 	private static final double PERCENT = 0.6;
 	private JPanel contentPane;
+	private UserController userController = new UserControllerImpl();
 	
 	/**
 	 * Create the frame.
 	 */
-	public HomeView(boolean faded) {
+	public HomeView(int loggedId) {
+		userController.setUserLogged(loggedId);
 		setFont(new Font("Dialog", Font.PLAIN, 6));
 		setTitle("Main Menu");
 		setBackground(Color.WHITE);
@@ -36,28 +44,35 @@ public class HomeView extends JFrame{
 		contentPane.setLayout(null);
 		
 		JButton btnCashier = new JButton("Cash register");
-		btnCashier.setEnabled(faded);
+		User u = userController.searchUser(loggedId);
+		boolean isNotCustomer = (u != null) ? !u.getRole().equals(UserRole.CUSTOMER) : false;
+		btnCashier.setEnabled(isNotCustomer);		
 		btnCashier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			setVisible(false);
-			CashierView cash=new CashierView();
-			cash.display();
+				if (isNotCustomer) {
+					CashierView cash=new CashierView(loggedId);
+					cash.display();
+					setVisible(false);
+				} else {
+					JOptionPane.showMessageDialog(null, "You must be authenticated as MANAGER");
+				}				
 			}
 		});
 		btnCashier.setFont(new Font("Serif", Font.BOLD, 15));
 		btnCashier.setBounds(194, 272, 129, 54);
 		contentPane.add(btnCashier);
 		
-		JButton btnInfo = new JButton("info");
-		btnInfo.setFont(new Font("Tahoma", Font.BOLD, 14));
+		JButton btnInfo = new JButton("I");
+		btnInfo.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    String right = "Developed by Sara Briccoli";
-			    JOptionPane.showMessageDialog(null, right);
+			    JLabel resLabel = new JLabel("Developed by Sara Briccoli");
+			    String info = "INFO";
+			    JOptionPane.showMessageDialog(null, resLabel, info, JOptionPane.QUESTION_MESSAGE);
 			}
 		});
-		btnInfo.setForeground(Color.RED);
-		btnInfo.setBackground(Color.WHITE);
+		btnInfo.setForeground(Color.WHITE);
+		btnInfo.setBackground(Color.GRAY);
 		btnInfo.setBounds(585, 13, 50, 50);
 		contentPane.add(btnInfo);
 		
@@ -74,12 +89,22 @@ public class HomeView extends JFrame{
 		contentPane.add(btnLogin);
 				
 		JButton btnManagement = new JButton("Management");
-		btnManagement.setEnabled(faded);
+		boolean isManager = (u != null) ? u.getRole().equals(UserRole.MANAGER) : false;
+		btnManagement.setEnabled(isManager);
 		btnManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ManagementView manage = new ManagementView();
-				setVisible(false);
-				manage.display();				
+				int log = userController.getIdUserLogged();
+				var a = userController.searchUser(log);
+				var b = a.getRole();
+				boolean isManagerTEST = b.equals(UserRole.MANAGER);
+				
+				if (isManagerTEST) {
+					ManagementView manage = new ManagementView(loggedId);
+					setVisible(false);
+					manage.display();
+				} else {
+					JOptionPane.showMessageDialog(null, "You must be authenticated as MANAGER");
+				}
 			}
 		});
 		btnManagement.setFont(new Font("Serif", Font.BOLD, 15));

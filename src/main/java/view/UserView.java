@@ -11,13 +11,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class UserView extends JFrame{
 
 	private static final long serialVersionUID = 4193666446055665724L;
 	private JPanel contentPane;
-
+	private UserController userController = new UserControllerImpl(); 
 	
-	public UserView() {
+	public UserView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Users");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 788, 512);
@@ -31,7 +35,7 @@ public class UserView extends JFrame{
 		btnAddUser.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AddUserView screen = new AddUserView();
+				AddUserView screen = new AddUserView(loggedId);
 				setVisible(false);
 				screen.display();			
 			}
@@ -43,7 +47,7 @@ public class UserView extends JFrame{
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ManagementView screen = new ManagementView();
+				ManagementView screen = new ManagementView(loggedId);
 				setVisible(false);
 				screen.display();
 			}
@@ -56,7 +60,7 @@ public class UserView extends JFrame{
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				EditUserView screen = new EditUserView();
+				EditUserView screen = new EditUserView(loggedId);
 				screen.display();
 			}
 		});

@@ -25,6 +25,8 @@ import javax.swing.text.NumberFormatter;
 
 import main.java.controller.ItemController;
 import main.java.controller.ItemControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
 import main.java.model.Item;
 import main.java.model.ItemCategory;
 import main.java.model.ItemImpl;
@@ -33,7 +35,8 @@ public class AddItemView extends JFrame{
 
 	private static final long serialVersionUID = -4391439102930446102L;
 
-	ItemController controller = new ItemControllerImpl();
+	private ItemController controller = new ItemControllerImpl();
+	private UserController userController = new UserControllerImpl(); 
 	
 	private JPanel contentPane;
 	private JTextField textField_ID;
@@ -48,7 +51,8 @@ public class AddItemView extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public AddItemView() {
+	public AddItemView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Add Product");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 550, 450);
@@ -171,7 +175,7 @@ public class AddItemView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				ItemView screen = new ItemView();
+				ItemView screen = new ItemView(loggedId);
 				screen.display();
 			}			
 		});

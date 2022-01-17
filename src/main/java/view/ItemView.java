@@ -11,15 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class ItemView extends JFrame{
 
 	private static final long serialVersionUID = -8594745175203264477L;
 	private JPanel contentPane;
+	private UserController userController = new UserControllerImpl(); 
 
 	/**
 	 * Create the frame.
 	 */
-	public ItemView() {
+	public ItemView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Product Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 905, 566);
@@ -33,7 +38,7 @@ public class ItemView extends JFrame{
 		btnAddUser.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AddItemView screen = new AddItemView();
+				AddItemView screen = new AddItemView(loggedId);
 				setVisible(false);
 				screen.display();			
 			}
@@ -45,7 +50,7 @@ public class ItemView extends JFrame{
 		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ManagementView screen = new ManagementView();
+				ManagementView screen = new ManagementView(loggedId);
 				setVisible(false);
 				screen.display();
 			}
@@ -56,7 +61,7 @@ public class ItemView extends JFrame{
 		JButton btnEditUser = new JButton("Edit Product");
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditItemView screen = new EditItemView();
+				EditItemView screen = new EditItemView(loggedId);
 				setVisible(false);
 				screen.display();
 			}

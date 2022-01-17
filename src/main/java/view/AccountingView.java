@@ -11,15 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class AccountingView extends JFrame{
 
 	private static final long serialVersionUID = 8308931027188591302L;
 	private JPanel contentPane;
-
+	private UserController userController = new UserControllerImpl(); 
+	
 	/**
 	 * Create the frame.
 	 */
-	public AccountingView() {
+	public AccountingView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Accounting");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 744, 611);
@@ -33,7 +38,7 @@ public class AccountingView extends JFrame{
 		btnCancel.setBounds(610, 520, 117, 25);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ManagementView screen = new ManagementView();
+				ManagementView screen = new ManagementView(loggedId);
 				setVisible(false);
 				screen.display();
 			}
@@ -46,7 +51,7 @@ public class AccountingView extends JFrame{
 		btnSalaries.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				PurchaseReportView screen= new PurchaseReportView();
+				PurchaseReportView screen= new PurchaseReportView(loggedId);
 				screen.display();
 			}
 		});
@@ -58,7 +63,7 @@ public class AccountingView extends JFrame{
 		btnPaymentMethood.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				ItemReportView screen= new ItemReportView();
+				ItemReportView screen= new ItemReportView(loggedId);
 				screen.display();
 			}
 		});

@@ -11,15 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class CashierView extends JFrame{
 
 	private static final long serialVersionUID = -392773556724218338L;
 	private JPanel contentPane;
-
+	private UserController userController = new UserControllerImpl(); 
+	
 	/**
 	 * Create the frame.
 	 */
-	public CashierView() {
+	public CashierView(int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Cashier register");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 458, 461);
@@ -32,7 +37,7 @@ public class CashierView extends JFrame{
 		JButton btnInvoiceScreen = new JButton("Invoice Screen");
 		btnInvoiceScreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InvoiceView screen = new InvoiceView();
+				InvoiceView screen = new InvoiceView(loggedId);
 				setVisible(false);
 				screen.display();
 			}
@@ -45,7 +50,7 @@ public class CashierView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				HomeView screen = new HomeView(true);
+				HomeView screen = new HomeView(loggedId);
 				screen.display();
 			}
 		});

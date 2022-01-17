@@ -4,11 +4,23 @@
 
 
 
-2;cipolla;50;0.4;null;null;vegetables
-3;penna;100;0.5;null;null;diary
 
-1;tofu;18;3.2;null;null;bio
 
-4;vino rosso;46;8.6;null;null;beverage
 
-5;mayo veg;73;3.2;null;null;sauce
+
+
+1;tofu;17;3.2;null;null;bio
+
+
+
+5;mayo veg;72;3.2;null;null;sauce
+
+7;sedano;38;0.15;null;null;vegetables
+
+2;cipolla;0;0.4;null;null;vegetables
+
+3;penna;93;0.5;null;null;diary
+
+6;carota;33;0.1;null;null;vegetables
+
+4;vino rosso;41;8.6;null;null;beverage

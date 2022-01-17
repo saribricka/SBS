@@ -35,21 +35,22 @@ public class InvoiceView extends JFrame{
 	private static final long serialVersionUID = 3240398240332114971L;
 	private JPanel contentPane;
 	private JTextField textField_TotalPrice;
-	JComboBox<Integer> comboBox_CustomerId;
-	JComboBox<String> comboBox_ItemId;
-	JComboBox<Integer> comboBox_Quantity;
+	private JComboBox<Integer> comboBox_CustomerId;
+	private JComboBox<String> comboBox_ItemId;
+	private JComboBox<Integer> comboBox_Quantity;
 
-	UserController userController = new UserControllerImpl();
-	ItemController itemController = new ItemControllerImpl();
-	ShopController shopController = new ShopControllerImpl();
-	InvoiceController invoiceController = new InvoiceControllerImpl();
-	Set<Integer> quantityModel;
+	private UserController userController = new UserControllerImpl();
+	private ItemController itemController = new ItemControllerImpl();
+	private ShopController shopController = new ShopControllerImpl();
+	private InvoiceController invoiceController = new InvoiceControllerImpl();
+	
+	private Set<Integer> quantityModel;
 		
 	/**
 	 * Create the frame.
 	 */	
-	public InvoiceView() {
-		
+	public InvoiceView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Invoice Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(620, 280, 1300, 520);
@@ -251,7 +252,7 @@ public class InvoiceView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				CashierView screen = new CashierView();
+				CashierView screen = new CashierView(loggedId);
 				screen.display();
 			}
 		});

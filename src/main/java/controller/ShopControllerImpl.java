@@ -15,6 +15,9 @@ public class ShopControllerImpl implements ShopController {
 	private FileStrategy fileShop = new FileShopImpl();
 	private UserController userController = new UserControllerImpl();
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean addPayment(int userId, Double tot) {
 		DateTimeFormatter formatter = DateTimeFormatter
@@ -22,10 +25,13 @@ public class ShopControllerImpl implements ShopController {
 				.withZone(ZoneId.from(ZoneOffset.UTC));
 		String time = formatter.format(Instant.now());
 		User u = userController.searchUser(userId);
-		String paymentLine = time + "\t" + userId + "\t" + u.getName() + " " + u.getLastname() + "\t" + tot + "\n";
+		String paymentLine = time + "\t" + userId + "\t" + u.getName() + " " + u.getLastname() + "\t\t" + tot + "\n";
 		return fileShop.writeInFile(paymentLine);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<String> showPayments() {
 		Set<String> payments = fileShop.fileReader();

@@ -11,12 +11,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class ManagementView extends JFrame{
 
 	private static final long serialVersionUID = -9170551248090369195L;
 	private JPanel contentPane;
-
-	public ManagementView() {
+	private UserController userController = new UserControllerImpl(); 
+	
+	public ManagementView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setFont(new Font("Serif", Font.BOLD, 14));
 		setTitle("Management Screen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +36,7 @@ public class ManagementView extends JFrame{
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			setVisible(false);
-			UserView screen = new UserView();
+			UserView screen = new UserView(loggedId);
 			screen.display();
 			}			
 		});
@@ -44,7 +49,7 @@ public class ManagementView extends JFrame{
 		btnProducts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				ItemView screen = new ItemView();
+				ItemView screen = new ItemView(loggedId);
 				screen.display();
 			}
 		});
@@ -57,7 +62,7 @@ public class ManagementView extends JFrame{
 		btnAccounting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				AccountingView screen = new AccountingView();
+				AccountingView screen = new AccountingView(loggedId);
 				screen.display();
 			}
 		});
@@ -70,7 +75,7 @@ public class ManagementView extends JFrame{
 		btnCustomers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				CustomerView screen = new CustomerView();
+				CustomerView screen = new CustomerView(loggedId);
 				screen.display();
 			}
 		});
@@ -83,7 +88,7 @@ public class ManagementView extends JFrame{
 		button_6.setFont(new Font("Serif", Font.BOLD, 16));
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				HomeView screen =new HomeView(true);{
+				HomeView screen =new HomeView(loggedId);{
 					screen.repaint();
 					setVisible(false);
 					screen.display();

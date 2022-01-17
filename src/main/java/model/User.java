@@ -5,24 +5,50 @@ import java.util.Optional;
 public interface User {	
 
 	/**
-	 * Get id of selected user.
+	 * Returns id of calling user.
 	 * @return a string with the id.
 	 */
-	public int getId();
+	int getId();
 	
 	/**
-	 * Get name of selected interface object.
+	 * Returns password of calling user.
+	 * @return
+	 */
+	String getPassword();
+	
+	/**
+	 * Returns the name of calling user.
 	 * @return a string with the name.
 	 */
-	public String getName();
+	String getName();
 	
-	public String getLastname();
+	/**
+	 * Returns lastname of calling user.
+	 * @return
+	 */
+	String getLastname();
 
-	public Optional<String> getCity();
+	/**
+	 * Returns the city where the calling user lives.
+	 * @return
+	 */
+	Optional<String> getCity();
 
-	public UserRole getRole();
+	/**
+	 * Returns the role of calling User.
+	 * @return a value from enum UserRole
+	 */
+	UserRole getRole();
 
-	public Optional<String> getDescription();
+	/**
+	 * Returns the description of calling user.
+	 * @return
+	 */
+	Optional<String> getDescription();
 
-	public String toString();
+	/**
+	 * Return the user as string. This is the format that will be used to print on db files.
+	 * @return
+	 */
+	String toString();
 }

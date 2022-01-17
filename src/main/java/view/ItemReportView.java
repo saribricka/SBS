@@ -19,6 +19,8 @@ import javax.swing.border.EmptyBorder;
 
 import main.java.controller.ItemController;
 import main.java.controller.ItemControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
 
 public class ItemReportView extends JFrame{
 
@@ -26,11 +28,13 @@ public class ItemReportView extends JFrame{
 	private JPanel contentPane;
 	
 	private ItemController itemController = new ItemControllerImpl();
-
+	private UserController userController = new UserControllerImpl(); 
+	
 	/**
 	 * Create the frame.
 	 */
-	public ItemReportView() {
+	public ItemReportView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(620, 280, 850, 650);
 		contentPane = new JPanel();
@@ -89,7 +93,7 @@ public class ItemReportView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				AccountingView screen = new AccountingView();
+				AccountingView screen = new AccountingView(loggedId);
 				screen.display();
 			}
 		});

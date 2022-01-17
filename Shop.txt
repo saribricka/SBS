@@ -1,3 +1,7 @@
-2022-01-15 22:29:56	11	simonetta cornacchia	74.7
-2022-01-16 13:20:51	11	simonetta cornacchia	58.2
-2022-01-16 13:30:09	1	penny briccoli	63.2
+2022-01-15 22:29:56	15	simonetta cornacchia	74.7
+2022-01-16 13:20:51	15	simonetta cornacchia	58.2
+2022-01-16 13:30:09	1	penny briccoli		63.2
+2022-01-16 23:29:33	2	matteo cico		25.9
+2022-01-16 23:30:57	4	sara white		20.0
+2022-01-16 23:32:38	10	lorenzo briccoli		1.7
+2022-01-16 23:36:31	11	mirko viroli		25.8

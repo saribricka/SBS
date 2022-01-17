@@ -14,15 +14,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
+
 public class ReportView extends JFrame{
 
 	private static final long serialVersionUID = 1066914862981666048L;
 	private JPanel contentPane;
+	private UserController userController = new UserControllerImpl(); 
 	
 	/**
 	 * Create the frame.
 	 */
-	public ReportView() {
+	public ReportView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(500, 500, 850, 650);
 		setTitle("Report Screen");
@@ -92,7 +97,7 @@ public class ReportView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				AccountingView screen = new AccountingView();
+				AccountingView screen = new AccountingView(loggedId);
 				screen.display();
 			}
 		});

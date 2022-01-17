@@ -1,7 +1,6 @@
 package main.java.model;
 
 public enum ItemCategory {
-	SELECT,
 	BIO,
 	VEGETABLES, 
 	FRUITS, 

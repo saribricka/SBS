@@ -29,6 +29,9 @@ public class ItemControllerImpl implements ItemController{
 		return single_instance;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean addItem(Item newItem) {	
 		if (!exists(newItem.getBarcode())) {	
@@ -39,6 +42,9 @@ public class ItemControllerImpl implements ItemController{
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Item searchItem(String barcode) {
 		String itemLine = file.searchInFile(barcode.toLowerCase());
@@ -50,6 +56,9 @@ public class ItemControllerImpl implements ItemController{
 		}			
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateItem(Item updatedItem) {
 		var id = updatedItem.getBarcode();
@@ -59,6 +68,9 @@ public class ItemControllerImpl implements ItemController{
 		addItem(updatedItem);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean deleteItem(String barcode) {
 		if (exists(barcode)) {		
@@ -68,6 +80,11 @@ public class ItemControllerImpl implements ItemController{
 		return false;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @param itemLine
+	 * @return
+	 */
 	private Item composeItem(String itemLine) {
 		String[] data = itemLine.split(";");
 		
@@ -82,6 +99,11 @@ public class ItemControllerImpl implements ItemController{
 		return item;		
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @param barcode
+	 * @return
+	 */
 	private boolean exists(String barcode) {
 		try {
 			String itemLine = file.searchInFile(barcode.toLowerCase());
@@ -96,12 +118,18 @@ public class ItemControllerImpl implements ItemController{
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<String> getAllId() {
 		Set<String> ls = file.getAllId();
 		return ls;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<Integer> fromOneToQuantity(Item item) {
 		Set<Integer> qtys = new HashSet<>();
@@ -112,6 +140,9 @@ public class ItemControllerImpl implements ItemController{
 		return qtys;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void recalculateQuantity(String barcode, int nSold) {
 		Item i = searchItem(barcode);
@@ -122,6 +153,9 @@ public class ItemControllerImpl implements ItemController{
 		updateItem(itemToUpdate);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<String> showUnsold() {
 		Set<String> ides = getAllId();

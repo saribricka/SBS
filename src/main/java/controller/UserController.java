@@ -40,4 +40,16 @@ public interface UserController {
 	 */
 	Set<String> getAllId();
 	
+	/**
+	 * Get the Id of logged user
+	 * @return the id as int
+	 */
+	int getIdUserLogged();
+	
+	/**
+	 * Set the Id of logged user
+	 * @param idLogged as int
+	 */
+	public boolean setUserLogged(int idLogged);
+	
 }

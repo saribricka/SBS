@@ -1,8 +1,15 @@
 
-1;penny;briccoli;;manager;faenza
-2;phebe;buffay;;customer;newyork;end
 
-11;simonetta;cornacchia;la donna delle ceramiche;manager;faenza;end
-3;matteo;cicognani;l'amor stronzo della mia vita;manager;san louis obispo;end
 
-0;el duko;pistolero;we mejo der coroseo;customer;roma;end
+1;matteo;cico;;cashier;san louis obispo;aka
+
+2;joseph;tribbiani;;customer;newyork;j1
+
+
+
+
+
+
+10;lorenzo;briccoli;how u doin;customer;liguria;ll
+
+11;mirko;viroli;;customer;;mk1

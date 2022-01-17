@@ -24,6 +24,8 @@ import javax.swing.text.NumberFormatter;
 
 import main.java.controller.ItemController;
 import main.java.controller.ItemControllerImpl;
+import main.java.controller.UserController;
+import main.java.controller.UserControllerImpl;
 import main.java.model.Item;
 import main.java.model.ItemCategory;
 import main.java.model.ItemImpl;
@@ -39,18 +41,18 @@ public class EditItemView extends JFrame{
 	private double price;
 	private ItemCategory category;
 	
-	ItemController controller = new ItemControllerImpl();
-	Object[] idArray;
+	private ItemController controller = new ItemControllerImpl();
+	private UserController userController = new UserControllerImpl(); 
 	
-	JComboBox<Integer> comboBox_ItemId;
-	JComboBox<ItemCategory> comboBox_Category;
+	private Object[] idArray;
+	
+	private JComboBox<Integer> comboBox_ItemId;
+	private JComboBox<ItemCategory> comboBox_Category;
 	/**
 	 * Create the frame.
 	 */
-	public EditItemView() {
-//		File logoImage = new File("EditItemView.png");
-//		String imagePath = logoImage.getPath();
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(imagePath));
+	public EditItemView(final int loggedId) {
+		userController.setUserLogged(loggedId);
 		setTitle("Edit Product");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,7 +135,7 @@ public class EditItemView extends JFrame{
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				ItemView screen = new ItemView();
+				ItemView screen = new ItemView(loggedId);
 				screen.display();
 			}
 		});
