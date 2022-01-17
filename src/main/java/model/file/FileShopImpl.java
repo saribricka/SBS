@@ -23,17 +23,19 @@ public class FileShopImpl implements FileStrategy {
     
     private File createFile() {
     	try {
-    	      File myObj = new File(SHOP_FILE);
-    	      myObj.createNewFile();
-    	      return myObj;
-    	    } catch (IOException e) {
-    	      e.printStackTrace();
-    	      return null;
-    	    }		
+    		String filePath = System.getProperty("user.dir") + File.separator + SHOP_FILE;
+    	    File myObj = new File(filePath);
+    	    myObj.createNewFile();
+    	    return myObj;
+    	} catch (IOException e) {
+    	    e.printStackTrace();
+    	    return null;
+    	}		
 	}
     
 	@Override
 	public Set<String> fileReader() {
+		createFile();
 		try(BufferedReader reader = new BufferedReader(new FileReader(SHOP_FILE))) {
 			String line;
 			list.clear();
@@ -51,6 +53,7 @@ public class FileShopImpl implements FileStrategy {
 
 	@Override
 	public boolean writeInFile(String objectToString) {
+		createFile();
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(SHOP_FILE, true))) {
 			writer.write(objectToString);
 			writer.flush();
@@ -64,7 +67,8 @@ public class FileShopImpl implements FileStrategy {
 		
 	@Override
 	public String searchInFile(String target) {
-		try {        	       
+		try {       
+			createFile();
 			Set<String> lines = fileReader();
 	        for(String line : lines) {
 	        	String[] data = line.split("\t");
@@ -98,6 +102,7 @@ public class FileShopImpl implements FileStrategy {
 
 	@Override
 	public boolean emptyFile() {
+		createFile();
 		try(PrintWriter writer = new PrintWriter(SHOP_FILE)) {
             writer.print("");
             writer.close();

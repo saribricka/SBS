@@ -26,7 +26,8 @@ public class FileItemImpl implements FileStrategy{
     
     private File createFile() {
     	try {
-    	      File myObj = new File(ITEM_FILE);
+    		String filePath = System.getProperty("user.dir") + File.separator + ITEM_FILE;
+    	      File myObj = new File(filePath);
     	      myObj.createNewFile();
     	      return myObj;
     	    } catch (IOException e) {
@@ -37,6 +38,7 @@ public class FileItemImpl implements FileStrategy{
     
 	@Override
 	public Set<String> fileReader() {
+		createFile();
 		try(BufferedReader reader = new BufferedReader(new FileReader(ITEM_FILE))) {
 			String line;
 			list.clear();
@@ -69,7 +71,8 @@ public class FileItemImpl implements FileStrategy{
 
 	@Override
 	public String searchInFile(String target) {		
-        try {        	       
+        try {        	
+        	createFile();
 			Set<String> lines = fileReader();
 	        for(String line : lines) {
 	        	String[] data = line.split(";");
@@ -102,7 +105,8 @@ public class FileItemImpl implements FileStrategy{
 	}
 
 	@Override
-	public boolean emptyFile() {		
+	public boolean emptyFile() {
+		createFile();
         try(PrintWriter writer = new PrintWriter(ITEM_FILE)) {
             writer.print("");
             writer.close();

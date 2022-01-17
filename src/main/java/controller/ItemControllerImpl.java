@@ -10,6 +10,8 @@ import main.java.model.ItemCategory;
 import main.java.model.ItemImpl;
 import main.java.model.file.FileItemImpl;
 import main.java.model.file.FileStrategy;
+import main.java.utils.StringUtil;
+import main.java.utils.StringUtilImpl;
 
 public class ItemControllerImpl implements ItemController{
 
@@ -19,6 +21,7 @@ public class ItemControllerImpl implements ItemController{
 	private double price;
 	private ItemCategory category;
 	
+	private StringUtil stringUtil = new StringUtilImpl(); 
 	private FileStrategy file = new FileItemImpl();
 	private static ItemControllerImpl single_instance = null;
 	
@@ -48,7 +51,7 @@ public class ItemControllerImpl implements ItemController{
 	@Override
 	public Item searchItem(String barcode) {
 		String itemLine = file.searchInFile(barcode.toLowerCase());
-		if (!StringUtils.isBlank(itemLine)) {	
+		if (!stringUtil.isNullOrBlank(itemLine)) {	
 			Item i = composeItem(itemLine);
 			return i;
 		} else {
@@ -107,7 +110,7 @@ public class ItemControllerImpl implements ItemController{
 	private boolean exists(String barcode) {
 		try {
 			String itemLine = file.searchInFile(barcode.toLowerCase());
-			if (!StringUtils.isBlank(itemLine)) {	
+			if (!stringUtil.isNullOrBlank(itemLine)) {	
 				return true;
 			} else {
 				return false;

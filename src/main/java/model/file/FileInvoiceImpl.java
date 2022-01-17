@@ -2,6 +2,7 @@ package main.java.model.file;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,8 +17,22 @@ public class FileInvoiceImpl implements FileStrategy {
 	private static final String CART_FILE = "Cart.txt";
 	private Set<String> list = new TreeSet<>();
 	
+	
+	private File createFile() {
+		try {
+			String filePath = System.getProperty("user.dir") + File.separator + CART_FILE;
+			File myObj = new File(filePath);
+  	      	myObj.createNewFile();
+  	      	return myObj;
+  	    } catch (IOException e) {
+  	    	e.printStackTrace();
+  	    	return null;
+  	    }			
+	}
+	
 	@Override
 	public Set<String> fileReader() {
+		createFile();
 		try(BufferedReader reader = new BufferedReader(new FileReader(CART_FILE))) {
 			String line;
 			list.clear();
@@ -35,6 +50,7 @@ public class FileInvoiceImpl implements FileStrategy {
 
 	@Override
 	public boolean writeInFile(String objectToString) {
+		createFile();
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(CART_FILE, true))) {
 			writer.write(objectToString);
 			writer.flush();
@@ -48,7 +64,7 @@ public class FileInvoiceImpl implements FileStrategy {
 
 	@Override
 	/**
-	 * Disabled in invoice.
+	 * @deprecated
 	 */
 	public String searchInFile(String target) {
 		// TODO Auto-generated method stub
@@ -57,7 +73,7 @@ public class FileInvoiceImpl implements FileStrategy {
 
 	@Override
 	/**
-	 * Disabled in invoice.
+	 * @deprecated
 	 */
 	public boolean deleteLine(String target) {
 		// TODO Auto-generated method stub
@@ -66,6 +82,7 @@ public class FileInvoiceImpl implements FileStrategy {
 
 	@Override
 	public boolean emptyFile() {
+		createFile();
 		try(PrintWriter writer = new PrintWriter(CART_FILE)) {
             writer.print("");
             writer.close();

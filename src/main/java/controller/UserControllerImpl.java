@@ -9,6 +9,8 @@ import main.java.model.UserImpl;
 import main.java.model.UserRole;
 import main.java.model.file.FileStrategy;
 import main.java.model.file.FileUserImpl;
+import main.java.utils.StringUtil;
+import main.java.utils.StringUtilImpl;
 
 public class UserControllerImpl implements UserController{
 
@@ -18,6 +20,7 @@ public class UserControllerImpl implements UserController{
 	private int id, loggedId;
 	protected boolean isAdmin, isCustomer;
 	
+	private StringUtil stringUtil = new StringUtilImpl(); 
 	private FileStrategy file = new FileUserImpl();
 	private static UserControllerImpl single_instance = null;
 	
@@ -47,7 +50,7 @@ public class UserControllerImpl implements UserController{
 	@Override
 	public User searchUser(final int userId) {
 		String userLine = file.searchInFile(String.valueOf(userId));
-		if (!StringUtils.isBlank(userLine)) {	
+		if (!stringUtil.isNullOrBlank(userLine)) {	
 			User u = composeUser(userLine);
 			return u;
 		} else {
@@ -115,7 +118,7 @@ public class UserControllerImpl implements UserController{
 		try {
 			String strId = String.valueOf(id);
 			String userLine = file.searchInFile(strId);
-			if (!StringUtils.isBlank(userLine)) {	
+			if (!stringUtil.isNullOrBlank(userLine)) {	
 				return true;
 			} else {
 				return false;

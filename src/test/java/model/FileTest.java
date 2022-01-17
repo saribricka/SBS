@@ -66,7 +66,10 @@ public class FileTest {
 		}
 	}
 
-
-
+	@Test
+	public void writeFromJar() {
+		FileStrategy file = new FileUserImpl();
+		file.writeInFile("testing jar1");
+	}
 
 }
