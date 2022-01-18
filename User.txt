@@ -1,14 +1,14 @@
-4;sara;bric;;manager;faenza;5ka
-1;matteo;cico;;cashier;san louis obispo;aka
+1;cashier;tre;;cashier;san louis obispo;000
 
 2;joseph;tribbiani;;customer;newyork;j1
 
-10;lorenzo;briccoli;how u doin;customer;genova;ll
+10;ivan;rossi;;customer;genova;ll
 
 11;mirko;viroli;;customer;;mk1
 
-3;fab;bric;;customer;;fab
+3;fab;rick;;customer;;fab
 
 
 
 
+4;admin;due;;manager;faenza;123

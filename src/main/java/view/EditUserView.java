@@ -159,8 +159,9 @@ public class EditUserView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					id = Integer.parseInt(String.valueOf(comboBox_UserId.getSelectedItem()));
-					
-					if(controller.searchUser(id) == null) {
+						
+					User u = controller.searchUser(id);
+					if(u == null) {
 						comboBox_UserId.setSelectedIndex(0);
 						JOptionPane.showMessageDialog(null, "The User was not found");
 					} else {
@@ -168,7 +169,12 @@ public class EditUserView extends JFrame{
 						name = textField_Name.getText();	
 						lastname = textField_LastName.getText();	
 						city = textField_City.getText();
-						role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+						if (id != loggedId) {
+							role = UserRole.valueOf(String.valueOf(comboBox_Role.getSelectedItem()).toUpperCase());
+						} else {							
+							role = u.getRole();
+						}
+						
 						description = textField_Description.getText();
 						
 						User user = new UserImpl.UserBuilder(id, password)
@@ -188,8 +194,14 @@ public class EditUserView extends JFrame{
 						comboBox_Role.setSelectedIndex(0);
 						textField_City.setText("");
 						textField_Description.setText("");
-						JOptionPane.showMessageDialog(null, "The User was updated");
-					}										
+						if (id != loggedId) {
+							JOptionPane.showMessageDialog(null, "The User was updated");
+						} else {
+							JOptionPane.showMessageDialog(null, "You're not allowed to modify your role!\nThe user data was updated but role.");
+						}
+						
+					}
+																								
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -204,22 +216,26 @@ public class EditUserView extends JFrame{
 				try {
 					id = Integer.parseInt(String.valueOf(comboBox_UserId.getSelectedItem()));
 					
-					boolean check = controller.deleteUser(id);
-					
-					if(!check) {
-						JOptionPane.showMessageDialog(null, "The User was not found");
-					} else {								
-						JOptionPane.showMessageDialog(null, "The User was successfully deleted");
-						Object[] idArray = controller.getAllId().toArray();
-						comboBox_UserId.setModel(new DefaultComboBoxModel(idArray));
-					}	
-					comboBox_UserId.setSelectedIndex(0);
-					textField_Psw.setText("");
-					textField_Name.setText("");
-					textField_LastName.setText("");
-					comboBox_Role.setSelectedIndex(0);
-					textField_City.setText("");
-					textField_Description.setText("");
+					if (id != loggedId) {
+						boolean check = controller.deleteUser(id);
+						
+						if(!check) {
+							JOptionPane.showMessageDialog(null, "The User was not found");
+						} else {								
+							JOptionPane.showMessageDialog(null, "The User was successfully deleted");
+							Object[] idArray = controller.getAllId().toArray();
+							comboBox_UserId.setModel(new DefaultComboBoxModel(idArray));
+						}	
+						comboBox_UserId.setSelectedIndex(0);
+						textField_Psw.setText("");
+						textField_Name.setText("");
+						textField_LastName.setText("");
+						comboBox_Role.setSelectedIndex(0);
+						textField_City.setText("");
+						textField_Description.setText("");
+					} else {
+						JOptionPane.showMessageDialog(null, "You're not allowed to delete yourself!");
+					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}								

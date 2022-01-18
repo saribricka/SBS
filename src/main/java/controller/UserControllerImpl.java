@@ -2,8 +2,6 @@ package main.java.controller;
 
 import java.util.Set;
 
-import org.junit.platform.commons.util.StringUtils;
-
 import main.java.model.User;
 import main.java.model.UserImpl;
 import main.java.model.UserRole;

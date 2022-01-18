@@ -3,7 +3,6 @@ package main.java.controller;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.platform.commons.util.StringUtils;
 
 import main.java.model.Item;
 import main.java.model.ItemCategory;

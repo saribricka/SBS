@@ -9,7 +9,7 @@ import main.java.model.file.FileStrategy;
 public class InvoiceControllerImpl implements InvoiceController{
 
 	private FileStrategy fileInvoice = new FileInvoiceImpl();
-	ItemController itemController = new ItemControllerImpl();
+	private ItemController itemController = new ItemControllerImpl();
 	
 	/**
 	 * {@inheritDoc}

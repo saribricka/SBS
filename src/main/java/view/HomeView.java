@@ -43,7 +43,7 @@ public class HomeView extends JFrame{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnCashier = new JButton("Cash register");
+		JButton btnCashier = new JButton("Cash Register");
 		User u = userController.searchUser(loggedId);
 		boolean isNotCustomer = (u != null) ? !u.getRole().equals(UserRole.CUSTOMER) : false;
 		btnCashier.setEnabled(isNotCustomer);		
